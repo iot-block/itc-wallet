@@ -1,7 +1,15 @@
 <template>
   <div>
-    <LeftMenu :show="true" :drawerUpdate="drawerUpdate" :temporary="false" :items="items"/>
+    <LeftMenu :show="true" :temporary="false" :items="items"/>
     <v-content>
+      <v-breadcrumbs 
+        :items="paths" 
+        large
+        class="px-3 pt-4 pb-0">
+        <template v-slot:divider>
+          <v-icon>chevron_right</v-icon>
+        </template>
+      </v-breadcrumbs>
       <router-view></router-view>
     </v-content>
   </div>
@@ -13,15 +21,18 @@ export default {
   components: {
     LeftMenu
   },
-  computed: {
-    // showDrawer(){
-    //   if(this.show == null) return this.$vuetify.breakpoint.lgAndUp
-    //   else return this.show
-    // }
+  mounted(){
+    this.loadHistory()
+  },
+  beforeRouteUpdate(to,from,next){
+    if(to.fullPath!=from.fullPath){
+      next()
+      this.loadHistory()
+    }
   },
   data(){
     return {
-      show: null,
+      paths: [],
       items: [
         {
           icon: 'account_balance_wallet',
@@ -41,11 +52,15 @@ export default {
     }
   },
   methods: {
-    drawerClick(){
-      this.show = !this.show
-    },
-    drawerUpdate(show){
-      this.show = show
+    loadHistory(){
+      this.paths = this.$history.routes.map(r => {
+        return {
+          disabled: false,
+          exact: true,
+          text: r.meta.name,
+          to: {name: r.name}
+        }
+      })
     }
   }
 }

@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+import storage from '../common/storage'
 
 /**
  * Set `__static` path to static files in production
@@ -14,13 +15,27 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 function createWindow () {
+  storage.set("routes",[
+    {
+      name: 'wallet',
+      fullPath: '/wallet',
+      meta: {
+        root: true,
+        name: '钱包',
+      },
+      path: 'wallet'
+    }
+  ])
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
     height: 563,
-    useContentSize: true,
     width: 1000,
+    useContentSize: true,
+    minWidth: 500,
+    minHeight: 500,
+    titleBarStyle: 'hidden',
     webPreferences: {webSecurity: false}
   })
 
