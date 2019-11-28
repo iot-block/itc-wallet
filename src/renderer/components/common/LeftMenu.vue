@@ -35,23 +35,6 @@
 <script>
 import Footer from '@/components/common/Footer'
 
-// items: [
-//   {
-//     header: '分组标题',
-//     items: [
-//       {
-//         icon: 'icon名字',
-//         text:'栏目名',
-//         img:'如果没有icon的话，可以填写img作为栏目名前的图标',
-//         model: 'true表示展开，false收起',
-//         children: [
-//           {icon:'图标',text:'子栏目名'}
-//         ]
-//       }
-//     ]
-//   }
-// ],
-
 export default {
   components:{
     Footer

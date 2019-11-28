@@ -21,43 +21,52 @@ export default {
   components: {
     LeftMenu
   },
+  data(){
+    return {
+      paths: []
+    }
+  },
   mounted(){
-    this.loadHistory()
+    this.paths = this.loadHistory()
+  },
+  watch: {
+    '$i18n.locale': function(val){
+      this.paths = this.loadHistory()
+    }
   },
   beforeRouteUpdate(to,from,next){
     if(to.fullPath!=from.fullPath){
       next()
-      this.loadHistory()
+      this.paths = this.loadHistory()
     }
   },
-  data(){
-    return {
-      paths: [],
-      items: [
+  computed:{
+    items(){
+      return [
         {
           icon: 'account_balance_wallet',
-          text: '钱包',
+          text: this.$t('wallet.title'),
           route: {
             name: 'wallet'
           },
         },
         {
           icon: 'settings',
-          text: '设置',
+          text: this.$t('setting.title'),
           route: {
             name: 'setting'
           }
         }
-      ] 
+      ]
     }
   },
   methods: {
     loadHistory(){
-      this.paths = this.$history.routes.map(r => {
+      return this.$history.routes.map(r => {
         return {
           disabled: false,
           exact: true,
-          text: r.meta.name,
+          text: this.$t(r.meta.name),
           to: {name: r.name}
         }
       })

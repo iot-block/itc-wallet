@@ -1,0 +1,13 @@
+{
+  "wallet": {
+    "title": "钱包",
+    "create": "创建"
+  },
+  "setting": {
+    "title": "设置",
+    "node": "节点",
+    "language": "语言",
+    "chinese": "中文",
+    "english": "English"
+  }
+}

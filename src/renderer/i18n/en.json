@@ -1,0 +1,13 @@
+{
+  "wallet": {
+    "title": "Wallet",
+    "create": "Create"
+  },
+  "setting": {
+    "title": "Setting",
+    "node": "Node",
+    "language": "Language",
+    "chinese": "中文",
+    "english": "English"
+  }
+}

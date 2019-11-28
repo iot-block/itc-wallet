@@ -40,7 +40,7 @@ const router = new VueRouter({
               name: 'wallet',
               meta: {
                 root: true,
-                name: '钱包',
+                name: 'wallet.title',
               },
               component: Wallet,
             },
@@ -48,7 +48,7 @@ const router = new VueRouter({
               path: 'create',
               name: 'create',
               meta: {
-                name: '创建',
+                name: 'wallet.create',
               },
               component: CreateAccount
             },
@@ -59,7 +59,7 @@ const router = new VueRouter({
           name: 'setting',
           meta: {
             root: true,
-            name: '设置',
+            name: 'setting.title',
           },
           component: Setting
         }
