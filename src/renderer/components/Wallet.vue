@@ -1,6 +1,25 @@
 <template>
   <v-container fluid>
-    <v-row :justify="accounts && accounts.length>0?'start':'start'">
+    <v-row justify="start">
+      <v-col
+        height="100%"
+        cols="6"
+        sm="6"
+        md="4"
+        lg="3"
+        xl="3">
+        <v-hover v-slot:default="{ hover }">
+          <v-card :elevation="hover ? 12 : 2">
+            <router-link :to="{name:'create'}" style="text-decoration:none;">
+              <v-responsive :aspect-ratio="16/9">
+                <div icon class="d-flex justify-center align-center" style="width:100%;height:100%;">
+                  <v-icon large>add</v-icon>
+                </div>
+              </v-responsive>
+            </router-link>
+          </v-card>
+        </v-hover>
+      </v-col>
       <template v-if="accounts && accounts.length>0">
         <v-col
           v-for="i in accounts"
@@ -18,24 +37,8 @@
           </v-card>
         </v-col>
       </template>
-      <v-col v-else
-        cols="6"
-        sm="6"
-        md="4"
-        lg="3"
-        xl="3">
-        <v-card>
-          <router-link :to="{name:'create'}" style="text-decoration:none;">
-            <v-responsive :aspect-ratio="16/9">
-              <div icon class="d-flex justify-center align-center" style="width:100%;height:100%;">
-                <v-icon large>add</v-icon>
-              </div>
-            </v-responsive>
-          </router-link>
-        </v-card>
-      </v-col>
     </v-row>
-    <v-speed-dial
+    <!-- <v-speed-dial
       v-model="fab"
       fixed
       right
@@ -68,9 +71,9 @@
         fab
         dark
         color="indigo">
-        <v-icon>add</v-icon>
+        <v-icon>account_balance_wallet</v-icon>
       </v-btn>
-    </v-speed-dial>
+    </v-speed-dial> -->
   </v-container>
 </template>
 

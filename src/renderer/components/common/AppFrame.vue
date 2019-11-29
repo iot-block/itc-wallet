@@ -1,8 +1,9 @@
 <template>
   <div>
     <LeftMenu :show="true" :temporary="false" :items="items"/>
-    <v-content>
+    <v-content class="pt-3">
       <v-breadcrumbs 
+        v-if="paths && paths.length>1"
         :items="paths" 
         large
         class="px-3 pt-4 pb-0">
@@ -10,7 +11,7 @@
           <v-icon>chevron_right</v-icon>
         </template>
       </v-breadcrumbs>
-      <router-view></router-view>
+      <router-view class=""></router-view>
     </v-content>
   </div>
 </template>
