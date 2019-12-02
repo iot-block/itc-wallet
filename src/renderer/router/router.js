@@ -5,6 +5,10 @@ import Index from '../components/Index'
 import Wallet from '../components/Wallet'
 import Setting from '../components/Setting'
 import CreateAccount from '../components/CreateAccount'
+import ImportWallet from '../components/ImportWallet'
+import WalletDetail from '../components/WalletDetail'
+import Transfer from '../components/Transfer'
+import Receive from '../components/Receive'
 import AppFrame from '../components/common/AppFrame'
 
 Vue.use(VueRouter)
@@ -46,11 +50,43 @@ const router = new VueRouter({
             },
             {
               path: 'create',
-              name: 'create',
+              name: 'createWallet',
               meta: {
                 name: 'wallet.create',
               },
               component: CreateAccount
+            },
+            {
+              path: 'import',
+              name: 'importWallet',
+              meta: {
+                name: 'wallet.import',
+              },
+              component: ImportWallet
+            },
+            {
+              path: 'walletDetail',
+              name: 'walletDetail',
+              meta: {
+                name: 'wallet.detail',
+              },
+              component: WalletDetail
+            },
+            {
+              path: 'transfer',
+              name: 'transfer',
+              meta: {
+                name: 'wallet.transfer',
+              },
+              component: Transfer
+            },
+            {
+              path: 'receive',
+              name: 'receive',
+              meta: {
+                name: 'wallet.receive',
+              },
+              component: Receive
             },
           ]
         },
@@ -76,6 +112,14 @@ router.beforeEach((to,from,next) => {
   if(context){
     if(to.meta && to.meta.root){
       context.$history.clear()
+    }
+    if(context.$history.contains(to)){
+      while(context.$history.nonEmpty()){
+        var poped = context.$history.pop()
+        if(poped.name==to.name){
+          break;
+        }
+      }
     }
     context.$history.push(to)
   }

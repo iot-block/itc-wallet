@@ -1,7 +1,11 @@
 {
   "wallet": {
     "title": "钱包",
-    "create": "创建"
+    "create": "创建",
+    "import": "导入",
+    "detail": "详情",
+    "transfer": "转账",
+    "receive": "收款"
   },
   "setting": {
     "title": "设置",

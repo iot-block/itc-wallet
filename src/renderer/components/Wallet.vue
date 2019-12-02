@@ -2,39 +2,61 @@
   <v-container fluid>
     <v-row justify="start">
       <v-col
-        height="100%"
-        cols="6"
+        cols="12"
         sm="6"
         md="4"
-        lg="3"
+        lg="4"
         xl="3">
         <v-hover v-slot:default="{ hover }">
-          <v-card :elevation="hover ? 12 : 2">
-            <router-link :to="{name:'create'}" style="text-decoration:none;">
-              <v-responsive :aspect-ratio="16/9">
-                <div icon class="d-flex justify-center align-center" style="width:100%;height:100%;">
-                  <v-icon large>add</v-icon>
-                </div>
-              </v-responsive>
-            </router-link>
+          <v-card :elevation="2">
+            <v-responsive :aspect-ratio="16/9">
+              <div v-if="!hover" class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;">
+                <v-icon large  class="transition-fast-in-fast-out">add</v-icon>
+              </div>
+              <div v-else class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;">
+                <v-btn transition="fade-transition" outlined dense color="primary" width="150" style="text-decoration:none;" :to="{name:'importWallet'}">Import</v-btn>
+                <v-btn transition="fade-transition" outlined dense color="primary" width="150" class="mt-2" style="text-decoration:none;" :to="{name:'createWallet'}">Create New</v-btn>
+              </div>
+            </v-responsive>
           </v-card>
         </v-hover>
       </v-col>
       <template v-if="accounts && accounts.length>0">
         <v-col
-          v-for="i in accounts"
-          :key="i"
-          cols="6"
+          v-for="(account,index) in accounts"
+          :key="index"
+          cols="12"
           sm="6"
           md="4"
-          lg="3"
+          lg="4"
           xl="3">
-          <v-card>
-            <router-link :to="{name:'create'}">
-              <v-responsive :aspect-ratio="16/9">
-              </v-responsive>
-            </router-link>
-          </v-card>
+          <v-hover v-slot:default="{ hover }">
+            <v-card :elevation="hover ? 12 : 2">
+              <router-link :to="{name:'walletDetail'}" style="text-decoration:none;">
+                <v-responsive :aspect-ratio="16/9" class="">
+                  <div style="width:100%;height:100%" class="d-flex flex-column">
+                    <div class="d-flex flex-row align-center">
+                      <v-card-subtitle class="flex-grow-1 font-weight-bold black--text text-truncate">
+                        {{account.name}}
+                      </v-card-subtitle>
+                      <v-icon class="mr-1">chevron_right</v-icon>
+                    </div>
+                    <div class="px-4 pr-2 grey--text d-flex flex-row">
+                      <span class="flex-grow-1 text-truncate">{{account.address}}</span>
+                      <v-icon class="mr-1" small>content_copy</v-icon>
+                    </div>
+                    <v-spacer />
+                    <v-divider class="mx-4"/>
+                    <div class=" d-flex flex-row px-4 py-2 black--text">
+                      <span class="flex-grow-1 text-center">{{account.itc}} ITC</span>
+                      <v-divider vertical/>
+                      <span class="flex-grow-1 text-center">{{account.itg}} ITG</span>
+                    </div>
+                  </div>
+                </v-responsive>
+              </router-link>
+            </v-card>
+          </v-hover>
         </v-col>
       </template>
     </v-row>
@@ -83,7 +105,38 @@ export default {
   data(){
     return {
       fab: false,
-      accounts: []
+      accounts: [
+        {
+          name: 'My Btc Wallet',
+          address: '0xe537cf83b28c0b130b35811ddf32e70d2d8772de',
+          itc: 10000,
+          itg: 100
+        },
+        {
+          name: 'My Btc Wallet',
+          address: '0xe537cf83b28c0b130b35811ddf32e70d2d8772de',
+          itc: 10000,
+          itg: 100
+        },
+        {
+          name: 'My Btc Wallet',
+          address: '0xe537cf83b28c0b130b35811ddf32e70d2d8772de',
+          itc: 10000,
+          itg: 100
+        },
+        {
+          name: 'My Btc Wallet',
+          address: '0xe537cf83b28c0b130b35811ddf32e70d2d8772de',
+          itc: 10000,
+          itg: 100
+        },
+        {
+          name: 'My Btc Wallet',
+          address: '0xe537cf83b28c0b130b35811ddf32e70d2d8772de',
+          itc: 10000,
+          itg: 100
+        }
+      ]
     }
   }
 }

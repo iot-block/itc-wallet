@@ -5,6 +5,15 @@ const HistoryStorage = {
   init(){
     this.routes = storage.get('routes',[])
   },
+  _save(){
+    storage.set('routes',this.routes)
+  },
+  nonEmpty(){
+    return this.routes && this.routes.length>0
+  },
+  contains(route){
+    return this.routes.find(r => r.name==route.name)
+  },
   push(route){
     this.routes.push({
       name: route.name,
@@ -14,12 +23,10 @@ const HistoryStorage = {
     })
     this._save()
   },
-  _save(){
-    storage.set('routes',this.routes)
-  },
   pop(){
-    this.routes.pop()
+    var poped = this.routes.pop()
     this._save()
+    return poped
   },
   clear(){
     this.routes = []

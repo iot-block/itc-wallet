@@ -1,5 +1,6 @@
 // import '@mdi/font/css/materialdesignicons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -11,7 +12,7 @@ const opts = {
   icons: {
     // see https://materialdesignicons.com/
     // https://jossef.github.io/material-design-icons-iconfont/ 
-    iconfont: 'md',   
+    iconfont: 'md' || 'mdi',   
   },
 }
 

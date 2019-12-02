@@ -1,7 +1,11 @@
 {
   "wallet": {
     "title": "Wallet",
-    "create": "Create"
+    "create": "Create",
+    "import": "Import",
+    "detail": "Detail",
+    "transfer": "Transfer",
+    "receive": "Receive"
   },
   "setting": {
     "title": "Setting",

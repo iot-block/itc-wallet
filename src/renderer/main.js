@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './assets/common.css'
 import VueI18n from 'vue-i18n'
 import vuetify from './plugins/vuetify'
 import history from './plugins/history'
