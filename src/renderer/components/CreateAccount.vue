@@ -24,8 +24,10 @@
           </v-text-field>
           <v-text-field
             v-model="password"
-            type="password"
             label="password"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="show1 = !show1"
+            :type="show1 ? 'text' : 'password'"
             rounded
             outlined
             filled
@@ -34,8 +36,10 @@
           </v-text-field>
           <v-text-field
             v-model="passwordRepeat"
-            type="password"
             label="password repeat"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="show2 = !show2"
+            :type="show2 ? 'text' : 'password'"
             rounded
             outlined
             filled
@@ -54,6 +58,7 @@
             <v-btn
               class="ml-4"
               depressed
+              :disabled="!walletName || !password || !passwordRepeat || password!=passwordRepeat"
               color="primary"
               @click="step = 2">
               Next
@@ -145,7 +150,8 @@
             <v-btn
               class="ml-4"
               color="primary"
-              @click="step = 4">
+              :loading="loading"
+              @click="checkMnemonics">
               Next
             </v-btn>
           </div>
@@ -164,11 +170,11 @@
                 <v-icon large class="">account_balance_wallet</v-icon>
                 <div class="pa-0 ml-3 flex-grow-1" style="width:0!important;">
                   <div class="subtitle-1 font-weight-bold">ITC Wallet</div>
-                  <div class="text-truncate">0xe537cf83b28c0b130b35811ddf32e70d2d8772de</div>
+                  <div class="text-truncate">{{this.address}}</div>
                 </div>
               </v-card>
               <div class="title font-weight-bold text-center mt-4">Your new wallet is ready</div>
-              <v-btn color="primary" depressed class="mx-auto d-block mt-2">Done</v-btn>
+              <v-btn color="primary" depressed class="mx-auto d-block mt-2" @click="$router.go(-1)">Done</v-btn>
             </v-col>
             
           </v-row>
@@ -178,17 +184,55 @@
   </v-container>
 </template>
 <script>
+
+function arrayEqual(l,r){
+  if(!l && r){
+    return false
+  }
+  if(l.length !== r.length){
+    return false
+  }
+  for (let i = 0; i < l.length; i++) {
+      const litem = l[i];
+      const ritem = r[i];
+      if (litem !== ritem) {
+        return false
+      }
+  }
+  return true
+}
+
+function shuffle(arr) {
+  for (let i=arr.length-1; i>=0; i--) {
+      let rIndex = Math.floor(Math.random()*(i+1));
+      let temp = arr[rIndex];
+      arr[rIndex] = arr[i];
+      arr[i] = temp;
+  }
+  return arr;
+}
+
 export default {
   data(){
     return {
+      loading: false,
+      show1: false,
+      show2: false,
       selectedWords: Array.from({length:12}, (v,k) => ''),
-      unselectedWords: ['word1','word2','word3','word4','word5','word6','word7','word8','word9','word10','word11','word12'],
-      mnemonics: ['word1','word2','word3','word4','word5','word6','word7','word8','word9','word10','word11','word12'],
+      unselectedWords: [],
+      mnemonics: [],
       walletName:'',
       password: '',
       passwordRepeat: '',
-      step: 1
+      step: 1,
+      address: ''
     }
+  },
+  mounted(){
+    const mnemonics = this.$iotchain.bip39.generateMnemonic().split(' ')
+    this.mnemonics = [...mnemonics]
+    this.unselectedWords = [...mnemonics]
+    // this.unselectedWords = shuffle([...mnemonics])
   },
   methods:{
     selectWord(word,index){
@@ -200,6 +244,23 @@ export default {
       if(word && word!=''){
         this.unselectedWords.push(word)
         this.selectedWords[index] = ''
+      }
+    },
+    checkMnemonics(){
+      if(arrayEqual(this.mnemonics,this.selectedWords)){
+        this.loading = true
+        var privateKey = this.$iotchain.bip39.mnemonicToSeedSync(this.mnemonics.join(' '),this.password).toString('hex')
+        setTimeout(() => {
+          this.$iotchain.util.dumpKeystore(privateKey,this.password)
+            .then(keyObject => {
+              this.step = 4
+              this.address = '0x'+keyObject.address
+            }).finally(()=>{
+              this.loading = false
+            })
+        }, 0);
+      }else{
+
       }
     }
   }

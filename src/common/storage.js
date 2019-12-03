@@ -8,6 +8,7 @@ const defaults = {
     ],
     current: '192.168.1.1:30315'
   },
+  keystore: [],
   language: 'zh'
 }
 

@@ -10,13 +10,17 @@
         <v-hover v-slot:default="{ hover }">
           <v-card :elevation="2">
             <v-responsive :aspect-ratio="16/9">
-              <div v-if="!hover" class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;">
-                <v-icon large  class="transition-fast-in-fast-out">add</v-icon>
-              </div>
-              <div v-else class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;">
-                <v-btn transition="fade-transition" outlined dense color="primary" width="150" style="text-decoration:none;" :to="{name:'importWallet'}">Import</v-btn>
-                <v-btn transition="fade-transition" outlined dense color="primary" width="150" class="mt-2" style="text-decoration:none;" :to="{name:'createWallet'}">Create New</v-btn>
-              </div>
+              <v-expand-x-transition v-if="!hover">
+                <div class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;position:absolute;top:0;left:0;">
+                  <v-icon large>add</v-icon>
+                </div>
+              </v-expand-x-transition>
+              <v-expand-x-transition v-else>
+                <div class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;position:absolute;top:0;left:0;">
+                  <v-btn outlined dense color="primary" width="150" style="text-decoration:none;" :to="{name:'importWallet'}">Import</v-btn>
+                  <v-btn outlined dense color="primary" width="150" class="mt-2" style="text-decoration:none;" :to="{name:'createWallet'}">Create New</v-btn>
+                </div>
+              </v-expand-x-transition>
             </v-responsive>
           </v-card>
         </v-hover>
@@ -138,6 +142,12 @@ export default {
         }
       ]
     }
+  },
+  mounted(){
+    this.$iotchain.getBalance('0xf5545fbc52b21d213800a0c0e5b2ee4664d9b44c')
+      .then((balance) => {
+        console.log(balance)
+      })
   }
 }
 </script>

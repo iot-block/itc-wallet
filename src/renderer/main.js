@@ -7,12 +7,14 @@ import router from './router/router'
 import App from './App'
 import storage from '../common/storage'
 import storagePlugin from './plugins/storage'
+import iotchain from './plugins/iotchain'
 
 Vue.config.productionTip = false
 
 Vue.use(history)
 Vue.use(VueI18n)
 Vue.use(storagePlugin)
+Vue.use(iotchain)
 
 const i18n = new VueI18n({
   locale: storage.get('language'),
