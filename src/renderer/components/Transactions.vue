@@ -21,7 +21,7 @@ export default {
   data(){
     return {
       page: 1,
-      pageSize: 20,
+      pageSize: 10,
       pageTotal: 1,
       itc: 0,
       itg: 0,
@@ -38,7 +38,7 @@ export default {
       this.loadData(1)
     },
     page(val){
-      this.loadData(page)
+      this.loadData(this.page)
     }
   },
   methods: {

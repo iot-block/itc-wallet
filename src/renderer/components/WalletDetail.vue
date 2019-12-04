@@ -1,41 +1,47 @@
 <template>
   <v-container>
-    <v-card :elevation="2" class="mb-3">
-      <v-card-title class="black--text font-weight-bold">{{wallet.name}}</v-card-title>
-      <div class="px-4 pb-4 pr-2 grey--text d-flex flex-row">
-        <span class="flex-grow-1 text-truncate">{{this.address | hash}}</span>
-        <v-icon class="mr-2 pointer" small @click="goReceive">mdi-qrcode</v-icon>
-        <v-icon class="mr-1 pointer" small @click="copyAddress">content_copy</v-icon>
-      </div>
-      <v-divider class="mx-4"/>
-      <div class=" d-flex flex-row px-4 py-2 black--text">
-        <span class="flex-grow-1 text-center pointer link-text" @click="openKeystore">Keystore</span>
-        <v-divider vertical/>
-        <span class="flex-grow-1 text-center pointer link-text">Change password</span>
-        <v-divider vertical/>
-        <span class="flex-grow-1 text-center pointer link-text" @click="deleteWallet">Delete</span>
-      </div>
-    </v-card>
-
-    <v-row no-gutters>
+    <v-row class="flex-wrap">
       <v-col 
-        :class="$vuetify.breakpoint.smAndUp?'pr-2':''"
-        class="pb-3"
         cols="12"
-        sm="6"
-        md="6"
-        lg="6"
-        xl="6">
-        <v-card :elevation="2" >
+        sm="8"
+        md="8"
+        lg="8"
+        xl="8">
+        <v-card :elevation="2" class="fill-height d-flex flex-column">
+          <v-card-title class="black--text font-weight-bold">{{wallet.name}}</v-card-title>
+          <div class="px-4 pb-4 pr-2 grey--text d-flex flex-row">
+            <span class="flex-grow-1 text-truncate">{{this.address | hash}}</span>
+            <v-icon class="mr-2 pointer" small @click="goReceive">mdi-qrcode</v-icon>
+            <v-icon class="mr-1 pointer" small @click="copyAddress">content_copy</v-icon>
+          </div>
+          <v-spacer />
+          <v-divider class="mx-4"/>
+          <div class=" d-flex flex-row px-4 py-2 black--text">
+            <span class="flex-grow-1 text-center pointer link-text" @click="openKeystore">Keystore</span>
+            <v-divider vertical/>
+            <span class="flex-grow-1 text-center pointer link-text">Change password</span>
+            <v-divider vertical/>
+            <span class="flex-grow-1 text-center pointer link-text" @click="deleteWallet">Delete</span>
+          </div>
+        </v-card>
+      </v-col>
+      <v-col 
+        cols="12"
+        sm="4"
+        md="4"
+        lg="4"
+        xl="4">
+        <v-card :elevation="2" class="fill-height d-flex flex-column">
           <div class="pa-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Balance</div>
           <div class="px-4 d-flex flex-row grey--text">
             <span class="pr-4">ITC</span>
-            <span class="flex-grow-1 text-right">{{itc | unit(5)}}</span>
+            <span class="flex-grow-1 text-right">{{itc | unit(4)}}</span>
           </div>
           <div class="px-4 d-flex flex-row grey--text">
             <span class="pr-4">ITG</span>
-            <span class="flex-grow-1 text-right">{{itg | unit(5)}}</span>
+            <span class="flex-grow-1 text-right">{{itg | unit(4)}}</span>
           </div>
+          <v-spacer />
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
             <router-link :to="{name:'transfer'}" class="flex-grow-1 text-center pointer">Transfer</router-link>
@@ -47,13 +53,7 @@
         </v-card>
       </v-col>
       <v-col
-        :class="$vuetify.breakpoint.smAndUp?'pl-2':''"
-        class="pb-3"
-        cols="12"
-        sm="6"
-        md="6"
-        lg="6"
-        xl="6">
+        cols="12">
         <v-card :elevation="2" class="pa-4">
           <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Transactions Records</div>
           <Transactions :address="`0xab86e2b07d1241b26528dfc39e1251f1fec7b913`"/>
@@ -71,9 +71,7 @@
           Keystore
         </v-card-title>
 
-        <v-card-text class="mt-4">
-          {{wallet.keystore}}
-        </v-card-text>
+        <pre class="pa-4" style="max-height:400px;overflow:scroll;">{{wallet.keystore}}</pre>
 
         <v-divider></v-divider>
 
@@ -176,7 +174,7 @@ export default {
       })
     },
     copyKeystore(){
-      this.$clipboard.writeText(JSON.stringify(this.wallet.keystore))
+      this.$clipboard.writeText(JSON.stringify(this.wallet.keystore,null,2))
       this.$alert.show({
         message: "复制成功",
         time: 1000,
