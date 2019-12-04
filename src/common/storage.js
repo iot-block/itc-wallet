@@ -1,15 +1,20 @@
 const Storage = require('electron-store');
 
 const defaults = {
-  node: {
-    list: [
-      '192.168.1.1:30315',
-      '192.168.1.2:30315'
-    ],
-    current: '192.168.1.1:30315'
+  config: {
+    node: {
+      list: [
+        'http://47.102.121.72:30315',
+        'http://139.196.160.72:30315',
+        'http://139.196.160.93:30315'
+      ],
+      current: 'http://47.102.121.72:30315'
+    },
+    language: 'zh'
   },
-  keystore: [],
-  language: 'zh'
+  wallet: {
+    list: []
+  },
 }
 
 const storage = new Storage({

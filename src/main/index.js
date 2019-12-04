@@ -21,7 +21,7 @@ function createWindow () {
       fullPath: '/wallet',
       meta: {
         root: true,
-        name: '钱包',
+        name: 'wallet.title',
       },
       path: 'wallet'
     }

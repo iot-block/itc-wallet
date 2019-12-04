@@ -7,18 +7,12 @@
         :items="paths" 
         large
         class="px-3 pt-4 pb-0">
-        <!-- <template v-slot:item="props">
-          <v-breadcrumbs-item
-            @click="pathClick(props.item.to)"
-            :class="[props.item.disabled && 'disabled']">
-            {{ props.item.text }}
-          </v-breadcrumbs-item>
-        </template> -->
         <template v-slot:divider>
           <v-icon>chevron_right</v-icon>
         </template>
       </v-breadcrumbs>
       <router-view class=""></router-view>
+      <a-alert />
     </v-content>
   </div>
 </template>
@@ -69,17 +63,13 @@ export default {
     }
   },
   methods: {
-    pathClick(to){
-      console.log(to)
-      this.$router.push(to)
-    },
     loadHistory(){
       return this.$history.routes.map(r => {
         return {
           disabled: false,
           exact: true,
           text: this.$t(r.meta.name),
-          to: {name: r.name}
+          to: {name: r.name, query:r.query}
         }
       })
     }

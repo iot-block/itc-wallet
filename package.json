@@ -1,7 +1,8 @@
 {
   "name": "itc-wallet",
+  "productName": "itc-wallet",
   "version": "0.0.1",
-  "description": "An electron-vue project",
+  "description": "IoT Chain wallet",
   "author": "iotchain",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -15,16 +16,19 @@
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "",
-    "unit": "karma start test/unit/karma.conf.js"
+    "unit": "karma start test/unit/karma.conf.js",
+    "fixp": "rm -rf node_modules/scrypt"
   },
   "main": "./dist/electron/main.js",
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.1",
     "bignumber": "^1.1.0",
     "bip39": "^3.0.2",
     "electron-store": "^5.1.0",
     "iotchain-js-sdk": "^1.0.0",
     "keythereum": "^1.0.4",
     "vue": "^2.5.16",
+    "vue-axios": "^2.1.5",
     "vue-i18n": "^8.15.1",
     "vue-router": "^3.1.3",
     "vuetify": "^2.1.12",

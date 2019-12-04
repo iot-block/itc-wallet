@@ -1,21 +1,3 @@
-const manager = require('./manager')
-const itcContractAddress = require('./config').itcContractAddress
-
-const itcBalanceOf = async (address)=>{
-
-    return manager.callContractFunction(itcContractAddress,abi,'balanceOf',[address])
-}
-
-const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
-
-    return manager.handleContractFunction(itcContractAddress,abi,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
-}
-
-module.exports={
-    itcBalanceOf,
-    transferITC,
-}
-
 const abi = `[
     {
         "constant": true,
@@ -284,3 +266,5 @@ const abi = `[
         "type": "event"
     }
 ]`
+
+module.exports = abi

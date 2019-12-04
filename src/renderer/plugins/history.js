@@ -19,7 +19,8 @@ const HistoryStorage = {
       name: route.name,
       fullPath: route.fullPath,
       meta: route.meta,
-      path: route.path
+      path: route.path,
+      query: route.query
     })
     this._save()
   },

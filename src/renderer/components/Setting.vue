@@ -34,22 +34,22 @@
 export default {
   data(){
     return {
-      nodes: this.$storage.get("node.list"),
-      currentNode: this.$storage.get("node.current"),
+      nodes: this.$setting.get("node.list"),
+      currentNode: this.$setting.get("node.current"),
       languages: [
         {text:'中文',value:'zh'},
         {text:'English',value:'en'},
       ],
-      currentLang: this.$storage.get("language")
+      currentLang: this.$setting.get("language")
     }
   },
   watch: {
     currentNode: function(val){
-      this.$storage.set('node.current',this.currentNode)
+      this.$setting.set('node.current',this.currentNode)
     },
     currentLang: function(val){
       this.$root.$i18n.locale = this.currentLang;
-      this.$storage.set('language',this.currentLang)
+      this.$setting.set('language',this.currentLang)
     }
   }
 }

@@ -255,6 +255,7 @@ export default {
             .then(keyObject => {
               this.step = 4
               this.address = '0x'+keyObject.address
+              this.$storage.addWallet(keyObject,this.walletName)
             }).finally(()=>{
               this.loading = false
             })

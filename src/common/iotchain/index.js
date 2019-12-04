@@ -1,7 +1,9 @@
 import keythereum from 'keythereum';
 const bip39 = require('bip39')
+const ABI = require('./abi')
+
 const iotchainSdk = require("iotchain-js-sdk");
-const {node,chainId} = require('./config')
+const {node,chainId,itcContractAddress} = require('./config')
 const iotchainApi = new iotchainSdk(node,chainId);
 var Web3EthAccounts = require('web3-eth-accounts');
 var ethAccounts = new Web3EthAccounts()
@@ -162,6 +164,10 @@ const getBalance = async (address)=>{
     catch(err){
         return Promise.reject(err)
     }
+}
+
+const getItcBalance = (address)=>{
+    return callContractFunction(itcContractAddress,ABI,'balanceOf',[address])
 }
     
 /**
@@ -411,29 +417,30 @@ const util = {
 
 export default {
     // ------ transaction ------
-    getTxReceipt,
-    getTxDetail,
-    sendTransaction,
-    sendSignedTransaction,
-    generalHandleContractFunctionTxData,
-    transferITG,
-    getSuggestGasPrice,
-
-    // ------ block ------
-
-    getBestBlockNumber,
-    getBlockByNumber,
-
-    // ------ account ------
-    getAccount,
-    getBalance,
-
-    // ------ contract ------
-    deployContrct,
-    getContract,
-    handleContractFunction,
-    callContractFunction,
-
+    transaction: {
+        getTxReceipt,
+        getTxDetail,
+        sendTransaction,
+        sendSignedTransaction,
+        generalHandleContractFunctionTxData,
+        transferITG,
+        getSuggestGasPrice,
+    },
+    block: {
+        getBestBlockNumber,
+        getBlockByNumber,
+    },
+    account: {
+        getAccount,
+        getBalance,
+        getItcBalance,
+    },
+    contract: {
+        deployContrct,
+        getContract,
+        handleContractFunction,
+        callContractFunction,
+    },
     //utils
     bip39,
     util,
