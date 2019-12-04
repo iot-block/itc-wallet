@@ -2,6 +2,7 @@
   <v-navigation-drawer
     color="#007aff"
     width="200"
+    mini-variant-width="80"
     permanent
     :mini-variant="!$vuetify.breakpoint.mdAndUp"
     app

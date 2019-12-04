@@ -1,7 +1,20 @@
 <template>
   <div>
     <LeftMenu :show="true" :temporary="false" :items="items"/>
-    <v-content class="pt-3">
+    <v-content class="mt-3">
+      <v-progress-linear
+        :style="$vuetify.breakpoint.mdAndUp?'left:200px':'left:80px'"
+        style="right:0;width:auto;"
+        fixed
+        top
+        indeterminate
+        striped
+        height="15"
+        color="light-blue">
+        <template v-slot="{ value }">
+          <span class="caption white--text">{{ Math.ceil(value) }}%</span>
+        </template>
+      </v-progress-linear>
       <v-breadcrumbs 
         v-if="paths && paths.length>1"
         :items="paths" 

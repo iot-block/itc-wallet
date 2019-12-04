@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="showAlert" inset width="500px" hide-overlay>
+  <v-bottom-sheet dark v-model="showAlert" inset hide-overlay>
     <v-sheet class="text-center">
       <div class="pa-4">{{message}}</div>
     </v-sheet>
