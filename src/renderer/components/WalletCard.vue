@@ -60,7 +60,7 @@ export default {
       this.$clipboard.writeText(this.wallet.keystore.address)
       this.$alert.show({
         message: "复制成功",
-        time: 1000,
+        timeout: 1000,
       })
     }
   }

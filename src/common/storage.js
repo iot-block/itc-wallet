@@ -1,4 +1,5 @@
 const Storage = require('electron-store');
+const dotProp = require('dot-prop');
 
 const defaults = {
   config: {
@@ -20,5 +21,10 @@ const defaults = {
 const storage = new Storage({
   defaults
 });
+
+storage.getWorkaround = function (key, defaultValue) {
+  var v = storage.get(key, defaultValue);
+  return typeof v == "undefined" ? dotProp.get(storage._defaultValues, key, defaultValue) : v;
+};
 
 export default storage

@@ -5,7 +5,8 @@
     "import": "导入",
     "detail": "详情",
     "transfer": "转账",
-    "receive": "收款"
+    "receive": "收款",
+    "changepswd": "修改密码"
   },
   "setting": {
     "title": "设置",

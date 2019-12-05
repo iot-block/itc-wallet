@@ -25,7 +25,7 @@
         </template>
       </v-breadcrumbs>
       <router-view class=""></router-view>
-      <a-alert />
+      <i-alert />
     </v-content>
   </div>
 </template>

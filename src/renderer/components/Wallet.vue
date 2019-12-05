@@ -56,10 +56,7 @@ export default {
     }
   },
   mounted(){
-    this.$iotchain.account.getBalance('0xf5545fbc52b21d213800a0c0e5b2ee4664d9b44c')
-      .then((balance) => {
-        console.log(balance)
-      })
+    
   }
 }
 </script>

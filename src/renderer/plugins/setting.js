@@ -7,7 +7,7 @@ const Setting = {
     return namespace+"."+key
   },
   get(key){
-    return storage.get(this._key(key))
+    return storage.getWorkaround(this._key(key))
   },
   set(key,value){
     storage.set(this._key(key),value)

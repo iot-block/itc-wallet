@@ -17,13 +17,13 @@ export default {
   },
   methods: {
     show(params){
-      let {message, time} = params
+      let {message, timeout} = params
       this.message = message
       this.showAlert = true
-      if(time && time>0){
+      if(timeout && timeout>0){
         setTimeout(() => {
           this.showAlert = false
-        }, time);
+        }, timeout);
       }
     },
     hide(){

@@ -19,7 +19,7 @@
           <div class=" d-flex flex-row px-4 py-2 black--text">
             <span class="flex-grow-1 text-center pointer link-text" @click="openKeystore">Keystore</span>
             <v-divider vertical/>
-            <span class="flex-grow-1 text-center pointer link-text">Change password</span>
+            <span class="flex-grow-1 text-center pointer link-text" @click="changePassword">Change password</span>
             <v-divider vertical/>
             <span class="flex-grow-1 text-center pointer link-text" @click="deleteWallet">Delete</span>
           </div>
@@ -56,7 +56,7 @@
         cols="12">
         <v-card :elevation="2" class="pa-4">
           <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Transactions Records</div>
-          <Transactions :address="`0xab86e2b07d1241b26528dfc39e1251f1fec7b913`"/>
+          <Transactions :address="address"/>
         </v-card>
       </v-col>
     </v-row>
@@ -163,6 +163,12 @@ export default {
         query: {address:this.address}
       })
     },
+    changePassword(){
+      this.$router.push({
+        name: 'changepswd',
+        query: {walletId:this.wallet.keystore.id}
+      })
+    },
     openKeystore(){
       this.dialogKeystore = true
     },
@@ -170,14 +176,14 @@ export default {
       this.$clipboard.writeText(this.address)
       this.$alert.show({
         message: "复制成功",
-        time: 1000,
+        timeout: 1000,
       })
     },
     copyKeystore(){
       this.$clipboard.writeText(JSON.stringify(this.wallet.keystore,null,2))
       this.$alert.show({
         message: "复制成功",
-        time: 1000,
+        timeout: 1000,
       })
     },
     deleteWallet(){
@@ -188,7 +194,7 @@ export default {
       this.dialogDelete = false
       this.$alert.show({
         message: "删除成功",
-        time: 1000,
+        timeout: 1000,
       })
       this.$router.go(-1)
     }

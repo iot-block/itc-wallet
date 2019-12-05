@@ -4,9 +4,12 @@ const ABI = require('./abi')
 
 const iotchainSdk = require("iotchain-js-sdk");
 const {node,chainId,itcContractAddress} = require('./config')
-const iotchainApi = new iotchainSdk(node,chainId);
+const iotchainApi = function(){
+    return new iotchainSdk(node,chainId)
+};
 var Web3EthAccounts = require('web3-eth-accounts');
 var ethAccounts = new Web3EthAccounts()
+
 
 /**
  * 生成合约调用方法的交易数据
@@ -26,10 +29,8 @@ const generalHandleContractFunctionTxData = async function(
     fromAddress
     ) {
     
-    console.log('function params->'+params)
-
     try{
-        const payload = iotchainApi.contract.encodeFunction(abi,method,params)
+        const payload = iotchainApi().contract.encodeFunction(abi,method,params)
         if(!payload){
             return Promise.reject('contract func parse error')
         }
@@ -55,8 +56,6 @@ const generalHandleContractFunctionTxData = async function(
         return contractTx  
     }
     catch(err){
-
-        console.log("parseContractCode err", err);
         return Promise.reject('parse contract error.'+err)
     }
     
@@ -68,7 +67,7 @@ const generalHandleContractFunctionTxData = async function(
 const getBestBlockNumber = async ()=>{
 
     try{
-        let response = await iotchainApi.block.getBestBlockNumber()
+        let response = await iotchainApi().block.getBestBlockNumber()
         return Promise.resolve(response)
     }
     catch(err){
@@ -83,7 +82,7 @@ const getBestBlockNumber = async ()=>{
 const getBlockByNumber = async (blockNumber)=>{
 
     try{
-        let result = await iotchainApi.block.getBlockByNumber(blockNumber+'')
+        let result = await iotchainApi().block.getBlockByNumber(blockNumber+'')
 
         let {header,body} = result
         let {transactionList} = body
@@ -143,7 +142,7 @@ const getBlockByNumber = async (blockNumber)=>{
 const getAccount = async (address)=>{
 
     try{
-        let response = await iotchainApi.account.getAccount(address)
+        let response = await iotchainApi().account.getAccount(address)
         return Promise.resolve(response)
     }
     catch(err){
@@ -158,7 +157,7 @@ const getAccount = async (address)=>{
 const getBalance = async (address)=>{
 
     try{
-        let response = await iotchainApi.account.getBalance(address)
+        let response = await iotchainApi().account.getBalance(address)
         return Promise.resolve(response)
     }
     catch(err){
@@ -177,7 +176,7 @@ const getItcBalance = (address)=>{
 const getTxReceipt = async (hash)=>{
 
     try{
-        let response = await iotchainApi.transaction.getReceipt(hash)
+        let response = await iotchainApi().transaction.getReceipt(hash)
         return Promise.resolve(response)
     }
     catch(err){
@@ -192,7 +191,7 @@ const getTxReceipt = async (hash)=>{
 const getTxDetail = async (hash)=>{
 
     try{
-        let response = await iotchainApi.transaction.getTx(hash)
+        let response = await iotchainApi().transaction.getTx(hash)
         return Promise.resolve(response)
     }
     catch(err){
@@ -203,7 +202,7 @@ const getTxDetail = async (hash)=>{
 const getSuggestGasPrice = async ()=>{
 
     try{
-        let response = await iotchainApi.contract.getGasPrice()
+        let response = await iotchainApi().contract.getGasPrice()
         return Promise.resolve(JSON.parse(response))
     }
     catch(err){
@@ -221,7 +220,7 @@ const sendSignedTransaction = async function(txJson) {
     return new Promise(async (resolve,reject)=>{
 
         try{
-            var sendRsp = await iotchainApi.transaction.sendTx(txJson);
+            var sendRsp = await iotchainApi().transaction.sendTx(txJson);
 
             if(sendRsp){
                 resolve(sendRsp)
@@ -231,8 +230,6 @@ const sendSignedTransaction = async function(txJson) {
             } 
         }
         catch(err){
-
-            console.log('发送签名交易失败，'+err)
             reject(err)
         }
     })
@@ -246,7 +243,7 @@ const sendSignedTransaction = async function(txJson) {
  */
 const sendTransaction = async (txJson, priKey) =>{
     
-    const trx = iotchainApi.utils.signTx(txJson,priKey)
+    const trx = iotchainApi().utils.signTx(txJson,priKey)
     return sendSignedTransaction(trx)
 }
 
@@ -257,7 +254,7 @@ const sendTransaction = async (txJson, priKey) =>{
 const getContract = async(address)=>{
 
     try{
-        let response = await iotchainApi.account.getCode(address)
+        let response = await iotchainApi().account.getCode(address)
         return Promise.resolve(response.length > 0 ? response : '0x')
     }
     catch(err){
@@ -277,12 +274,12 @@ const getContract = async(address)=>{
 
     //添加参数
     if(params){
-        let extra = iotchainApi.contract.encodeConstruct(abi,params)
+        let extra = iotchainApi().contract.encodeConstruct(abi,params)
         codebyte = codebyte + extra   
     }
 
     if(!nonce){
-        let fromAddress = iotchainApi.utils.privateKeyToAddress(privateKey)
+        let fromAddress = iotchainApi().utils.privateKeyToAddress(privateKey)
         let account = await getAccount(fromAddress)
         nonce = account.nonce
     }
@@ -313,7 +310,7 @@ const getContract = async(address)=>{
 
  const handleContractFunction = async (contractAddress,abi,funcName,funcParam,privateKey,{nonce,gas,gasPrice} = {})=>{
 
-    let fromAddress = iotchainApi.utils.privateKeyToAddress(privateKey)
+    let fromAddress = iotchainApi().utils.privateKeyToAddress(privateKey)
     let contractTx = await  generalHandleContractFunctionTxData(contractAddress,abi,funcName,funcParam,{nonce,gas,gasPrice},fromAddress)
     return sendTransaction(contractTx,privateKey)
  }
@@ -330,7 +327,7 @@ const getContract = async(address)=>{
 const callContractFunction = async (contractAddress,abi,funcName,funcParam,fromAddress)=>{
  
     try{
-        let payload = iotchainApi.contract.encodeFunction(abi,funcName,funcParam)
+        let payload = iotchainApi().contract.encodeFunction(abi,funcName,funcParam)
         if(!payload){
             return Promise.reject('contract func parse error')
         }
@@ -345,8 +342,8 @@ const callContractFunction = async (contractAddress,abi,funcName,funcParam,fromA
             data: payload
         };
 
-        const resp = await iotchainApi.contract.call(callTx);
-        let result = iotchainApi.contract.decodeOutput(abi,funcName,resp)
+        const resp = await iotchainApi().contract.call(callTx);
+        let result = iotchainApi().contract.decodeOutput(abi,funcName,resp)
     
         return Promise.resolve(result)
     }
@@ -372,7 +369,7 @@ const itcBalanceOf = async(address)=>{
 const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}={})=>{
 
     if(!nonce){
-        let address = iotchainApi.utils.privateKeyToAddress(privateKey)
+        let address = iotchainApi().utils.privateKeyToAddress(privateKey)
         let account = await getAccount(address)
         nonce = account.nonce
     }
@@ -392,10 +389,10 @@ const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}
 const util = {
     async kec256(data){
         let buffer = new Buffer(data)
-        return iotchainApi.utils.haser.kec256(buffer)
+        return iotchainApi().utils.haser.kec256(buffer)
     },
     async signTx(txJson,priKey){
-        return iotchainApi.utils.signTx(txJson,priKey)
+        return iotchainApi().utils.signTx(txJson,priKey)
     },
     dumpKeystore(privateKey,password){
         var promise = new Promise((resolve,reject) => {

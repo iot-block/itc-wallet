@@ -10,6 +10,7 @@ import WalletDetail from '../components/WalletDetail'
 import Transfer from '../components/Transfer'
 import Receive from '../components/Receive'
 import AppFrame from '../components/common/AppFrame'
+import ChangePassword from '../components/ChangePassword'
 
 Vue.use(VueRouter)
 
@@ -87,6 +88,14 @@ const router = new VueRouter({
                 name: 'wallet.receive',
               },
               component: Receive
+            },
+            {
+              path: 'changepswd',
+              name: 'changepswd',
+              meta: {
+                name: 'wallet.changepswd',
+              },
+              component: ChangePassword
             },
           ]
         },

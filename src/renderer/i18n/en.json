@@ -5,7 +5,8 @@
     "import": "Import",
     "detail": "Detail",
     "transfer": "Transfer",
-    "receive": "Receive"
+    "receive": "Receive",
+    "changepswd": "Password"
   },
   "setting": {
     "title": "Setting",
