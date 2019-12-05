@@ -1,4 +1,5 @@
 import axios from 'axios'
+import storage from '../../common/storage'
 
 const API_SERVER = {
   mainnet: 'https://explorer.iotchain.io/v0',
@@ -40,8 +41,9 @@ function post(url, params) {
   });
 }
 
-function explorerGet(path,params,dev){
-  return get(`${dev?API_SERVER.abel:API_SERVER.mainnet}${path}`,params)
+function explorerGet(path,params){
+  var currentNode = storage.getWorkaround("config.node.current")
+  return get(`${currentNode.testnet?API_SERVER.abel:API_SERVER.mainnet}${path}`,params)
 }
 function blockList(page,size){
   return explorerGet(`/block/queryall`,{page:page,size:size})

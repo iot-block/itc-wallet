@@ -7,10 +7,14 @@ const iotchainSdk = require("iotchain-js-sdk");
 import trxListen from './trxListen'
 import storage from '../storage'
 
-const {node,chainId,itcContractAddress} = require('./config')
+const itcContractAddress = function(){
+    var currentNode = storage.getWorkaround("config.node.current")
+    return currentNode.itcContract
+}
+
 const iotchainApi = function(){
     var currentNode = storage.getWorkaround("config.node.current")
-    return new iotchainSdk(currentNode,chainId)
+    return new iotchainSdk(currentNode.server,currentNode.chainId)
 };
 var Web3EthAccounts = require('web3-eth-accounts');
 var ethAccounts = new Web3EthAccounts()
@@ -171,7 +175,7 @@ const getBalance = async (address)=>{
 }
 
 const getItcBalance = (address)=>{
-    return callContractFunction(itcContractAddress,ABI,'balanceOf',[address])
+    return callContractFunction(itcContractAddress(),ABI,'balanceOf',[address])
 }
     
 /**
@@ -392,7 +396,7 @@ const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}
 }
 
 const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
-    return handleContractFunction(itcContractAddress,ABI,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
+    return handleContractFunction(itcContractAddress(),ABI,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
 }
 
 const util = {

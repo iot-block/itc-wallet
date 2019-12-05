@@ -5,6 +5,8 @@
       v-model="currentNode"
       class="mt-1 mb-3"
       :items="nodes"
+      item-text="name"
+      item-value="server"
       :label="$t('setting.node')"
       dense
       outlined
@@ -35,7 +37,7 @@ export default {
   data(){
     return {
       nodes: this.$setting.get("node.list"),
-      currentNode: this.$setting.get("node.current"),
+      currentNode: this.$setting.get("node.current").server,
       languages: [
         {text:'中文',value:'zh'},
         {text:'English',value:'en'},
@@ -45,7 +47,8 @@ export default {
   },
   watch: {
     currentNode: function(val){
-      this.$setting.set('node.current',this.currentNode)
+      console.log(this.currentNode)
+      this.$setting.set('node.current',this.nodes.find(n => n.server==this.currentNode))
     },
     currentLang: function(val){
       this.$root.$i18n.locale = this.currentLang;
