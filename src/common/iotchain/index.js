@@ -1,8 +1,11 @@
 import keythereum from 'keythereum';
 const bip39 = require('bip39')
+const hdkey = require('ethereumjs-wallet/hdkey')
 const ABI = require('./abi')
-
+import web3util from 'web3-utils'
 const iotchainSdk = require("iotchain-js-sdk");
+import trxListen from './trxListen'
+
 const {node,chainId,itcContractAddress} = require('./config')
 const iotchainApi = function(){
     return new iotchainSdk(node,chainId)
@@ -386,7 +389,18 @@ const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}
     return sendTransaction(txJson,privateKey)
 }
 
+const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
+    return handleContractFunction(itcContractAddress,ABI,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
+}
+
 const util = {
+    toWei(value, unit='ether'){
+        let bn = web3util.toBN(value+'')
+        return web3util.toWei(bn, unit)
+    },
+    isAddress(address){
+        return web3util.isAddress(address)
+    },
     async kec256(data){
         let buffer = new Buffer(data)
         return iotchainApi().utils.haser.kec256(buffer)
@@ -409,6 +423,11 @@ const util = {
     recoverFromKeystore(keyObject,password){
         var privateKey = keythereum.recover(password, keyObject);
         return privateKey
+    },
+    mnemonicToPrivate(mnemonics,password){
+        var seed = bip39.mnemonicToSeedSync(mnemonics,password)
+        var hdWallet = hdkey.fromMasterSeed(seed)
+        return hdWallet.derivePath("m/44'/60'/0'/0/0").getWallet().getPrivateKeyString()
     }
 }
 
@@ -421,6 +440,7 @@ export default {
         sendSignedTransaction,
         generalHandleContractFunctionTxData,
         transferITG,
+        transferITC,
         getSuggestGasPrice,
     },
     block: {
@@ -441,4 +461,5 @@ export default {
     //utils
     bip39,
     util,
+    trxListen,
 }

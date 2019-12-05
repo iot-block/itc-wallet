@@ -25,6 +25,7 @@
     "bignumber": "^1.1.0",
     "bip39": "^3.0.2",
     "electron-store": "^5.1.0",
+    "ethereumjs-wallet": "^0.6.3",
     "iotchain-js-sdk": "^1.0.0",
     "keythereum": "^1.0.4",
     "vue": "^2.5.16",

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import alert from './alert'
+import progress from './progress'
 import api from './api'
 import clipboard from './clipboard'
 import history from './history'
@@ -11,6 +12,7 @@ import filters from './filters'
 
 const plugins = [
   alert,
+  progress,
   api,
   clipboard,
   history,

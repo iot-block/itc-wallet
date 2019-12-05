@@ -184,6 +184,7 @@
   </v-container>
 </template>
 <script>
+import web3util from 'web3-utils'
 
 function arrayEqual(l,r){
   if(!l && r){
@@ -249,7 +250,7 @@ export default {
     checkMnemonics(){
       if(arrayEqual(this.mnemonics,this.selectedWords)){
         this.loading = true
-        var privateKey = this.$iotchain.bip39.mnemonicToSeedSync(this.mnemonics.join(' '),this.password).toString('hex')
+        var privateKey = this.$iotchain.util.mnemonicToPrivate(this.mnemonics.join(' '),this.password)
         setTimeout(() => {
           this.$iotchain.util.dumpKeystore(privateKey,this.password)
             .then(keyObject => {

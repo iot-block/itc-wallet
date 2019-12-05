@@ -32,10 +32,10 @@ export default {
     }
   },
   beforeMount() {
-    Alert.EventBus.$on('show', (params) => {
+    Alert.EventBus.$on('alert.show', (params) => {
       this.show(params)
     })
-    Alert.EventBus.$on('hide', () => {
+    Alert.EventBus.$on('alert.hide', () => {
       this.hide()
     })
   },

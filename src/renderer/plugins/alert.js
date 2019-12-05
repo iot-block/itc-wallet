@@ -6,10 +6,10 @@ const Alert = {
     Vue.component('i-alert', AppAlert)
     Vue.prototype.$alert = {
       show(params) {
-        Alert.EventBus.$emit('show', params)
+        Alert.EventBus.$emit('alert.show', params)
       },
       hide(){
-        Alert.EventBus.$emit('hide')
+        Alert.EventBus.$emit('alert.hide')
       }
     }
   }

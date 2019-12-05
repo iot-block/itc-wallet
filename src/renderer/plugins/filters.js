@@ -23,6 +23,13 @@ const filters = {
     var bn = new BigNumber(value)
     return bn.toFixed(f)
   },
+  tounit(value, unit){
+    if(!value){
+      return 0
+    }
+    let bn = web3util.toBN(value+'')
+    return web3util.toWei(bn, unit)
+  },
   unit(value,fixed){
     if(!value){
       return 0

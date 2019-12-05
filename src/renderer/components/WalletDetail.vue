@@ -44,7 +44,7 @@
           <v-spacer />
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
-            <router-link :to="{name:'transfer'}" class="flex-grow-1 text-center pointer">Transfer</router-link>
+            <router-link :to="{name:'transfer', query:{walletId:wallet.keystore.id}}" class="flex-grow-1 text-center pointer">Transfer</router-link>
             <v-divider vertical/>
             <span @click="goReceive" class="flex-grow-1 text-center pointer link-text">
               Receive
