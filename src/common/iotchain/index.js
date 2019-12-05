@@ -5,10 +5,12 @@ const ABI = require('./abi')
 import web3util from 'web3-utils'
 const iotchainSdk = require("iotchain-js-sdk");
 import trxListen from './trxListen'
+import storage from '../storage'
 
 const {node,chainId,itcContractAddress} = require('./config')
 const iotchainApi = function(){
-    return new iotchainSdk(node,chainId)
+    var currentNode = storage.getWorkaround("config.node.current")
+    return new iotchainSdk(currentNode,chainId)
 };
 var Web3EthAccounts = require('web3-eth-accounts');
 var ethAccounts = new Web3EthAccounts()

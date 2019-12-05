@@ -1,9 +1,10 @@
 const iotchainSdk = require("iotchain-js-sdk");
-const {node,chainId} = require('./config')
-const iotchainApi = new iotchainSdk(node,chainId);
-
+const {chainId} = require('./config')
+import storage from '../storage'
 
 async function listenTrx(hash,interval,timeout,callback){
+    var currentNode = storage.getWorkaround("config.node.current")
+    const iotchainApi = new iotchainSdk(currentNode,chainId);
     let recepit = await iotchainApi.transaction.getReceipt(hash)
     if(recepit){
         callback(hash,recepit)
