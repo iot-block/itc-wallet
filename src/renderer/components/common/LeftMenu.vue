@@ -25,11 +25,10 @@
         </v-list-item-action>
         <div :key="index" class="title ml-3 font-weight-regular">{{ group.text }}</div>
       </v-list-item>
-      <v-list-item>
-        <Footer style="width:100%;"></Footer>
-      </v-list-item>
-      
     </v-list>
+    <template v-slot:append>
+      <Footer style="width:100%;"></Footer>
+    </template>
   </v-navigation-drawer>
 </template>
 

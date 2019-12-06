@@ -282,7 +282,6 @@ export default {
           }, 0);
         }
       } catch (error) {
-        console.log(error)
         this.error2 = true
         this.errorMessage2 = "密码错误"
       }
