@@ -23,7 +23,7 @@
               </v-expand-x-transition>
               <v-expand-x-transition v-else>
                 <div class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;position:absolute;top:0;left:0;">
-                  <v-btn outlined dense color="primary" width="80%" style="text-decoration:none;" >{{$t("ledger.connect")}}</v-btn>
+                  <v-btn outlined dense color="primary" width="80%" style="text-decoration:none;" :to="{name:'connectledger'}" >{{$t("ledger.connect")}}</v-btn>
                 </div>
               </v-expand-x-transition>
             </v-responsive>

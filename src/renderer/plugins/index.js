@@ -9,6 +9,7 @@ import iotchain from './iotchain'
 import setting from './setting'
 import storage from './storage'
 import filters from './filters'
+// import ledger from './ledger'
 
 const plugins = [
   alert,
@@ -19,7 +20,8 @@ const plugins = [
   iotchain,
   setting,
   storage,
-  filters
+  filters,
+  // ledger
 ]
 
 export default {

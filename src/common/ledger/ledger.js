@@ -1,6 +1,8 @@
-const TransportNodeHid = require("@ledgerhq/hw-transport-node-hid").default;
-const AppEth = require("@ledgerhq/hw-app-eth").default;
-const EthereumTx = require('ethereumjs-tx').Transaction
+import * as TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
+import * as AppEth from "@ledgerhq/hw-app-eth"
+import Transaction from "ethereumjs-tx"
+
+const {EthereumTx} = Transaction
 
 var ledgerTransport = null
 let ledgerStatusCalls = []
@@ -223,7 +225,7 @@ const serializeTx = (t)=>{
     return serializedTx.toString('hex')
 }
 
-module.exports = {
+export default {
     startConnect,
     registLedgerStatus,
     queryIotChainAddressList,

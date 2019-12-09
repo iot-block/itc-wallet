@@ -18,12 +18,13 @@
     "postinstall": "",
     "unit": "karma start test/unit/karma.conf.js",
     "fixp": "rm -rf node_modules/scrypt",
-    "fixadd":"yarn run fixp && yarn"
+    "fixadd": "yarn run fixp && yarn"
   },
   "main": "./dist/electron/main.js",
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.1",
-    "@ledgerhq/hw-transport-node-hid": "^4.78.0",
+    "@ledgerhq/hw-app-eth": "^4.78.0",
+    "@ledgerhq/hw-transport-node-hid": "4.55.0",
     "bignumber": "^1.1.0",
     "bip39": "^3.0.2",
     "electron-store": "^5.1.0",
