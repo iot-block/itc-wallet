@@ -239,7 +239,7 @@ export default {
     },
     confirm(){
       try {
-        var privateKey = this.$iotchain.util.recoverFromKeystore(this.wallet.keystore,this.password).toString('hex')
+        var privateKey = this.$iotchain.util.recoverFromKeystore(this.wallet.keystore,this.password)
         this.txStatus = 'Pending'
         this.progressValue = 0
         if(this.transferType == 'itg'){

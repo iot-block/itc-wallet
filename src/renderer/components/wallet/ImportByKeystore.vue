@@ -80,7 +80,7 @@ export default {
         this.loading = true
         var pk = this.$iotchain.util.recoverFromKeystore(JSON.parse(this.keystore),this.password)
         setTimeout(() => {
-          this.$iotchain.util.dumpKeystore(pk.toString('hex'),this.password)
+          this.$iotchain.util.dumpKeystore(pk,this.password)
             .then(keyObject => {
               this.address = '0x'+keyObject.address
               this.$storage.addWallet(keyObject,this.walletName)

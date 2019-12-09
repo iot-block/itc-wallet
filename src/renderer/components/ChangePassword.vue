@@ -116,7 +116,7 @@ export default {
 
       this.loading = true
       setTimeout(() => {
-        this.$iotchain.util.dumpKeystore(privateKey.toString('hex'),this.newPassword)
+        this.$iotchain.util.dumpKeystore(privateKey,this.newPassword)
           .then(keyObject => {
             this.$storage.addWallet(keyObject,this.wallet.name)
             this.$storage.deleteWallet(this.wallet.keystore.id)

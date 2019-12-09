@@ -427,8 +427,8 @@ const util = {
         return promise
     },
     recoverFromKeystore(keyObject,password){
-        var privateKey = keythereum.recover(password, keyObject);
-        return privateKey
+        var account = ethAccounts.decrypt(keyObject,password)
+        return account.privateKey
     },
     mnemonicToPrivate(mnemonics,password){
         var seed = bip39.mnemonicToSeedSync(mnemonics,password)
