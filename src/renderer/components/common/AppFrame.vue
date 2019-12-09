@@ -117,6 +117,13 @@ export default {
           },
         },
         {
+          icon: 'usb',
+          text: this.$t('ledger.title'),
+          route: {
+            name: 'ledger'
+          }
+        },
+        {
           icon: 'settings',
           text: this.$t('setting.title'),
           route: {

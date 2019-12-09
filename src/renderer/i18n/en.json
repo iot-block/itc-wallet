@@ -14,5 +14,10 @@
     "language": "Language",
     "chinese": "中文",
     "english": "English"
+  },
+  "ledger":{
+    "title":"Ledger",
+    "no-ledger":"You have no wallet yet!",
+    "connect":"connect ledger"
   }
 }

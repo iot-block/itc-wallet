@@ -12,6 +12,10 @@ import Receive from '../components/Receive'
 import AppFrame from '../components/common/AppFrame'
 import ChangePassword from '../components/ChangePassword'
 
+//ledger
+import Ledger from '../components/Ledger/Ledger'
+import ConnectLedger from '../components/Ledger/ConnectLedger'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -96,6 +100,33 @@ const router = new VueRouter({
                 name: 'wallet.changepswd',
               },
               component: ChangePassword
+            },
+          ]
+        },
+        {
+          path: 'ledger',
+          component: {
+            template: `
+              <router-view></router-view>
+            `
+          },
+          children:[
+            {
+              path:'',
+              name: 'ledger',
+              meta: {
+                root: true,
+                name: 'ledger.title',
+              },
+              component: Ledger
+            },
+            {
+              path: 'connectledger',
+              name: 'connectledger',
+              meta: {
+                name: 'ledger.connect',
+              },
+              component: ConnectLedger
             },
           ]
         },

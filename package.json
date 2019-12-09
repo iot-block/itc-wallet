@@ -17,17 +17,21 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": "",
     "unit": "karma start test/unit/karma.conf.js",
-    "fixp": "rm -rf node_modules/scrypt"
+    "fixp": "rm -rf node_modules/scrypt",
+    "fixadd":"yarn run fixp && yarn"
   },
   "main": "./dist/electron/main.js",
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.1",
+    "@ledgerhq/hw-transport-node-hid": "^4.78.0",
     "bignumber": "^1.1.0",
     "bip39": "^3.0.2",
     "electron-store": "^5.1.0",
+    "ethereumjs-tx": "^2.1.1",
     "ethereumjs-wallet": "^0.6.3",
     "iotchain-js-sdk": "^1.0.0",
     "keythereum": "^1.0.4",
+    "scrypt": "^6.0.3",
     "vue": "^2.5.16",
     "vue-axios": "^2.1.5",
     "vue-i18n": "^8.15.1",

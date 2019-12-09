@@ -14,5 +14,10 @@
     "language": "语言",
     "chinese": "中文",
     "english": "English"
+  },
+  "ledger":{
+    "title":"Ledger",
+    "no-ledger":"未连接硬件钱包",
+    "connect":"连接硬件钱包"
   }
 }
