@@ -1,3 +1,4 @@
+import "babel-polyfill"
 import ledger from '../../common/ledger/ledger'
 
 export default {

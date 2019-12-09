@@ -1,8 +1,8 @@
+import "babel-polyfill"
+
 import * as TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 import * as AppEth from "@ledgerhq/hw-app-eth"
 import Transaction from "ethereumjs-tx"
-
-const {EthereumTx} = Transaction
 
 var ledgerTransport = null
 let ledgerStatusCalls = []
@@ -184,7 +184,7 @@ const getRecoveryId = (chainId,v)=>{
 
 const serializeErc20Tx = (t)=>{
 
-    const tx = new EthereumTx({
+    const tx = new Transaction({
       nonce: t.nonce,
       gasPrice: t.gasPrice,
       gasLimit: t.gasLimit,
@@ -206,7 +206,7 @@ const serializeErc20Tx = (t)=>{
 
 const serializeTx = (t)=>{
 
-    const tx = new EthereumTx({
+    const tx = new Transaction({
       nonce: t.nonce,
       gasPrice: t.gasPrice,
       gasLimit: t.gasLimit,
@@ -232,3 +232,5 @@ export default {
     sendITG,
     sendITC
 }
+
+console.log('*&&&&&&&&&&&&&&&&7')
