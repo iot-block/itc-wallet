@@ -53,7 +53,10 @@ export default {
     goDetail(){
       this.$router.push({
         name:'walletDetail',
-        query:{walletId:this.wallet.keystore.id}
+        query:{
+          wallet:this.wallet.keystore.crypto ? null : this.wallet,
+          walletId:this.wallet.keystore.id
+        }
       })
     },
     copyAddress(){

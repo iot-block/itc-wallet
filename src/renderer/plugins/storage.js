@@ -21,6 +21,12 @@ export default {
       deleteWallet(id){
         let keystores = this.listWallet().filter(wallet => wallet.keystore.id!=id)
         storage.set("wallet.list",keystores)
+      },
+      addLedgerWallet(deviceSign,walletInfo){
+        storage.set("ledger.wallet"+deviceSign,walletInfo)
+      },
+      getLedgerWallet(deviceSign){
+        return storage.get("ledger.wallet"+deviceSign,{})  
       }
     }
   }

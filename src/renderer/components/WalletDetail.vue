@@ -16,7 +16,7 @@
           </div>
           <v-spacer />
           <v-divider class="mx-4"/>
-          <div class=" d-flex flex-row px-4 py-2 black--text">
+          <div v-if="!isLederAddress" class=" d-flex flex-row px-4 py-2 black--text">
             <span class="flex-grow-1 text-center pointer link-text" @click="openKeystore">Keystore</span>
             <v-divider vertical/>
             <span class="flex-grow-1 text-center pointer link-text" @click="changePassword">Change password</span>
@@ -44,7 +44,10 @@
           <v-spacer />
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
-            <router-link :to="{name:'transfer', query:{walletId:wallet.keystore.id}}" class="flex-grow-1 text-center pointer">Transfer</router-link>
+            <router-link :to="{name:'transfer', query:{
+                wallet:wallet.keystore.crypto?null:wallet,
+                walletId:wallet.keystore.id
+            }}" class="flex-grow-1 text-center pointer">Transfer</router-link>
             <v-divider vertical/>
             <span @click="goReceive" class="flex-grow-1 text-center pointer link-text">
               Receive
@@ -142,10 +145,18 @@ export default {
       address: '',
       itc: 0,
       itg: 0,
+      isLederAddress:false
     }
   },
   mounted(){
-    this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
+    if(this.$route.query.wallet){
+      this.wallet = this.$route.query.wallet
+      this.isLederAddress = true
+    }
+    else{
+      this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
+    }
+    
     this.address = '0x'+this.wallet.keystore.address
     this.$iotchain.account.getBalance(this.address)
       .then((balance) => {

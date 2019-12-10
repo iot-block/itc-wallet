@@ -1,10 +1,19 @@
 <template>
   <v-layout class="container" row wrap  align-center justify-center  :style="'height:'+fullHeight+'px;'" >
+     <v-container v-if="accounts && accounts.length>0" align-center justify-center style="width:200px;height:80px;">
+      <v-select
+            v-model="ledgerselect"
+            :items="ledgers"
+            append-outer-icon="style"
+            menu-props="auto"
+            hide-details
+            label="Select"
+            single-line
+      ></v-select>
+    </v-container> 
     <v-container id="inspire">
-    <v-row
-      justify="start"
-    >
-      <v-col cols="12">
+    <v-row justify="start">
+      <v-col v-if="!accounts || accounts.length==0" cols="12">
         <v-hover v-slot:default="{ hover }">
           <v-card
             :elevation="hover ? 12 : 2"
@@ -30,6 +39,18 @@
           </v-card>
         </v-hover>
       </v-col>
+      <template v-if="accounts && accounts.length>0" style="margin-top:50px">
+        <v-col
+          v-for="(account,index) in accounts"
+          :key="index"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="4"
+          xl="3">
+          <WalletCard :wallet="account"/>
+        </v-col>
+      </template>
     </v-row>
     </v-container>
   </v-layout>
@@ -37,12 +58,24 @@
 
 <script>
 
+import WalletCard from '../WalletCard'
+import storage from '../../../common/storage'
+import DataManager from '../../util/manager'
+import eventBus, {RELOAD_LEADER_WALLET_LIST}  from '../../util/eventbus'
+
 export default {
-    data () {
-        return {
-            fullHeight: document.documentElement.clientHeight
-        }
-	},
+    components:{
+      WalletCard
+    },
+    data (){
+      return {
+        fullHeight: document.documentElement.clientHeight,
+        accounts:[],
+        ledgerName:'',
+        ledgerselect: '',
+        ledgers: [],
+      }
+    },
     watch: {
         fullHeight (val) {//监控浏览器高度变化
             if(!this.timer) {
@@ -53,13 +86,24 @@ export default {
                     that.timer = false
                 },400)
             }
-        }
+        },
+        '$route': function (to, from) {
+　　　　    console.log('路由跳转'+to+from)
+    　　}
     },
     mounted () {
-        this.get_bodyHeight()
+        this.getBodyHeight()
+
+        this.refreshLedgerList()
+
+        //根据key名获取传递回来的参数，data就是map
+        // eventBus.$on(RELOAD_LEADER_WALLET_LIST, function(data){
+        //   console.log('收到刷新页面通知，开始刷新界面')
+        //   this.refreshLedgerList()
+        // }.bind(this));
     },
     methods :{
-        get_bodyHeight () {//动态获取浏览器高度
+        getBodyHeight () {//动态获取浏览器高度
             const that = this
             window.onresize = () => {
                 return (() => {
@@ -67,7 +111,30 @@ export default {
                     that.fullHeight = window.fullHeight
                 })()
             }
-        }
+        },
+        refreshLedgerList(){
+          let manager = DataManager.defaultManager()
+
+          this.ledgers = manager.getTotalLedgerDeviceName()          
+          let selDevice = manager.getCurrentSelectLedger()
+
+          if(!selDevice){
+            return
+          }
+
+          this.ledgerselect = selDevice.name
+          let info = this.$storage.getLedgerWallet(selDevice.sign)
+          console.log('本地存储硬件钱包信息为：'+JSON.stringify(info,null,2))
+          //
+          if(Object.keys(info).length>0){
+            this.ledgerName = info.name
+            this.accounts = info.wallets
+          }
+
+        },
+        getPath(){
+          console.log('路由变化'+this.$route.path);
+        },
     }
 }
 </script>

@@ -202,7 +202,12 @@ export default {
     }
   },
   mounted(){
-    this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
+    if(this.$route.query.wallet){
+      this.wallet = this.$route.query.wallet
+    }
+    else{
+      this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
+    }
     this.sender = this.wallet.keystore.address
     this.$iotchain.account.getBalance(this.sender)
       .then((balance) => {

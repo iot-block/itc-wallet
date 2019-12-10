@@ -21,7 +21,10 @@ const statusCall = (status)=>{
 
     lastStatus = status
     ledgerStatusCalls.forEach(element => {
-        element(status)
+        element({
+            device: ledgerTransport ? ledgerTransport.deviceModel : {},
+            status:status
+        })
     });
 }
 
@@ -47,6 +50,9 @@ const connectLedger = async ()=>{
     if(!ledgerTransport){
 
         await TransportNodeHid.open("").then(async newTransport => {
+            
+            console.log(JSON.stringify(newTransport,null,2))
+
             statusCall(2)
             ledgerTransport = newTransport
         }).catch(err=>{
@@ -63,7 +69,7 @@ const connectLedger = async ()=>{
 
         await connectIotChainApp().then(appinfo=>{
 
-            console.log('itc app info->'+JSON.stringify(appinfo,null,2))
+            // console.log('itc app info->'+JSON.stringify(appinfo,null,2))
             statusCall(3)
         }).catch(err=>{
             console.log('读取iotcain app信息错误->'+err)
@@ -152,7 +158,10 @@ const queryIotChainAddressList = async (amount)=>{
     }
 
     console.log(JSON.stringify(addressInfos,null,2))
-    return addressInfos;
+    return {
+        addresses:addressInfos,
+        device:transport.deviceModel
+    };
 }
 
  /**
@@ -280,11 +289,26 @@ const serializeTx = (t)=>{
     return serializedTx.toString('hex')
 }
 
+const queryCurrentStatus= ()=>{
+
+    console.log('查询状态'+lastStatus)
+
+    if(lastStatus == 2){
+        return 1
+    }
+    else if (lastStatus == 3){
+        return 2
+    }
+    else{
+        return 0
+    }
+}
 
 export default {
     startConnect,
     registLedgerStatus,
     queryIotChainAddressList,
     sendITG,
-    sendITC
+    sendITC,
+    queryCurrentStatus
 }
