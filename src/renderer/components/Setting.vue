@@ -47,7 +47,6 @@ export default {
   },
   watch: {
     currentNode: function(val){
-      console.log(this.currentNode)
       this.$setting.set('node.current',this.nodes.find(n => n.server==this.currentNode))
     },
     currentLang: function(val){

@@ -146,8 +146,15 @@
         </v-stepper-content>
         <v-stepper-content step="3">
           <div class="d-flex flex-column justify-center align-center">
-            <v-icon color="#2c7cf7" size="60">mdi-checkbox-marked-circle</v-icon>
-            <span style="color:#2c7cf7;">Success</span>
+            <!-- <v-icon color="#2c7cf7" size="60">mdi-checkbox-marked-circle</v-icon> -->
+            <v-progress-circular
+              :rotate="-90"
+              :size="100"
+              :width="10"
+              :value="progressValue"
+              color="#2c7cf7">
+              {{txStatus}}
+            </v-progress-circular>
           </div>
           <div class="mt-4 text-center">
             <v-btn
@@ -184,6 +191,9 @@ export default {
       receiver: '',
       amount: '',
       gasPrice: 0,
+      timer: null,
+      txStatus: 'Pending',
+      progressValue: 0
     }
   },
   computed:{
@@ -234,7 +244,9 @@ export default {
     },
     confirm(){
       try {
-        var privateKey = this.$iotchain.util.recoverFromKeystore(this.wallet.keystore,this.password).toString('hex')
+        var privateKey = this.$iotchain.util.recoverFromKeystore(this.wallet.keystore,this.password)
+        this.txStatus = 'Pending'
+        this.progressValue = 0
         if(this.transferType == 'itg'){
           setTimeout(() => {
             let amount = this.$iotchain.util.toWei(this.amount)
@@ -250,8 +262,22 @@ export default {
                 type: 'tx',
                 hash: response
               })
-              this.$router.replace({
-                name: 'wallet'
+              this.step = 3
+
+              this.timer = setInterval(() => {
+                this.progressValue += 1
+              }, 210);
+
+              this.$iotchain.trxListen.listenTrx(response,3000,1000*20,(hash,receipt)=>{
+                this.progressValue = 100
+                if(this.timer){
+                  clearInterval(this.timer);
+                }
+                if(receipt && receipt.status){
+                  this.txStatus = 'Success'
+                }else{
+                  this.txStatus = 'Fail'
+                }
               })
             }).catch((error) => {
               this.$alert.show({
@@ -275,8 +301,22 @@ export default {
                 type: 'tx',
                 hash: response
               })
-              this.$router.replace({
-                name: 'wallet'
+              this.step = 3
+
+              this.timer = setInterval(() => {
+                this.progressValue += 1
+              }, 210);
+
+              this.$iotchain.trxListen.listenTrx(response,3000,1000*20,(hash,receipt)=>{
+                this.progressValue = 100
+                if(this.timer){
+                  clearInterval(this.timer);
+                }
+                if(receipt && receipt.status){
+                  this.txStatus = 'Success'
+                }else{
+                  this.txStatus = 'Fail'
+                }
               })
             }).catch((error) => {
               this.$alert.show({
@@ -287,11 +327,15 @@ export default {
           }, 0);
         }
       } catch (error) {
-        console.log(error)
         this.error2 = true
         this.errorMessage2 = "密码错误"
       }
     }
-  }
+  },
+  beforeDestroy(){
+    if(this.timer){
+      clearInterval(this.timer);
+    }
+  },
 }
 </script>
