@@ -8,18 +8,40 @@
 
 <script>
 
-// import ledger from '../../../common/ledger/ledger.js'
-// ledger.registLedgerStatus(status=>{
-//   console.log('Ledger设备状态变化->'+status)
-// })
+import ledger from '../../../common/ledger/ledger.js'
 
 export default {
     data: () => ({
       label: '',
-      step:2
+      step:0
     }),
-    methods: {
-      
-    },
+    beforeMount(){
+
+      let subThis = this 
+
+      //开始连接
+      ledger.registLedgerStatus(status=>{
+
+        console.log('Ledger设备状态变化->'+status)
+        if(status == 2){
+          this.step = 1
+        }
+        else if (status == 3){
+          this.step = 2
+
+          console.log('开始获取硬件钱包地址列表')
+          
+          ledger.queryIotChainAddressList(10).then(result=>{
+            console.log('地址列表->'+result)
+          }).catch(err=>{
+
+          })
+        }
+        else{
+          this.step = 0
+        }
+      })
+      ledger.startConnect()
+    }
 }
 </script>

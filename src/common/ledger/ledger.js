@@ -1,18 +1,25 @@
 import "babel-polyfill"
 
-import * as TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
-import * as AppEth from "@ledgerhq/hw-app-eth"
+import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
+import AppEth from "@ledgerhq/hw-app-eth"
 import Transaction from "ethereumjs-tx"
+import { app } from "electron"
 
 var ledgerTransport = null
+var lastStatus = 0
 let ledgerStatusCalls = []
 
 /**
  * 状态回调
- * @param {*} status 1-尝试连接  2-连接成功 3-断开连接，再次尝试连接
+ * @param {*} status 1-尝试连接  2-连接设备成功 3-连接上 iot chain-app 4-断开连接，再次尝试连接
  */
 const statusCall = (status)=>{
 
+    if(lastStatus == status){
+        return
+    }
+
+    lastStatus = status
     ledgerStatusCalls.forEach(element => {
         element(status)
     });
@@ -22,33 +29,80 @@ const statusCall = (status)=>{
 /**
  * 开始连接
  */
-const startConnect = ()=>{
+var connectSign = 0
+const startConnect = async ()=>{
 
-    statusCall(1)
-    connectLedger()
+    if(!connectSign){
+    
+        connectSign = 1
+
+        statusCall(1)
+        connectLedger()      
+    }
 }
 
-const connectLedger = ()=>{
+//1、连接设备。2、打开iotchain app
+const connectLedger = async ()=>{
 
-    TransportNodeHid.open("").then(async newTransport => {
+    if(!ledgerTransport){
 
-        statusCall(2)
-        ledgerTransport = newTransport
-    }).catch(err=>{
+        await TransportNodeHid.open("").then(async newTransport => {
+            statusCall(2)
+            ledgerTransport = newTransport
+        }).catch(err=>{
+    
+            if(ledgerTransport){
+                statusCall(4)
+                ledgerTransport = null
+            }
+            console.log('设备连接错误，1秒后再次尝试'+err)
+        })  
+    }
 
-        if(ledgerTransport){
+    if(ledgerTransport){
+
+        await connectIotChainApp().then(appinfo=>{
+
+            console.log('itc app info->'+JSON.stringify(appinfo,null,2))
             statusCall(3)
-            ledgerTransport = null
-        }
+        }).catch(err=>{
+            console.log('读取iotcain app信息错误->'+err)
 
-        console.log('设备未连接，5秒后再次尝试'+err)
+            if(err.toString().indexOf('DisconnectedDevice') != -1){
 
-        return new Promise(s => setTimeout(s, 5 * 1000)).then(() =>
-            connectLedger()
-        );
-    })  
+                ledgerTransport = null
+                console.log('设备连接错误，1秒后再次尝试')
+            }
+            
+            if(err.toString().indexOf('TransportStatusError') != -1){
+                statusCall(2)
+                console.log('未打开iotchain应用')
+            }
+        })
+    }
+
+    let watchTime = 1
+    if(ledgerTransport){
+        watchTime = 5
+    }
+
+    //监听Ledger变化
+    setTimeout(()=>{
+        connectLedger()
+    }, watchTime * 1000)
 }
 
+const connectIotChainApp = async ()=>{
+
+    let transport = await getInstancedTransport()
+    if(!transport){
+        return Promise.reject('connect device error')
+    }
+
+    const appEth = new AppEth(transport);
+
+    return appEth.getAppConfiguration()
+}
 
 
 const registLedgerStatus = (call)=>{
@@ -59,11 +113,6 @@ const registLedgerStatus = (call)=>{
 }
 
 const getInstancedTransport = async ()=>{
-
-    if(!ledgerTransport){
-
-        return Promise.reject('device did not connect') 
-    }
 
     return ledgerTransport
 }
@@ -82,6 +131,9 @@ const queryDestinationAddress =  async (appEth,pathIdx)=>{
 const queryIotChainAddressList = async (amount)=>{
 
     let transport = await getInstancedTransport()
+    if(!transport){
+        return Promise.reject('device did not connect') 
+    }
     const appEth = new AppEth(transport);
 
     let addressInfos = []
@@ -153,6 +205,9 @@ const signTransaction = async (addressIdx,tx)=>{
     let path = getAddressPath(addressIdx)
 
     let transport = await getInstancedTransport()
+    if(!transport){
+        return Promise.reject('connect device error')
+    }
     const appEth = new AppEth(transport);
 
     return appEth.signTransaction(path, tx).then(result => {
@@ -225,6 +280,7 @@ const serializeTx = (t)=>{
     return serializedTx.toString('hex')
 }
 
+
 export default {
     startConnect,
     registLedgerStatus,
@@ -232,5 +288,3 @@ export default {
     sendITG,
     sendITC
 }
-
-console.log('*&&&&&&&&&&&&&&&&7')

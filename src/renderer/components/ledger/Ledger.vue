@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="sssssss" row wrap  align-center justify-center  :style="'height:'+fullHeight+'px;'" >
+  <v-layout class="container" row wrap  align-center justify-center  :style="'height:'+fullHeight+'px;'" >
     <v-container id="inspire">
     <v-row
       justify="start"
@@ -31,9 +31,8 @@
         </v-hover>
       </v-col>
     </v-row>
-  </v-container>
+    </v-container>
   </v-layout>
-  
 </template>
 
 <script>
@@ -54,7 +53,6 @@ export default {
                     that.timer = false
                 },400)
             }
-            
         }
     },
     mounted () {
