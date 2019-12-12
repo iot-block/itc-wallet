@@ -231,6 +231,7 @@ export default {
   },
   mounted(){
     const mnemonics = this.$iotchain.bip39.generateMnemonic().split(' ')
+    console.log(mnemonics.join(" "))
     this.mnemonics = [...mnemonics]
     this.unselectedWords = [...mnemonics]
     // this.unselectedWords = shuffle([...mnemonics])
@@ -250,7 +251,7 @@ export default {
     checkMnemonics(){
       if(arrayEqual(this.mnemonics,this.selectedWords)){
         this.loading = true
-        var privateKey = this.$iotchain.util.mnemonicToPrivate(this.mnemonics.join(' '),this.password)
+        var privateKey = this.$iotchain.util.mnemonicToPrivate(this.mnemonics.join(' '))
         setTimeout(() => {
           this.$iotchain.util.dumpKeystore(privateKey,this.password)
             .then(keyObject => {

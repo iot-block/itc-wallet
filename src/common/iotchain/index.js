@@ -431,7 +431,7 @@ const util = {
         return account.privateKey
     },
     mnemonicToPrivate(mnemonics,password){
-        var seed = bip39.mnemonicToSeedSync(mnemonics,password)
+        var seed = bip39.mnemonicToSeedSync(mnemonics)
         var hdWallet = hdkey.fromMasterSeed(seed)
         return hdWallet.derivePath("m/44'/60'/0'/0/0").getWallet().getPrivateKeyString()
     }
