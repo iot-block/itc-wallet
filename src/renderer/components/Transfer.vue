@@ -112,7 +112,7 @@
             <v-col cols="10">
               <span class="grey--text">{{estimatedGas | tounit('szabo') | unit}} ITG</span>
             </v-col>
-            <v-col cols="10">
+            <v-col v-if="isLedgerAddress" cols="10">
               <span class="red--text">Please confirm the transaction in your ledger.</span>
             </v-col>
           </v-row>
