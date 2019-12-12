@@ -109,7 +109,7 @@ export default {
     doImport(){
       try {
         this.loading = true
-        var privateKey = this.$iotchain.util.mnemonicToPrivate(this.mnemonics.trim(),this.password)
+        var privateKey = this.$iotchain.util.mnemonicToPrivate(this.mnemonics.trim())
         setTimeout(() => {
           this.$iotchain.util.dumpKeystore(privateKey.toString('hex'),this.password)
             .then(keyObject => {
