@@ -45,7 +45,7 @@
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
             <router-link :to="{name:'transfer', query:{
-                wallet:wallet.keystore.crypto?null:wallet,
+                wallet:isLederAddress?JSON.stringify(wallet):null,
                 walletId:wallet.keystore.id
             }}" class="flex-grow-1 text-center pointer">Transfer</router-link>
             <v-divider vertical/>
@@ -149,8 +149,11 @@ export default {
     }
   },
   mounted(){
+
+    console.log('地址详情界面出现,参数'+JSON.stringify(this.$route.query.wallet,null,2))
+
     if(this.$route.query.wallet){
-      this.wallet = this.$route.query.wallet
+      this.wallet = JSON.parse(this.$route.query.wallet)
       this.isLederAddress = true
     }
     else{

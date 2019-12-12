@@ -6,7 +6,7 @@
   "author": "iotchain",
   "scripts": {
     "start": "electron .",
-    "postinstall": "",
+    "postinstall": "electron-builder install-app-deps",
     "build": "node .electron-vue/build.js && electron-builder",
     "test": "npm run unit && npm run e2e",
     "e2e": "npm run pack && mocha test/e2e",

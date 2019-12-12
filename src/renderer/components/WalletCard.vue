@@ -54,7 +54,7 @@ export default {
       this.$router.push({
         name:'walletDetail',
         query:{
-          wallet:this.wallet.keystore.crypto ? null : this.wallet,
+          wallet:this.wallet.keystore.crypto ? null :JSON.stringify(this.wallet),
           walletId:this.wallet.keystore.id
         }
       })

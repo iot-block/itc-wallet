@@ -233,8 +233,9 @@ export default {
     }
   },
   mounted(){
+
     if(this.$route.query.wallet){
-      this.wallet = this.$route.query.wallet
+      this.wallet = JSON.parse(this.$route.query.wallet)
       this.isLedgerAddress = true
     }
     else{
