@@ -235,7 +235,7 @@ const sendSignedTransaction = async function(txJson) {
                 resolve(sendRsp)
             }
             else{
-                reject('sendSignedTransaction failed')
+                reject('sendSignedTransaction failed.'+sendRsp)
             } 
         }
         catch(err){
@@ -399,10 +399,24 @@ const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
     return handleContractFunction(itcContractAddress(),ABI,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
 }
 
+const generalITCTransferData = (address,value)=>{
+
+
+    console.log('参数address->'+address+' value->'+value)
+
+    const payload = iotchainApi().contract.encodeFunction(ABI,'transfer',[address,value])
+
+    console.log('payload->'+payload)
+
+    return payload
+}
+
 const util = {
     toWei(value, unit='ether'){
-        let bn = web3util.toBN(value+'')
-        return web3util.toWei(bn, unit)
+        return web3util.toWei(value+'', unit)
+    },
+    fromWei(value, unit='ether'){
+        return web3util.fromWei(value+'', unit)
     },
     isAddress(address){
         return web3util.isAddress(address)
@@ -448,6 +462,8 @@ export default {
         transferITG,
         transferITC,
         getSuggestGasPrice,
+        generalITCTransferData,
+        itcContractAddress,
     },
     block: {
         getBestBlockNumber,

@@ -55,3 +55,4 @@ storage.getWorkaround = function (key, defaultValue) {
 };
 
 export default storage
+

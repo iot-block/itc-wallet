@@ -112,8 +112,12 @@
             <v-col cols="10">
               <span class="grey--text">{{estimatedGas | tounit('szabo') | unit}} ITG</span>
             </v-col>
+            <v-col cols="10">
+              <span class="red--text">Please confirm the transaction in your ledger.</span>
+            </v-col>
           </v-row>
           <v-text-field
+            v-if="!isLedgerAddress"
             class="mt-4"
             v-model="password"
             label="password"
@@ -135,11 +139,22 @@
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
             <v-btn
+              v-if="!isLedgerAddress"
               class="ml-4"
               depressed
               color="primary"
               :disabled="!password"
               @click="confirm">
+              Transfer
+            </v-btn>
+            <v-btn
+              v-if="isLedgerAddress"
+              class="ml-5"
+              depressed
+              color="primary"
+              :disabled="signedTx.length == 0"
+              :loading="isSendTx"
+              @click="sendSignedTransaction">
               Transfer
             </v-btn>
           </div>
@@ -173,7 +188,10 @@
 </template>
 
 <script>
+
 var web3account = require('web3-eth-accounts')
+import web3util from 'web3-utils'
+
 export default {
   data(){
     return {
@@ -188,12 +206,15 @@ export default {
       error2: false,
       errorMessage2: '',
       transferType: 'itc',
-      receiver: '',
+      receiver: '0xdc1e56d308fadcfda34219920e70bb2be41699df',
       amount: '',
       gasPrice: 0,
       timer: null,
       txStatus: 'Pending',
-      progressValue: 0
+      progressValue: 0,
+      isLedgerAddress:false,
+      signedTx:'',
+      isSendTx:false
     }
   },
   computed:{
@@ -214,6 +235,7 @@ export default {
   mounted(){
     if(this.$route.query.wallet){
       this.wallet = this.$route.query.wallet
+      this.isLedgerAddress = true
     }
     else{
       this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
@@ -229,6 +251,107 @@ export default {
       })
   },
   methods:{
+    async confirmTxByLedger(){
+
+      let account = await this.$iotchain.account.getAccount(this.wallet.keystore.address)
+      let nonce = account.nonce
+      let gasPrice = this.$iotchain.util.toWei(this.gasPrice,'szabo')
+      let value = this.$iotchain.util.toWei(this.amount,'ether')
+
+      console.log('基本交易参数,nonce：'+nonce+' gasPrice:'+gasPrice+' value:'+value)
+
+      if(this.transferType == 'itg'){
+      
+        let gas = web3util.toHex('42000')
+
+        this.$ledger.sendITG(this.wallet.keystore.id,{
+            nonce: web3util.toHex(nonce),
+            gasPrice: web3util.toHex(gasPrice),
+            gasLimit: gas,
+            to: this.receiver,
+            value:web3util.toHex(value),
+            chainId:'0x0a'
+        }).then(result=>{
+
+            console.log('ledger签名的ITG交易：'+JSON.stringify(result,null,2))
+            this.signedTx = result
+        }).catch(err=>{
+
+          console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
+
+           this.$alert.show({
+                message: '交易确认失败，请重新尝试.'+err,
+                timeout: 2000
+          })
+        })
+      }
+      else{
+        
+          let gas = web3util.toHex('150000')
+          let data = this.$iotchain.transaction.generalITCTransferData(this.receiver,value+'')
+
+          this.$ledger.sendITC(this.wallet.keystore.id,{
+              nonce: web3util.toHex(nonce),
+              gasPrice: web3util.toHex(gasPrice),
+              gasLimit: gas,
+              to: this.$iotchain.transaction.itcContractAddress(),
+              value:'0x00',
+              data:'0x'+data,
+              chainId:10
+          }).then(result=>{
+              console.log('ledger签名的ITC交易：'+JSON.stringify(result,null,2))
+              this.signedTx = result
+          }).catch(err=>{
+
+            console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
+
+            this.$alert.show({
+                message: '交易确认失败，请重新尝试.'+err,
+                timeout: 2000
+            })
+          })
+      }
+      
+    },
+    serializeSignedTx(tx){
+
+      return {
+        nonce: web3util.hexToNumberString(tx.nonce),
+        gasPrice: web3util.hexToNumberString(tx.gasPrice),
+        gasLimit: web3util.hexToNumberString(tx.gasLimit),
+        receivingAddress: tx.to,
+        value: web3util.hexToNumberString(tx.value),
+        payload: tx.data?tx.data.substr(2):'',
+        v:tx.v,
+        r:web3util.hexToNumberString('0x'+tx.r),
+        s:web3util.hexToNumberString('0x'+tx.s)
+      }
+    },
+    sendSignedTransaction(){
+
+        this.isSendTx = true
+
+        //发送
+        let serializeTx = this.serializeSignedTx(this.signedTx)
+        console.log(JSON.stringify(serializeTx,null,2))
+
+        this.$iotchain.transaction.sendSignedTransaction(serializeTx).then(response=>{
+
+          this.isSendTx = false
+          this.handleTxResponse(response)
+
+        }).catch(err=>{
+
+          console.log('交易发送失败'+err)
+
+          this.isSendTx = false
+
+          this.$alert.show({
+                message: '交易广播失败'+err,
+                timeout: 2000
+          })
+        })
+    },
     goConfirm(){
       if(!this.$iotchain.util.isAddress(this.receiver)){
         this.error1 = true
@@ -241,6 +364,38 @@ export default {
         return
       }
       this.step = 2
+
+      if(this.isLedgerAddress){
+        this.confirmTxByLedger()
+      }
+    },
+    handleTxResponse(response){
+
+      this.$alert.show({
+        message: '交易广播成功',
+        timeout: 2000
+      })
+      this.$progress.show({
+        type: 'tx',
+        hash: response
+      })
+      this.step = 3
+
+      this.timer = setInterval(() => {
+        this.progressValue += 1
+      }, 210);
+
+      this.$iotchain.trxListen.listenTrx(response,3000,1000*20,(hash,receipt)=>{
+        this.progressValue = 100
+        if(this.timer){
+          clearInterval(this.timer);
+        }
+        if(receipt && receipt.status){
+          this.txStatus = 'Success'
+        }else{
+          this.txStatus = 'Fail'
+        }
+      })
     },
     confirm(){
       try {
@@ -254,31 +409,8 @@ export default {
                 gas:'42000',
                 gasPrice:this.$iotchain.util.toWei(this.gasPrice,'szabo')+""
             }).then((response) => {
-              this.$alert.show({
-                message: '交易广播成功',
-                timeout: 2000
-              })
-              this.$progress.show({
-                type: 'tx',
-                hash: response
-              })
-              this.step = 3
-
-              this.timer = setInterval(() => {
-                this.progressValue += 1
-              }, 210);
-
-              this.$iotchain.trxListen.listenTrx(response,3000,1000*20,(hash,receipt)=>{
-                this.progressValue = 100
-                if(this.timer){
-                  clearInterval(this.timer);
-                }
-                if(receipt && receipt.status){
-                  this.txStatus = 'Success'
-                }else{
-                  this.txStatus = 'Fail'
-                }
-              })
+             
+                this.handleTxResponse(response)
             }).catch((error) => {
               this.$alert.show({
                 message: '交易广播失败'+error,
@@ -293,31 +425,8 @@ export default {
                 gas:'150000',
                 gasPrice:this.$iotchain.util.toWei(this.gasPrice,'szabo')+""
             }).then((response) => {
-              this.$alert.show({
-                message: '交易广播成功',
-                timeout: 2000
-              })
-              this.$progress.show({
-                type: 'tx',
-                hash: response
-              })
-              this.step = 3
 
-              this.timer = setInterval(() => {
-                this.progressValue += 1
-              }, 210);
-
-              this.$iotchain.trxListen.listenTrx(response,3000,1000*20,(hash,receipt)=>{
-                this.progressValue = 100
-                if(this.timer){
-                  clearInterval(this.timer);
-                }
-                if(receipt && receipt.status){
-                  this.txStatus = 'Success'
-                }else{
-                  this.txStatus = 'Fail'
-                }
-              })
+              this.handleTxResponse(response)
             }).catch((error) => {
               this.$alert.show({
                 message: '交易广播失败'+error,

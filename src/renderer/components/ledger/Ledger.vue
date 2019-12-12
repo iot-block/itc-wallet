@@ -113,6 +113,7 @@ export default {
             }
         },
         refreshLedgerList(){
+
           let manager = DataManager.defaultManager()
 
           this.ledgers = manager.getTotalLedgerDeviceName()          

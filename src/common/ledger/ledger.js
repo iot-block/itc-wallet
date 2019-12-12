@@ -2,7 +2,7 @@ import "babel-polyfill"
 
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 import AppEth from "@ledgerhq/hw-app-eth"
-import Transaction from "ethereumjs-tx"
+import {Transaction} from "ethereumjs-tx"
 import { app } from "electron"
 
 var ledgerTransport = null
@@ -148,6 +148,7 @@ const queryIotChainAddressList = async (amount)=>{
 
         await queryDestinationAddress(appEth,index).then(addressInfo=>{
 
+            console.log(JSON.stringify(addressInfo))
             addressInfos.push({
                 address:addressInfo.address,
                 idx:index
@@ -176,6 +177,9 @@ const queryIotChainAddressList = async (amount)=>{
   */
 const sendITG = async (addressIdx,t)=>{
 
+    console.log('地址序号为'+addressIdx)
+    console.log('ITG交易内容为'+JSON.stringify(t,null,2))
+
     let tx = serializeTx(t)
     return await signTransaction(addressIdx,tx).then(vsr=>{
 
@@ -187,7 +191,7 @@ const sendITG = async (addressIdx,t)=>{
 }
 
 /**
-  * 发送ITG
+  * 发送ITC
   * @param {*} addressIdx 地址序号
   * @param {*} t.nonce 
   * @param {*} t.gasPrice  
@@ -198,6 +202,9 @@ const sendITG = async (addressIdx,t)=>{
   * @param {*} t.chainId 
   */
  const sendITC = async (addressIdx,t)=>{
+
+    console.log('地址序号为'+addressIdx)
+    console.log('ITC交易内容为'+JSON.stringify(t,null,2))
 
     let tx = serializeErc20Tx(t)
     return await signTransaction(addressIdx,tx).then(vsr=>{
@@ -220,9 +227,9 @@ const signTransaction = async (addressIdx,tx)=>{
     const appEth = new AppEth(transport);
 
     return appEth.signTransaction(path, tx).then(result => {
+
         result.v = getRecoveryId(10,parseInt(result.v))
         return result
-
     }).catch(err=>{
 
         console.log('交易拒绝'+err)
@@ -232,7 +239,7 @@ const signTransaction = async (addressIdx,tx)=>{
 
 const getRecoveryId = (chainId,v)=>{
 
-    return chainId + v;
+    return '' + (chainId + v);
 
     // const NEGATIVE_POINT_SIGN = 27;
     // const POSITIVE_POINT_SIGN = 28;
@@ -262,7 +269,7 @@ const serializeErc20Tx = (t)=>{
     tx.raw[8] = Buffer.from([]) // s
   
     const serializedTx = tx.serialize()
-    console.log('对应的raw  -> '+serializedTx.toString('hex'))
+    console.log('交易序列化结果-> '+serializedTx.toString('hex'))
   
     return serializedTx.toString('hex')
 }

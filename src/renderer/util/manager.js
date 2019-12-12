@@ -4,13 +4,14 @@ let singleton;
 class DataManager{
     
     constructor(){
-        this.ledgerDevices = [{
-            sign:'nanoS16',
-            name:'噼噼啪啪'
-        },{
-            sign:'nanoS16',
-            name:'嗷嗷嗷'
-        }]
+        // this.ledgerDevices = [{  
+        //     sign:'nanoS16',
+        //     name:'噼噼啪啪'
+        // },{
+        //     sign:'nanoS16',
+        //     name:'嗷嗷嗷'
+        // }]
+        this.ledgerDevices = []
         this.selectLedgerIdx = 0
     }
 
