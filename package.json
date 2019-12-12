@@ -31,7 +31,7 @@
     "babel-polyfill": "^6.26.0",
     "bignumber": "^1.1.0",
     "bip39": "^3.0.2",
-    "electron-debug": "^3.0.1",
+    "electron-debug": "^1.5.0",
     "electron-store": "^5.1.0",
     "ethereumjs-tx": "^2.1.1",
     "ethereumjs-wallet": "^0.6.3",

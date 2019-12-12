@@ -112,7 +112,7 @@
             <v-col cols="10">
               <span class="grey--text">{{estimatedGas | tounit('szabo') | unit}} ITG</span>
             </v-col>
-            <v-col cols="10">
+            <v-col v-if="isLedgerAddress" cols="10">
               <span class="red--text">Please confirm the transaction in your ledger.</span>
             </v-col>
           </v-row>
@@ -206,7 +206,7 @@ export default {
       error2: false,
       errorMessage2: '',
       transferType: 'itc',
-      receiver: '0xdc1e56d308fadcfda34219920e70bb2be41699df',
+      receiver: '',
       amount: '',
       gasPrice: 0,
       timer: null,
