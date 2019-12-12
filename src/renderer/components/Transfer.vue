@@ -206,7 +206,7 @@ export default {
       error2: false,
       errorMessage2: '',
       transferType: 'itc',
-      receiver: '0xdc1e56d308fadcfda34219920e70bb2be41699df',
+      receiver: '',
       amount: '',
       gasPrice: 0,
       timer: null,
