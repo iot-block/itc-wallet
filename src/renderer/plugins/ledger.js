@@ -1,5 +1,7 @@
 import "babel-polyfill"
-import ledger from '../../common/ledger/ledger'
+import LedgerManager from '../util/manager'
+
+const ledger = LedgerManager.defaultManager()
 
 export default {
   install(Vue, options){

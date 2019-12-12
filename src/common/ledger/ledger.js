@@ -3,254 +3,10 @@ import "babel-polyfill"
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 import AppEth from "@ledgerhq/hw-app-eth"
 import {Transaction} from "ethereumjs-tx"
-import { app } from "electron"
-
-var ledgerTransport = null
-var lastStatus = 0
-let ledgerStatusCalls = []
-
-/**
- * 状态回调
- * @param {*} status 1-尝试连接  2-连接设备成功 3-连接上 iot chain-app 4-断开连接，再次尝试连接
- */
-const statusCall = (status)=>{
-
-    if(lastStatus == status){
-        return
-    }
-
-    lastStatus = status
-    ledgerStatusCalls.forEach(element => {
-        element({
-            device: ledgerTransport ? ledgerTransport.deviceModel : {},
-            status:status
-        })
-    });
-}
-
-
-/**
- * 开始连接
- */
-var connectSign = 0
-const startConnect = async ()=>{
-
-    if(!connectSign){
-    
-        connectSign = 1
-
-        statusCall(1)
-        connectLedger()      
-    }
-}
-
-//1、连接设备。2、打开iotchain app
-const connectLedger = async ()=>{
-
-    if(!ledgerTransport){
-
-        await TransportNodeHid.open("").then(async newTransport => {
-            
-            console.log(JSON.stringify(newTransport,null,2))
-
-            statusCall(2)
-            ledgerTransport = newTransport
-        }).catch(err=>{
-    
-            if(ledgerTransport){
-                statusCall(4)
-                ledgerTransport = null
-            }
-            console.log('设备连接错误，1秒后再次尝试'+err)
-        })  
-    }
-
-    if(ledgerTransport){
-
-        await connectIotChainApp().then(appinfo=>{
-
-            // console.log('itc app info->'+JSON.stringify(appinfo,null,2))
-            statusCall(3)
-        }).catch(err=>{
-            console.log('读取iotcain app信息错误->'+err)
-
-            if(err.toString().indexOf('DisconnectedDevice') != -1){
-
-                ledgerTransport = null
-                console.log('设备连接错误，1秒后再次尝试')
-            }
-            
-            if(err.toString().indexOf('TransportStatusError') != -1){
-                statusCall(2)
-                console.log('未打开iotchain应用')
-            }
-        })
-    }
-
-    let watchTime = 1
-    if(ledgerTransport){
-        watchTime = 5
-    }
-
-    //监听Ledger变化
-    setTimeout(()=>{
-        connectLedger()
-    }, watchTime * 1000)
-}
-
-const connectIotChainApp = async ()=>{
-
-    let transport = await getInstancedTransport()
-    if(!transport){
-        return Promise.reject('connect device error')
-    }
-
-    const appEth = new AppEth(transport);
-
-    return appEth.getAppConfiguration()
-}
-
-
-const registLedgerStatus = (call)=>{
-    
-    if(typeof(call).toString().indexOf('function') != -1){
-        ledgerStatusCalls.push(call)
-    }
-}
-
-const getInstancedTransport = async ()=>{
-
-    return ledgerTransport
-}
-
-const getAddressPath = (pathIdx)=>{
-
-    return `44'/30315'/0'/0/${pathIdx}`
-}
-
-const queryDestinationAddress =  async (appEth,pathIdx)=>{
-
-    let path = getAddressPath(pathIdx)
-    return appEth.getAddress(path)
-}
-
-const queryIotChainAddressList = async (amount)=>{
-
-    let transport = await getInstancedTransport()
-    if(!transport){
-        return Promise.reject('device did not connect') 
-    }
-    const appEth = new AppEth(transport);
-
-    let addressInfos = []
-
-    for (let index = 0; index < amount; index++) {
-
-        await queryDestinationAddress(appEth,index).then(addressInfo=>{
-
-            console.log(JSON.stringify(addressInfo))
-            addressInfos.push({
-                address:addressInfo.address,
-                idx:index
-            })
-        }).catch(err=>{
-            console.log('path为'+index+'的地址信息查询错误')
-        })
-    }
-
-    console.log(JSON.stringify(addressInfos,null,2))
-    return {
-        addresses:addressInfos,
-        device:transport.deviceModel
-    };
-}
-
- /**
-  * 发送ITG
-  * @param {*} addressIdx 地址序号
-  * @param {*} t.nonce 
-  * @param {*} t.gasPrice  
-  * @param {*} t.gasLimit  
-  * @param {*} t.to 
-  * @param {*} t.value
-  * @param {*} t.chainId 
-  */
-const sendITG = async (addressIdx,t)=>{
-
-    console.log('地址序号为'+addressIdx)
-    console.log('ITG交易内容为'+JSON.stringify(t,null,2))
-
-    let tx = serializeTx(t)
-    return await signTransaction(addressIdx,tx).then(vsr=>{
-
-        return {
-            ...t,
-            ...vsr
-        }
-    })
-}
-
-/**
-  * 发送ITC
-  * @param {*} addressIdx 地址序号
-  * @param {*} t.nonce 
-  * @param {*} t.gasPrice  
-  * @param {*} t.gasLimit  
-  * @param {*} t.to 
-  * @param {*} t.value
-  * @param {*} t.data
-  * @param {*} t.chainId 
-  */
- const sendITC = async (addressIdx,t)=>{
-
-    console.log('地址序号为'+addressIdx)
-    console.log('ITC交易内容为'+JSON.stringify(t,null,2))
-
-    let tx = serializeErc20Tx(t)
-    return await signTransaction(addressIdx,tx).then(vsr=>{
-
-        return {
-            ...t,
-            ...vsr
-        }
-    })
-}
-
-const signTransaction = async (addressIdx,tx)=>{
-
-    let path = getAddressPath(addressIdx)
-
-    let transport = await getInstancedTransport()
-    if(!transport){
-        return Promise.reject('connect device error')
-    }
-    const appEth = new AppEth(transport);
-
-    return appEth.signTransaction(path, tx).then(result => {
-
-        result.v = getRecoveryId(10,parseInt(result.v))
-        return result
-    }).catch(err=>{
-
-        console.log('交易拒绝'+err)
-        return Promise.reject('交易错误，请检查连接或者确认交易'+err)
-    }) 
-}
 
 const getRecoveryId = (chainId,v)=>{
 
     return '' + (chainId + v);
-
-    // const NEGATIVE_POINT_SIGN = 27;
-    // const POSITIVE_POINT_SIGN = 28;
-    // const NEW_NEGATIVE_POINT_SIGN = 27;
-    // const NEW_POSITIVE_POINT_SIGN = 28;
-    
-    // if (v == NEGATIVE_POINT_SIGN){
-    //     return chainId * 2 + NEW_NEGATIVE_POINT_SIGN;
-    // }else if (v == POSITIVE_POINT_SIGN){
-    //     return chainId * 2 + NEW_POSITIVE_POINT_SIGN;
-    // }else return null;
 }
 
 const serializeErc20Tx = (t)=>{
@@ -296,26 +52,256 @@ const serializeTx = (t)=>{
     return serializedTx.toString('hex')
 }
 
-const queryCurrentStatus= ()=>{
 
-    console.log('查询状态'+lastStatus)
+export default class LedgerDevice {
 
-    if(lastStatus == 2){
-        return 1
+    constructor(){
+        this.deviceName = ''
+        this.deviceSign = ''
+        this.transport = null
+        this.wallets = []
+        this.originalAddressInfo = []
+        this.startConnect = false
+        this.status = 0 //0-未连接设备 、1-连接设备未打开app、2-已打开app
     }
-    else if (lastStatus == 3){
-        return 2
+
+    static getAddressPath(pathIdx){
+        return `44'/30315'/0'/0/${pathIdx}`
     }
-    else{
-        return 0
+
+    /**
+     * 保存设备名字
+     * @param {*} ledgerName 
+     */
+    saveDevice(ledgerName){
+        
+        this.deviceName = ledgerName
+        let wallets = []
+        this.originalAddressInfo.forEach((element,idx)=>{
+
+            wallets.push({
+                keystore:{
+                  address:element.address.substr(2),
+                  id:element.idx
+                },
+                name:ledgerName + '-' + (idx+1)
+            })
+        })
+        this.wallets = wallets
+    }
+
+    //1、连接设备。2、打开iotchain app
+    async connectLedger(){
+
+        if(!this.transport){
+
+
+            let that = this
+
+            await TransportNodeHid.open("").then(async newTransport => {
+                
+                console.log(JSON.stringify(newTransport,null,2))
+
+                that.status = 1
+                that.transport = newTransport
+            }).catch(err=>{
+        
+                if(that.transport){
+                    that.transport = null
+                }
+                console.log('设备连接错误，1秒后再次尝试'+err)
+            })  
+        }
+
+        if(this.transport){
+
+            let that = this
+
+            await this.connectIotChainApp().then(appinfo=>{
+                console.log('itc app info->'+JSON.stringify(appinfo,null,2))
+                that.status = 2
+
+            }).catch(err=>{
+                console.log('读取iotcain app信息错误->'+err)
+
+                if(err.toString().indexOf('DisconnectedDevice') != -1){
+
+                    that.transport = null
+                    that.status = 0
+                    console.log('设备连接错误，1秒后再次尝试')
+                }
+                
+                if(err.toString().indexOf('TransportStatusError') != -1){
+                    
+                    that.status = 1
+                    console.log('未打开iotchain应用')
+                }
+            })
+        }
+
+        if(this.originalAddressInfo.length == 0){
+
+            let that = this
+            await this.queryIotChainAddressList(10).then(result=>{
+                
+                console.log('获取地址信息成功->'+result)
+            }).catch(err=>{
+                
+                if(err.toString().indexOf('DisconnectedDevice') != -1){
+
+                    that.transport = null
+                    that.status = 0
+                    console.log('设备连接错误，1秒后再次尝试')
+                }
+                
+                if(err.toString().indexOf('TransportStatusError') != -1){
+                    
+                    that.status = 1
+                    console.log('未打开iotchain应用')
+                }
+            })
+        }
+
+        let watchTime = 1
+        if(this.transport){
+            watchTime = 5
+        }
+
+        //监听Ledger变化
+        setTimeout(()=>{
+            this.connectLedger()
+        }, watchTime * 1000)
+    }
+
+    /**
+     * 查询某个地址信息
+     * @param {*} appEth 
+     * @param {*} pathIdx 地址序号 
+     */
+    queryDestinationAddress(pathIdx){
+
+        if(!this.transport){
+            return Promise.reject('device did not connect') 
+        }
+        const appEth = new AppEth(this.transport);
+        let path = LedgerDevice.getAddressPath(pathIdx)
+
+        return appEth.getAddress(path)
+    }
+
+    /**
+     * 查询iot-chain app信息
+     */
+    async connectIotChainApp(){
+
+        if(!this.transport){
+            return Promise.reject('connect device error')
+        }
+    
+        const appEth = new AppEth(this.transport);
+        return appEth.getAppConfiguration()
+    }
+
+    /**
+     * 查询硬件钱包地址列表
+     * @param {*} amount 数量
+     */
+    async queryIotChainAddressList(amount){
+
+        if(!this.transport){
+            return Promise.reject('device did not connect') 
+        }
+
+        let addressInfos = []
+
+        for (let index = 0; index < amount; index++) {
+                        
+            await this.queryDestinationAddress(index).then(addressInfo=>{
+
+                addressInfos.push({
+                    address:addressInfo.address,
+                    idx:index
+                })
+            }).catch(err=>{
+
+                console.log('path为'+index+'的地址信息查询错误:'+err)
+                return Promise.reject('path为'+index+'的地址信息查询错误:'+err)
+            })
+        }
+
+        this.originalAddressInfo = addressInfos
+        return Promise.resolve(addressInfos)
+    }    
+
+    /**
+     * 发送ITG
+     * @param {*} addressIdx 地址序号
+     * @param {*} t.nonce 
+     * @param {*} t.gasPrice  
+     * @param {*} t.gasLimit  
+     * @param {*} t.to 
+     * @param {*} t.value
+     * @param {*} t.chainId 
+     */
+    async sendITG(addressIdx,t){
+
+        console.log('地址序号为'+addressIdx)
+        console.log('ITG交易内容为'+JSON.stringify(t,null,2))
+
+        let tx = serializeTx(t)
+        return await this.signTransaction(addressIdx,tx).then(vsr=>{
+
+            return {
+                ...t,
+                ...vsr
+            }
+        })
+    }
+
+    /**
+     * 发送ITC
+     * @param {*} addressIdx 地址序号
+     * @param {*} t.nonce 
+     * @param {*} t.gasPrice  
+     * @param {*} t.gasLimit  
+     * @param {*} t.to 
+     * @param {*} t.value
+     * @param {*} t.data
+     * @param {*} t.chainId 
+     */
+    async sendITC(addressIdx,t){
+
+        console.log('地址序号为'+addressIdx)
+        console.log('ITC交易内容为'+JSON.stringify(t,null,2))
+
+        let tx = serializeErc20Tx(t)
+        return await this.signTransaction(addressIdx,tx).then(vsr=>{
+
+            return {
+                ...t,
+                ...vsr
+            }
+        })
+    }
+
+    async signTransaction(addressIdx,tx){
+
+        let path = LedgerDevice.getAddressPath(addressIdx)
+
+        if(!this.transport){
+            return Promise.reject('connect device error')
+        }
+        const appEth = new AppEth(this.transport);
+
+        return appEth.signTransaction(path, tx).then(result => {
+
+            result.v = getRecoveryId(10,parseInt(result.v))
+            return result
+        }).catch(err=>{
+
+            console.log('交易拒绝'+err)
+            return Promise.reject('交易错误，请检查连接或者确认交易'+err)
+        }) 
     }
 }
 
-export default {
-    startConnect,
-    registLedgerStatus,
-    queryIotChainAddressList,
-    sendITG,
-    sendITC,
-    queryCurrentStatus
-}

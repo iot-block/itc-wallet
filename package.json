@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "build": "node .electron-vue/build.js && electron-builder",
+    "build": "node .electron-vue/build.js && electron-builder -mwl",
     "test": "npm run unit && npm run e2e",
     "e2e": "npm run pack && mocha test/e2e",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
@@ -20,7 +20,8 @@
     "unit": "karma start test/unit/karma.conf.js",
     "fixp": "rm -rf node_modules/scrypt",
     "fixadd": "yarn run fixp && yarn",
-    "fixusb": "electron-builder install-app-deps"
+    "fixusb": "electron-builder install-app-deps",
+    "packager": "electron-packager ./ VEA_L --platform=win32 --arch=x64 --electron-version=2.0.0 --overwrite"
   },
   "main": "./dist/electron/main.js",
   "dependencies": {
