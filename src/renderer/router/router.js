@@ -128,6 +128,30 @@ const router = new VueRouter({
               },
               component: ConnectLedger
             },
+            {
+              path: 'ledgerWalletDetail',
+              name: 'ledgerWalletDetail',
+              meta: {
+                name: 'wallet.detail',
+              },
+              component: WalletDetail
+            },
+            {
+              path: 'ledgerTransfer',
+              name: 'ledgerTransfer',
+              meta: {
+                name: 'wallet.transfer',
+              },
+              component: Transfer
+            },
+            {
+              path: 'ledgerReceive',
+              name: 'ledgerReceive',
+              meta: {
+                name: 'wallet.receive',
+              },
+              component: Receive
+            },
           ]
         },
         {

@@ -265,7 +265,7 @@ export default {
       
         let gas = web3util.toHex('42000')
 
-        this.$ledger.sendITG(this.wallet.keystore.id,{
+        this.$ledger.confirmITGTx(this.wallet.keystore.id,{
             nonce: web3util.toHex(nonce),
             gasPrice: web3util.toHex(gasPrice),
             gasLimit: gas,
@@ -291,14 +291,14 @@ export default {
           let gas = web3util.toHex('150000')
           let data = this.$iotchain.transaction.generalITCTransferData(this.receiver,value+'')
 
-          this.$ledger.sendITC(this.wallet.keystore.id,{
+          this.$ledger.confirmITCTx(this.wallet.keystore.id,{
               nonce: web3util.toHex(nonce),
               gasPrice: web3util.toHex(gasPrice),
               gasLimit: gas,
               to: this.$iotchain.transaction.itcContractAddress(),
               value:'0x00',
               data:'0x'+data,
-              chainId:10
+              chainId:'0x0a'
           }).then(result=>{
               console.log('ledger签名的ITC交易：'+JSON.stringify(result,null,2))
               this.signedTx = result
@@ -314,29 +314,13 @@ export default {
       }
       
     },
-    serializeSignedTx(tx){
-
-      return {
-        nonce: web3util.hexToNumberString(tx.nonce),
-        gasPrice: web3util.hexToNumberString(tx.gasPrice),
-        gasLimit: web3util.hexToNumberString(tx.gasLimit),
-        receivingAddress: tx.to,
-        value: web3util.hexToNumberString(tx.value),
-        payload: tx.data?tx.data.substr(2):'',
-        v:tx.v,
-        r:web3util.hexToNumberString('0x'+tx.r),
-        s:web3util.hexToNumberString('0x'+tx.s)
-      }
-    },
+   
     sendSignedTransaction(){
 
         this.isSendTx = true
-
+        
         //发送
-        let serializeTx = this.serializeSignedTx(this.signedTx)
-        console.log(JSON.stringify(serializeTx,null,2))
-
-        this.$iotchain.transaction.sendSignedTransaction(serializeTx).then(response=>{
+        this.$iotchain.transaction.sendSignedTransaction(this.signedTx).then(response=>{
 
           this.isSendTx = false
           this.handleTxResponse(response)

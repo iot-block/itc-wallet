@@ -52,7 +52,7 @@ export default {
   methods:{
     goDetail(){
       this.$router.push({
-        name:'walletDetail',
+        name:this.wallet.keystore.crypto?'walletDetail':'ledgerWalletDetail',
         query:{
           wallet:this.wallet.keystore.crypto ? null :JSON.stringify(this.wallet),
           walletId:this.wallet.keystore.id

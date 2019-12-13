@@ -44,7 +44,7 @@
           <v-spacer />
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
-            <router-link :to="{name:'transfer', query:{
+            <router-link :to="{name:isLederAddress?'ledgerTransfer':'transfer', query:{
                 wallet:isLederAddress?JSON.stringify(wallet):null,
                 walletId:wallet.keystore.id
             }}" class="flex-grow-1 text-center pointer">Transfer</router-link>
@@ -173,7 +173,7 @@ export default {
   methods: {
     goReceive(){
       this.$router.push({
-        name: 'receive',
+        name:this.isLederAddress?'ledgerReceive':'receive',
         query: {address:this.address}
       })
     },

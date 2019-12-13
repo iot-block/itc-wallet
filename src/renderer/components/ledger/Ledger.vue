@@ -1,15 +1,7 @@
 <template>
   <v-container class="container" row wrap  align-center justify-center  :style="'height:'+fullHeight+'px;'" >
      <v-container v-if="accounts && accounts.length>0" align-center justify-center style="width:200px;height:80px;">
-      <v-select
-            v-model="ledgerselect"
-            :items="ledgers"
-            append-outer-icon="style"
-            menu-props="auto"
-            hide-details
-            label="Select"
-            single-line
-      ></v-select>
+      <span>{{ledgerName}}</span>
     </v-container> 
     <v-container id="inspire">
       <v-row justify="start">
@@ -60,8 +52,8 @@
 
 import WalletCard from '../WalletCard'
 import storage from '../../../common/storage'
-import DataManager from '../../util/manager'
-import eventBus, {RELOAD_LEADER_WALLET_LIST}  from '../../util/eventbus'
+
+// import eventBus, {RELOAD_LEADER_WALLET_LIST}  from '../../util/eventbus'
 
 export default {
     components:{
@@ -72,8 +64,6 @@ export default {
         fullHeight: document.documentElement.clientHeight,
         accounts:[],
         ledgerName:'',
-        ledgerselect: '',
-        ledgers: [],
       }
     },
     watch: {
@@ -114,24 +104,17 @@ export default {
         },
         refreshLedgerList(){
 
-          let manager = DataManager.defaultManager()
+          let status = this.$ledger.queryLedgerStatus()
 
-          this.ledgers = manager.getTotalLedgerDeviceName()          
-          let selDevice = manager.getCurrentSelectLedger()
-
-          if(!selDevice){
+          if(status != 4){
+            console.log('设备状态不正确，需要连接')
             return
           }
+          
+          let {deviceName, wallets} = this.$ledger.queryLedgerInfo()
 
-          this.ledgerselect = selDevice.name
-          let info = this.$storage.getLedgerWallet(selDevice.sign)
-          console.log('本地存储硬件钱包信息为：'+JSON.stringify(info,null,2))
-          //
-          if(Object.keys(info).length>0){
-            this.ledgerName = info.name
-            this.accounts = info.wallets
-          }
-
+          this.ledgerName = deviceName
+          this.accounts = wallets
         },
         getPath(){
           console.log('路由变化'+this.$route.path);
