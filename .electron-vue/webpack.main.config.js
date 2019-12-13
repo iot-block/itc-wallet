@@ -25,7 +25,13 @@ let mainConfig = {
       {
         test: /\.node$/,
         use: 'node-loader'
-      }
+      },
+      {
+        test: /\.(woff|woff2|otf)$/,
+        use: {
+          loader: 'url-loader',
+        },
+      },
     ]
   },
   node: {

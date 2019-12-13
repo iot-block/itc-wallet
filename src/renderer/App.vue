@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style>
-  /* CSS */
+.v-application{
+  font-family: 'SourceHanSans'!important;
+}
 </style>

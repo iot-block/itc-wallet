@@ -1,3 +1,7 @@
+@font-face{
+  font-family: 'SourceHanSans';
+  src: url('./SOURCEHANSANSCN-REGULAR.otf');
+}
 .pointer{
   cursor: pointer;
 }
