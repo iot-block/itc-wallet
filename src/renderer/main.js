@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import './assets/common.css'
 import VueI18n from 'vue-i18n'
 import vuetify from './plugins/vuetify'
 import router from './router/router'
@@ -7,6 +6,7 @@ import App from './App'
 import storage from '../common/storage'
 import plugins from './plugins'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import './assets/common.css'
 
 Vue.config.productionTip = false
 Vue.component(VueQrcode.name, VueQrcode);

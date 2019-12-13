@@ -11,7 +11,4 @@ export default {
 </script>
 
 <style>
-.v-application{
-  font-family: 'SourceHanSans'!important;
-}
 </style>

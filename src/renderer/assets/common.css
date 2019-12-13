@@ -2,6 +2,16 @@
   font-family: 'SourceHanSans';
   src: url('./SOURCEHANSANSCN-REGULAR.otf');
 }
+.v-application,
+.v-application .title,
+.v-application .headline,
+.v-application .subtitle-1,
+.v-application .subtitle-2,
+.v-application .body-1,
+.v-application .body-2,
+.v-application .caption{
+  font-family: 'SourceHanSans'!important;
+}
 .pointer{
   cursor: pointer;
 }
