@@ -1,27 +1,27 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card :elevation="hover ? 12 : 2" @click="goDetail">
+    <v-card elevation="2" @click="goDetail">
       <v-responsive :aspect-ratio="16/9" class="">
         <div style="width:100%;height:100%" class="d-flex flex-column">
           <div class="d-flex flex-row align-center">
-            <v-card-subtitle class="flex-grow-1 font-weight-bold black--text text-truncate">
+            <v-card-subtitle class="flex-grow-1 font-weight-bold link-text text-truncate">
               {{wallet.name}}
             </v-card-subtitle>
-            <v-icon class="mr-1">chevron_right</v-icon>
+            <v-icon class="mr-1 link-text">chevron_right</v-icon>
           </div>
-          <div class="px-4 pr-2 grey--text d-flex flex-row">
+          <div class="px-4 pr-2 content-color d-flex flex-row">
             <span class="flex-grow-1 text-truncate">{{wallet.keystore.address | hash}}</span>
             <v-icon class="mr-1" small @click.stop="copyAddress">content_copy</v-icon>
           </div>
           <v-spacer />
-          <v-divider class="mx-4"/>
+          <!-- <v-divider class="mx-4"/> -->
           <v-row class="flex-grow-0 d-flex flex-row px-4 py-2 black--text mx-0">
-            <v-col cols="6" class="pa-0 text-center border-right">
-              <span>{{itc | unit(2)}} ITC</span>
+            <v-col cols="6" class="pa-0  ">
+              <span class="link-text">{{itc | unit(2)}}</span><span class="content-color"> ITC</span>
             </v-col>
             <!-- <v-divider vertical/> -->
-            <v-col cols="6" class="pa-0 text-center">
-              <span>{{itg | unit(2)}} ITG</span>
+            <v-col cols="6" class="pa-0 ">
+              <span class="link-text">{{itg | unit(2)}}</span><span class="content-color"> ITG</span>
             </v-col>
           </v-row>
         </div>

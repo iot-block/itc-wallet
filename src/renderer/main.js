@@ -6,7 +6,7 @@ import App from './App'
 import storage from '../common/storage'
 import plugins from './plugins'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
-import './assets/common.css'
+import './assets/common.scss'
 
 Vue.config.productionTip = false
 Vue.component(VueQrcode.name, VueQrcode);

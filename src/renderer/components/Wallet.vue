@@ -17,8 +17,8 @@
               </v-expand-x-transition>
               <v-expand-x-transition v-else>
                 <div class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;position:absolute;top:0;left:0;">
-                  <v-btn outlined dense color="primary" width="150" style="text-decoration:none;" :to="{name:'importWallet'}">Import</v-btn>
-                  <v-btn outlined dense color="primary" width="150" class="mt-2" style="text-decoration:none;" :to="{name:'createWallet'}">Create New</v-btn>
+                  <v-btn outlined dense width="150" class="border-dash link-text" style="text-decoration:none;" :to="{name:'importWallet'}">Import</v-btn>
+                  <v-btn outlined dense width="150" class="mt-2 border-dash link-text" style="text-decoration:none;" :to="{name:'createWallet'}">Create New</v-btn>
                 </div>
               </v-expand-x-transition>
             </v-responsive>
