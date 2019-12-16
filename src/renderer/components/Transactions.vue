@@ -17,7 +17,7 @@
         <v-col cols="3" class="py-0">
           <span>From</span>
         </v-col>
-        <v-col cols="2" class="py-0">
+        <v-col cols="3" class="py-0">
           <span>To</span>
         </v-col>
         <v-col cols="1" class="py-0 text-right">
@@ -32,7 +32,7 @@
         :class="index%2==1?'grey lighten-3 grey--text text--darken-2':''"
         dense>
         <v-col cols="3" class="py-0 text-truncate link-text pointer">
-          <router-link :to="{name:'transation'}">
+          <router-link :to="{name:'transation',query:{hash:tx.hash}}">
             {{tx.hash | hash}}
           </router-link>
         </v-col>
@@ -65,34 +65,6 @@ export default {
   props: ['address'],
   data(){
     return {
-      headers:[
-        {
-          text: 'TxHash',
-          align: 'left',
-          sortable: false,
-          value: 'txhash',
-        },
-        {
-          text: 'From',
-          align: 'left',
-          sortable: false,
-        },
-        {
-          text: 'To',
-          align: 'left',
-          sortable: false,
-        },
-        {
-          text: 'Value',
-          align: 'left',
-          sortable: false,
-        },
-        {
-          text: 'Age',
-          align: 'left',
-          sortable: false,
-        },
-      ],
       page: 1,
       pageSize: 10,
       pageTotal: 1,

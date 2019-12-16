@@ -8,7 +8,7 @@
             TxHash
           </v-col>
           <v-col cols="10" class="content-color">
-            {{tx.txhash | hash}}
+            {{transaction.trx.hash | hash}}
           </v-col>
         </v-row>
         <v-divider />
@@ -17,7 +17,7 @@
             Status
           </v-col>
           <v-col cols="10" class="content-color">
-            Success
+            {{transaction.trx.status==1?'success':'fail'}}
           </v-col>
         </v-row>
         <v-divider />
@@ -26,7 +26,7 @@
             BlockHeight
           </v-col>
           <v-col cols="10" class="content-color">
-            1069866
+            {{transaction.trx.blockNumber}}
           </v-col>
         </v-row>
         <v-divider />
@@ -35,7 +35,7 @@
             TimeStamp
           </v-col>
           <v-col cols="10" class="content-color">
-            2019-12-16 09:51:00
+            {{transaction.trx.unixTimestamp | datetime}}
           </v-col>
         </v-row>
         <v-divider />
@@ -44,7 +44,7 @@
             From
           </v-col>
           <v-col cols="10" class="content-color">
-            {{tx.txhash | hash}}
+            {{transaction.trx.senderAddress | hash}}
           </v-col>
         </v-row>
         <v-divider />
@@ -53,7 +53,7 @@
             To
           </v-col>
           <v-col cols="10" class="content-color">
-            {{tx.txhash | hash}}
+            {{transaction.trx.receivingAddress | hash}}
           </v-col>
         </v-row>
         <v-divider />
@@ -74,8 +74,26 @@
 export default {
   data(){
     return {
-      tx: {
-        txhash: '0x91b7af42b66f10f5c813bc80cb961c2686e62f042a18c0c7df3103a47c231827'
+      txhash: '',
+      loading: false,
+      transaction: {
+        trx: {}
+      }
+    }
+  },
+  mounted(){
+    this.txhash = this.$route.query.hash
+    this.loadData()
+  },
+  methods:{
+    loadData(){
+      if(this.txhash){
+        this.loading = true
+        this.$explorer.txInfo(this.txhash)
+          .then(response => {
+            this.transaction = response.data
+            this.isLoading = false
+          });
       }
     }
   }
