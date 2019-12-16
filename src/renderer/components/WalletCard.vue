@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card elevation="2" @click="goDetail">
+    <v-card elevation="2" @click="goDetail" class="pa-5">
       <v-responsive :aspect-ratio="16/9" class="">
         <div style="width:100%;height:100%" class="d-flex flex-column">
           <div class="d-flex flex-row align-center">
@@ -15,7 +15,7 @@
           </div>
           <v-spacer />
           <!-- <v-divider class="mx-4"/> -->
-          <v-row class="flex-grow-0 d-flex flex-row px-4 py-2 black--text mx-0">
+          <v-row class="flex-grow-0 d-flex flex-row px-4 py-2 black--text mx-0 mb-3">
             <v-col cols="6" class="pa-0  ">
               <span class="link-text">{{itc | unit(2)}}</span><span class="content-color"> ITC</span>
             </v-col>

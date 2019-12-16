@@ -4,11 +4,11 @@
       <v-col
         cols="12"
         sm="6"
-        md="4"
-        lg="4"
-        xl="3">
+        md="6"
+        lg="6"
+        xl="4">
         <v-hover v-slot:default="{ hover }">
-          <v-card :elevation="2">
+          <v-card :elevation="2" class="pa-5">
             <v-responsive :aspect-ratio="16/9">
               <v-expand-x-transition v-if="!hover">
                 <div class="d-flex justify-center align-center flex-column" style="width:100%;height:100%;position:absolute;top:0;left:0;">
@@ -31,9 +31,9 @@
           :key="index"
           cols="12"
           sm="6"
-          md="4"
-          lg="4"
-          xl="3">
+          md="6"
+          lg="6"
+          xl="4">
           <WalletCard :wallet="account"/>
         </v-col>
       </template>
