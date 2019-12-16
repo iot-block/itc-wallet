@@ -6,7 +6,8 @@
     "detail": "详情",
     "transfer": "转账",
     "receive": "收款",
-    "changepswd": "修改密码"
+    "changepswd": "修改密码",
+    "transation": "交易"
   },
   "setting": {
     "title": "设置",

@@ -10,38 +10,47 @@
       <span class="subtitle-2 font-weight-bold grey--text text--darken-1">no data</span>
     </div>
     <template v-else>
-      <div class="d-flex flex-column" v-for="(tx,index) in txs" :key="index">
-        <v-row class="pa-2 my-2 grey lighten-3 grey--text text--darken-2" dense>
-          <v-col cols="2" class="py-0">
-            <span>txhash</span>
-          </v-col>
-          <v-col cols="10" class="py-0 text-right">
-            <span class="text-truncate">{{tx.hash | hash}}</span>
-          </v-col>
-
-          <v-col cols="2" class="py-0">
-            <span>{{tx.senderAddress===address?'to':'from'}}</span>
-          </v-col>
-          <v-col cols="10" class="py-0 text-right">
-            <span class="text-truncate">{{tx.senderAddress===address?tx.receivingAddress:tx.senderAddress}}</span>
-          </v-col>
-
-          <v-col cols="2" class="py-0">
-            <span>value</span>
-          </v-col>
-          <v-col cols="10" class="py-0 text-right">
-            <span class="text-truncate">{{tx.senderAddress===address?'-':'+'}}{{tx.value | unit(3)}} ITC</span>
-          </v-col>
-
-          <v-col cols="2" class="py-0">
-            <span>time</span>
-          </v-col>
-          <v-col cols="10" class="py-0 text-right">
-            <span class="text-truncate">{{tx.unixTimestamp | datetime}}</span>
-          </v-col>
-        </v-row>
-      </div>
+      <v-row class="pa-2 mt-2 white--text" style="background:#3896ff;" dense>
+        <v-col cols="3" class="py-0">
+          <span>TxHash</span>
+        </v-col>
+        <v-col cols="3" class="py-0">
+          <span>From</span>
+        </v-col>
+        <v-col cols="2" class="py-0">
+          <span>To</span>
+        </v-col>
+        <v-col cols="1" class="py-0 text-right">
+          <span>Value</span>
+        </v-col>
+        <v-col cols="2" class="py-0 text-right">
+          <span>Time</span>
+        </v-col>
+      </v-row>
+      <v-row v-for="(tx,index) in txs" :key="index" 
+        class="pa-2 " 
+        :class="index%2==1?'grey lighten-3 grey--text text--darken-2':''"
+        dense>
+        <v-col cols="3" class="py-0 text-truncate link-text pointer">
+          <router-link :to="{name:'transation'}">
+            {{tx.hash | hash}}
+          </router-link>
+        </v-col>
+        <v-col cols="3" class="py-0 text-truncate">
+          {{tx.senderAddress | hash}}
+        </v-col>
+        <v-col class="py-0 text-truncate">
+          {{tx.receivingAddress | hash}}
+        </v-col>
+        <v-col cols="1" class="py-0 text-truncate text-right">
+          {{tx.value | unit(2)}}
+        </v-col>
+        <v-col cols="2" class="py-0 text-truncate text-right" style="width:">
+          {{tx.unixTimestamp | datetime}}
+        </v-col>
+      </v-row>
       <v-pagination
+        class="mt-3"
         v-model="page"
         total-visible="6"
         :length="pageTotal">
@@ -56,6 +65,34 @@ export default {
   props: ['address'],
   data(){
     return {
+      headers:[
+        {
+          text: 'TxHash',
+          align: 'left',
+          sortable: false,
+          value: 'txhash',
+        },
+        {
+          text: 'From',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'To',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'Value',
+          align: 'left',
+          sortable: false,
+        },
+        {
+          text: 'Age',
+          align: 'left',
+          sortable: false,
+        },
+      ],
       page: 1,
       pageSize: 10,
       pageTotal: 1,

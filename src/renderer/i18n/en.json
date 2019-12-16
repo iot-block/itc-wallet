@@ -6,7 +6,8 @@
     "detail": "Detail",
     "transfer": "Transfer",
     "receive": "Receive",
-    "changepswd": "Password"
+    "changepswd": "Password",
+    "transation": "Transation"
   },
   "setting": {
     "title": "Setting",

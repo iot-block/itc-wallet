@@ -11,6 +11,7 @@ import Transfer from '../components/Transfer'
 import Receive from '../components/Receive'
 import AppFrame from '../components/common/AppFrame'
 import ChangePassword from '../components/ChangePassword'
+import TransactionDetail from '../components/TransactionDetail'
 
 //ledger
 import Ledger from '../components/Ledger/Ledger'
@@ -76,6 +77,14 @@ const router = new VueRouter({
                 name: 'wallet.detail',
               },
               component: WalletDetail
+            },
+            {
+              path: 'transation',
+              name: 'transation',
+              meta: {
+                name: 'wallet.transation',
+              },
+              component: TransactionDetail
             },
             {
               path: 'transfer',
