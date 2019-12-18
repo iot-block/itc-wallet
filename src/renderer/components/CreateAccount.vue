@@ -2,13 +2,13 @@
   <v-container>
     <v-stepper v-model="step">
       <v-stepper-header>
-        <v-stepper-step :complete="step > 1" step="1">创建钱包</v-stepper-step>
-        <v-divider ></v-divider>
-        <v-stepper-step :complete="step > 2" step="2">备份助记词</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :complete="step > 3" step="3">确认助记词</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step :complete="step ==4" step="4">完成</v-stepper-step>
+        <v-stepper-step :complete="step > 1" step="1" :color="(step > 1)?'green':'blue'"><span :class="(step >= 1)?'blue--text':''">创建钱包</span></v-stepper-step>
+        <v-divider :class="(step > 1)?'blue':''" ></v-divider>
+        <v-stepper-step :complete="step > 2" step="2" :color="(step > 2)?'green':'blue'"><span :class="(step >= 2)?'blue--text':''">备份助记词</span></v-stepper-step>
+       <v-divider :class="(step > 2)?'blue':''" ></v-divider>
+        <v-stepper-step :complete="step > 3" step="3" :color="(step > 3)?'green':'blue'"><span :class="(step >= 3)?'blue--text':''">确认助记词</span></v-stepper-step>
+      <v-divider :class="(step > 3)?'blue':''" ></v-divider>
+        <v-stepper-step :complete="step ==4" step="4" :color="(step ==4 )?'green':'blue'"><span :class="(step >= 4)?'blue--text':''">完成</span></v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -70,7 +70,7 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <span class="warning--text">
+          <span class="blue--text">
             Mnemonic words are very important to restore your wallet. Please back it up carefully and keep it in a safe place.
           </span>
           <v-card 
@@ -91,11 +91,13 @@
           
           <div>
             <v-btn
-              dark
-              icon
-              color="orange darken-2"
+              replace
+              depressed
+              outlined
+              light
+              color="blue darken-3"
               @click="step = 1">
-              <v-icon>mdi-arrow-left</v-icon>
+             取消
             </v-btn>
             <v-btn
               class="ml-4"
@@ -108,7 +110,7 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <span class="warning--text">
+         <span class="blue--text">
             To ensure that mnemonic words are backed up correctly, please arrange the following mnemonic words in order.
           </span>
           <v-card 
@@ -124,15 +126,15 @@
                 class="text-center"
                 :class="[index%4!=3?'border-right':'',index/4<2?'border-bottom':'']"
                 cols="3">
-                <span class="body-2">{{word?word:'&nbsp;'}}</span>
+                <span class="body-2 blue--text">{{word?word:'&nbsp;'}}</span>
               </v-col>
             </v-row>
           </v-card>
           <v-container class="mb-5">
             <v-chip 
               style="cursor:pointer;"
-              text-color="white" 
-              color="green" 
+              text-color="grey" 
+              color="grey lighten-3" 
               v-for="(word,index) in unselectedWords" 
               @click="selectWord(word,index)"
               :key="index" 
@@ -143,11 +145,13 @@
           
           <div>
             <v-btn
-              dark
-              icon
-              color="orange darken-2"
+              replace
+              depressed
+              outlined
+              light
+              color="blue darken-3"
               @click="step = 2">
-              <v-icon>mdi-arrow-left</v-icon>
+             取消
             </v-btn>
             <v-btn
               class="ml-4"
