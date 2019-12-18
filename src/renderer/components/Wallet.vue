@@ -1,7 +1,20 @@
 <template>
   <v-container>
     <v-row justify="start">
-      <v-col
+    
+      <template v-if="accounts && accounts.length>0">
+        <v-col
+          v-for="(account,index) in accounts"
+          :key="index"
+          cols="12"
+          sm="6"
+          md="6"
+          lg="6"
+          xl="4">
+          <WalletCard :wallet="account"/>
+        </v-col>
+      </template>
+        <v-col
         cols="12"
         sm="6"
         md="6"
@@ -25,18 +38,6 @@
           </v-card>
         </v-hover>
       </v-col>
-      <template v-if="accounts && accounts.length>0">
-        <v-col
-          v-for="(account,index) in accounts"
-          :key="index"
-          cols="12"
-          sm="6"
-          md="6"
-          lg="6"
-          xl="4">
-          <WalletCard :wallet="account"/>
-        </v-col>
-      </template>
     </v-row>
   </v-container>
 </template>

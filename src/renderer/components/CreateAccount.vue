@@ -3,7 +3,7 @@
     <v-stepper v-model="step">
       <v-stepper-header>
         <v-stepper-step :complete="step > 1" step="1">创建钱包</v-stepper-step>
-        <v-divider></v-divider>
+        <v-divider ></v-divider>
         <v-stepper-step :complete="step > 2" step="2">备份助记词</v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step :complete="step > 3" step="3">确认助记词</v-stepper-step>
@@ -46,13 +46,15 @@
             dense
             required>
           </v-text-field>
+          
           <div class="mt-3">
             <v-btn
-              :to="{name:'wallet'}"
+              to="{name:'wallet'}"
               replace
-              text
               depressed
-              color="success">
+              outlined
+              light
+              color="blue darken-3">
               取消
             </v-btn>
             <v-btn

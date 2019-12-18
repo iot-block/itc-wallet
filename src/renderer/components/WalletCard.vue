@@ -11,7 +11,7 @@
           </div>
           <div class="px-4 pr-2 content-color d-flex flex-row">
             <span class="flex-grow-1 text-truncate">{{wallet.keystore.address | hash}}</span>
-            <v-icon class="mr-1" small @click.stop="copyAddress">content_copy</v-icon>
+            <v-icon class="mr-1" small @click.stop="copyAddress" color="#64a6ff">content_copy</v-icon>
           </div>
           <v-spacer />
           <!-- <v-divider class="mx-4"/> -->
