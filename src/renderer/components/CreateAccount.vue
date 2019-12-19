@@ -238,10 +238,9 @@ export default {
   },
   mounted(){
     const mnemonics = this.$iotchain.bip39.generateMnemonic().split(' ')
-    console.log(mnemonics.join(" "))
     this.mnemonics = [...mnemonics]
-    this.unselectedWords = [...mnemonics]
-    // this.unselectedWords = shuffle([...mnemonics])
+    // this.unselectedWords = [...mnemonics]
+    this.unselectedWords = shuffle([...mnemonics])
   },
   methods:{
     selectWord(word,index){
