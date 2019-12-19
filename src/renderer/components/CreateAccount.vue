@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-stepper v-model="step">
-      <v-stepper-header>
+    <v-stepper v-model="step" class="elevation-0" style="background:#f9f9f9;">
+      <v-stepper-header class="elevation-0" style="background:#ffffff;">
         <v-stepper-step :complete="step > 1" step="1" :color="(step > 1)?'green':'blue'"><span :class="(step >= 1)?'blue--text':''">创建钱包</span></v-stepper-step>
         <v-divider :class="(step > 1)?'blue':''" ></v-divider>
         <v-stepper-step :complete="step > 2" step="2" :color="(step > 2)?'green':'blue'"><span :class="(step >= 2)?'blue--text':''">备份助记词</span></v-stepper-step>
@@ -10,7 +10,7 @@
       <v-divider :class="(step > 3)?'blue':''" ></v-divider>
         <v-stepper-step :complete="step ==4" step="4" :color="(step ==4 )?'green':'blue'"><span :class="(step >= 4)?'blue--text':''">完成</span></v-stepper-step>
       </v-stepper-header>
-      <v-stepper-items>
+      <v-stepper-items style="border-radius:5px;background:#ffffff" class="mt-5" >
         <v-stepper-content step="1">
           <v-text-field
             v-model="walletName"
@@ -165,22 +165,23 @@
         </v-stepper-content>
 
         <v-stepper-content step="4">
-          <v-row justify="center">
+          <v-row justify="center" >
             <v-col
               cols="12"
               sm="11"
               md="8"
               lg="7"
               xl="6">
-              <v-card color="#f2f2f2" elevation="0" class="pa-3 d-flex justify-center align-center">
-                <v-icon large class="">account_balance_wallet</v-icon>
+              <v-card color="#3c8cff" elevation="0" class="pa-3 d-flex justify-center align-center">
+                <v-icon large class="" color="white">account_balance_wallet</v-icon>
                 <div class="pa-0 ml-3 flex-grow-1" style="width:0!important;">
-                  <div class="subtitle-1 font-weight-bold">ITC Wallet</div>
-                  <div class="text-truncate">{{this.address}}</div>
+                  <div class="subtitle-1 font-weight-bold white--text">Wallet</div>
+                  <div class="text-truncate white--text">{{this.address}}</div>
                 </div>
               </v-card>
-              <div class="title font-weight-bold text-center mt-4">Your new wallet is ready</div>
-              <v-btn color="primary" depressed class="mx-auto d-block mt-2" @click="$router.go(-1)">Done</v-btn>
+              <v-btn  depressed class="mx-auto d-block mt-4 " color="white"><v-icon color="green" class="bule">check</v-icon></v-btn>
+              <div class=" text-center mt-2 blue--text">Your new wallet is ready</div>
+              <v-btn color="blue" depressed class="mx-auto d-block mt-2 white--text" @click="$router.go(-1)">Done</v-btn>
             </v-col>
             
           </v-row>

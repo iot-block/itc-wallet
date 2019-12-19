@@ -1,26 +1,32 @@
-<template>
-  <v-container>
-    <v-stepper v-model="step">
-      <v-stepper-header>
-        <v-stepper-step :complete="step > 1" step="1">Transfer</v-stepper-step>
-        <v-divider></v-divider>
+<template >
+  <v-container >
+    <v-stepper v-model="step" class="elevation-0" style="background:#f9f9f9;">
+      <v-stepper-header class="elevation-0" style="background:#ffffff;">
+        <v-stepper-step :complete="step > 1" step="1"><span :class="(step >= 1)?'blue--text':''">创建钱包</span></v-stepper-step>
+       <v-divider :class="(step > 1)?'blue':''" ></v-divider>
         <v-stepper-step :complete="step > 2" step="2">Confirm</v-stepper-step>
-        <v-divider></v-divider>
+       <v-divider :class="(step > 2)?'blue':''" ></v-divider>
         <v-stepper-step :complete="step == 3" step="3">Finish</v-stepper-step>
       </v-stepper-header>
-      <v-stepper-items>
-        <v-stepper-content step="1">
-          <v-card-title class="px-0 pt-0 black--text font-weight-bold">Trasfer [{{sender | hash}}]</v-card-title>
+    
+      <v-stepper-items style="border-radius:5px" class="mt-5">
+        <v-stepper-content step="1" class="px-0 py-0 ">
+        
+          <v-card-title class="blue--text font-weight-bold pl-10" style="background:#e4f0ff;">Trasfer [{{sender | hash}}]</v-card-title>
+          <v-card color="px-5 py-5">
+          <div></div>
+            
           <v-text-field
             v-model="receiver"
-            label="receiver address"
+            label="Receiver Address"
             rounded
             outlined
             :error="error1"
             :error-messages="errorMessage1"
             filled
             dense
-            required>
+            required
+            class="mt-5">
           </v-text-field>
           <v-radio-group class="mt-0" v-model="transferType" mandatory row hide-details>
             <v-radio
@@ -56,21 +62,23 @@
             thumb-label="always"
             min="1"
             max="100"
-            v-model="gasPrice"
-            label="Gas price">
+            track-color="grey lighten-2"
+            v-model="gasPrice">
             <template v-slot:thumb-label="props">
               <span>{{props.value>66?'高':props.value>33?'中':'低'}}</span>
             </template>
-            <template v-slot:append>
+            <template v-slot:prepend>
               <v-text-field
                 v-model="gasPrice"
                 class="mt-0 pt-0 align-center"
-                append-icon="mdi-bitcoin"
                 hide-details
-                single-line
-                outlined
-                dense
                 type="number"
+                rounded
+                outlined
+                filled
+                dense
+                required
+                label="Gas price"
                 style="width: 100px">
               </v-text-field>
             </template>
@@ -85,6 +93,7 @@
               Next
             </v-btn>
           </div>
+          </v-card>
         </v-stepper-content>
         <v-stepper-content step="2">
           <v-row>
@@ -131,13 +140,17 @@
             required>
           </v-text-field>
           <div class="mt-3">
-            <v-btn
-              dark
-              icon
-              color="orange darken-2"
-              @click="step = 1">
-              <v-icon>mdi-arrow-left</v-icon>
+              <v-btn
+              @click="step = 1"
+              replace
+              depressed
+              outlined
+              light
+              color="blue darken-3">
+              取消
             </v-btn>
+
+      
             <v-btn
               v-if="!isLedgerAddress"
               class="ml-4"

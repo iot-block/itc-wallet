@@ -6,10 +6,10 @@
       indeterminate>
     </v-progress-linear>
     <div v-if="nodata" class="d-flex flex-column justify-center align-center">
-      <v-icon size="80">mdi-emoticon-frown-outline</v-icon>
+      <v-icon size="80" color="blue">mdi-emoticon-frown-outline</v-icon>
       <span class="subtitle-2 font-weight-bold grey--text text--darken-1">no data</span>
     </div>
-    <template v-else>
+    <template >
       <v-row class="pa-2 mt-2 white--text" style="background:#3896ff;" dense>
         <v-col cols="3" class="py-0">
           <span>TxHash</span>

@@ -11,17 +11,21 @@
           <v-card-title class="black--text font-weight-bold">{{wallet.name}}</v-card-title>
           <div class="px-4 pb-4 pr-2 grey--text d-flex flex-row">
             <span class="flex-grow-1 text-truncate">{{this.address | hash}}</span>
-            <v-icon class="mr-2 pointer" small @click="goReceive">mdi-qrcode</v-icon>
-            <v-icon class="mr-1 pointer" small @click="copyAddress">content_copy</v-icon>
+            <v-icon class="mr-2 pointer" small @click="goReceive" color="blue">mdi-qrcode</v-icon>
+            <v-icon class="mr-1 pointer" small @click="copyAddress" color="blue">content_copy</v-icon>
           </div>
           <v-spacer />
-          <v-divider class="mx-4"/>
+         
           <div v-if="!isLederAddress" class=" d-flex flex-row px-4 py-2 black--text">
-            <span class="flex-grow-1 text-center pointer link-text" @click="openKeystore">Keystore</span>
-            <v-divider vertical/>
-            <span class="flex-grow-1 text-center pointer link-text" @click="changePassword">Change password</span>
-            <v-divider vertical/>
-            <span class="flex-grow-1 text-center pointer link-text" @click="deleteWallet">Delete</span>
+            <v-btn class="flex-grow-1 justify-center align-center d-flex mr-5" color="#e4f0ff" elevation="0" @click="openKeystore">
+                <span  class=" text-center pointer link-text"> Keystore</span>
+            </v-btn>  
+            <v-btn class="flex-grow-1 justify-center align-center d-flex mr-5" color="#e4f0ff" elevation="0" @click="changePassword">
+                <span  class=" text-center pointer link-text"> Change password</span>
+            </v-btn>  
+            <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="deleteWallet">
+                <span  class=" text-center pointer link-text">Delete</span>
+            </v-btn>  
           </div>
         </v-card>
       </v-col>
@@ -35,23 +39,25 @@
           <div class="pa-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Balance</div>
           <div class="px-4 d-flex flex-row grey--text">
             <span class="pr-4">ITC</span>
-            <span class="flex-grow-1 text-right">{{itc | unit(4)}}</span>
+            <span class="flex-grow-1 text-right blue--text">{{itc | unit(4)}}</span>
           </div>
           <div class="px-4 d-flex flex-row grey--text">
             <span class="pr-4">ITG</span>
-            <span class="flex-grow-1 text-right">{{itg | unit(4)}}</span>
+            <span class="flex-grow-1 text-right blue--text">{{itg | unit(4)}}</span>
           </div>
           <v-spacer />
           <v-divider class="mx-4 mt-4"/>
           <div class="py-2 px-4 d-flex flex-row black--text">
-            <router-link :to="{name:isLederAddress?'ledgerTransfer':'transfer', query:{
+
+            <v-btn class="flex-grow-1 justify-center align-center d-flex mr-2" color="#e4f0ff" elevation="0" :to="{name:isLederAddress?'ledgerTransfer':'transfer', query:{
                 wallet:isLederAddress?JSON.stringify(wallet):null,
                 walletId:wallet.keystore.id
-            }}" class="flex-grow-1 text-center pointer">Transfer</router-link>
-            <v-divider vertical/>
-            <span @click="goReceive" class="flex-grow-1 text-center pointer link-text">
-              Receive
-            </span>
+            }}">
+                <span  class=" text-center pointer link-text"> Transfer</span>
+            </v-btn>    
+            <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="goReceive">
+                <span  class=" text-center pointer link-text"> Receive</span>
+            </v-btn>    
           </div>
         </v-card>
       </v-col>
