@@ -31,7 +31,7 @@ export default {
                         timeout: 3 * 1000,
                     })
                 }
-            },5 * 1000)
+            },1 * 1000)
             // console.log('建立监听'+this.listenLedger)
         }
     },
