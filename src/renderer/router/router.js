@@ -154,6 +154,14 @@ const router = new VueRouter({
               component: Transfer
             },
             {
+              path: 'ledgerTxDetail',
+              name: 'ledgerTxDetail',
+              meta: {
+                name: 'wallet.detail',
+              },
+              component: TransactionDetail
+            },
+            {
               path: 'ledgerReceive',
               name: 'ledgerReceive',
               meta: {

@@ -52,10 +52,11 @@
 
 import WalletCard from '../WalletCard'
 import storage from '../../../common/storage'
-
+import Base from './Base'
 // import eventBus, {RELOAD_LEADER_WALLET_LIST}  from '../../util/eventbus'
 
 export default {
+    extends:Base,
     components:{
       WalletCard
     },
@@ -78,7 +79,7 @@ export default {
             }
         },
         '$route': function (to, from) {
-　　　　    console.log('路由跳转'+to+from)
+// 　　　　    console.log('路由跳转'+to+from)
     　　}
     },
     mounted () {
@@ -107,7 +108,7 @@ export default {
           let status = this.$ledger.queryLedgerStatus()
 
           if(status != 4){
-            console.log('设备状态不正确，需要连接')
+            // console.log('设备状态不正确，需要连接')
             return
           }
           
@@ -117,7 +118,7 @@ export default {
           this.accounts = wallets
         },
         getPath(){
-          console.log('路由变化'+this.$route.path);
+          // console.log('路由变化'+this.$route.path);
         },
     }
 }

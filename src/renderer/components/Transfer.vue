@@ -204,8 +204,10 @@
 
 var web3account = require('web3-eth-accounts')
 import web3util from 'web3-utils'
+import Base from './ledger/Base'
 
 export default {
+  extends:Base,
   data(){
     return {
       sender: '',
@@ -278,7 +280,7 @@ export default {
       let gasPrice = this.$iotchain.util.toWei(this.gasPrice,'szabo')
       let value = this.$iotchain.util.toWei(this.amount,'ether')
 
-      console.log('基本交易参数,nonce：'+nonce+' gasPrice:'+gasPrice+' value:'+value)
+      // console.log('基本交易参数,nonce：'+nonce+' gasPrice:'+gasPrice+' value:'+value)
 
       if(this.transferType == 'itg'){
       
@@ -293,11 +295,11 @@ export default {
             chainId:'0x0a'
         }).then(result=>{
 
-            console.log('ledger签名的ITG交易：'+JSON.stringify(result,null,2))
+            // console.log('ledger签名的ITG交易：'+JSON.stringify(result,null,2))
             this.signedTx = result
         }).catch(err=>{
 
-          console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
+          // console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
 
            this.$alert.show({
                 message: '交易确认失败，请重新尝试.'+err,
@@ -319,11 +321,11 @@ export default {
               data:'0x'+data,
               chainId:'0x0a'
           }).then(result=>{
-              console.log('ledger签名的ITC交易：'+JSON.stringify(result,null,2))
+              // console.log('ledger签名的ITC交易：'+JSON.stringify(result,null,2))
               this.signedTx = result
           }).catch(err=>{
 
-            console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
+            // console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
 
             this.$alert.show({
                 message: '交易确认失败，请重新尝试.'+err,
@@ -346,7 +348,7 @@ export default {
 
         }).catch(err=>{
 
-          console.log('交易发送失败'+err)
+          // console.log('交易发送失败'+err)
 
           this.isSendTx = false
 

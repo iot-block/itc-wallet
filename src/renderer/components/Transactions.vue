@@ -32,7 +32,7 @@
         :class="index%2==1?'grey lighten-3 grey--text text--darken-2':''"
         dense>
         <v-col cols="3" class="py-0 text-truncate link-text pointer">
-          <router-link :to="{name:'transation',query:{hash:tx.hash}}">
+          <router-link :to="{name: isLedger?'ledgerTxDetail':'transation',query:{hash:tx.hash}}">
             {{tx.hash | hash}}
           </router-link>
         </v-col>
@@ -61,8 +61,9 @@
 </template>
 
 <script>
+
 export default {
-  props: ['address'],
+  props: ['address','isLedger'],
   data(){
     return {
       page: 1,
@@ -73,7 +74,7 @@ export default {
       txs: [],
       total: 0,
       loading: false,
-      nodata: false
+      nodata: false,
     }
   },
   mounted(){
@@ -85,7 +86,7 @@ export default {
     },
     page(val){
       this.loadData(this.page)
-    }
+    },
   },
   methods: {
     loadData(page){

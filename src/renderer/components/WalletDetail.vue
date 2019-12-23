@@ -65,7 +65,7 @@
         cols="12">
         <v-card :elevation="2" class="pa-4">
           <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Transactions Records</div>
-          <Transactions :address="address"/>
+          <Transactions :address="address" :isLedger="isLederAddress"/>
         </v-card>
       </v-col>
     </v-row>
@@ -135,7 +135,9 @@
 <script>
 
 import Transactions from './Transactions'
+import Base from './ledger/Base'
 export default {
+  extends:Base,
   components: {
     Transactions
   },
@@ -164,8 +166,7 @@ export default {
     }
     else{
       this.wallet = this.$storage.getWalletById(this.$route.query.walletId)
-    }
-    
+    }    
     this.address = '0x'+this.wallet.keystore.address
     this.$iotchain.account.getBalance(this.address)
       .then((balance) => {
@@ -209,7 +210,7 @@ export default {
     deleteWallet(){
       this.dialogDelete = true
     },
-    confirmDelete(){
+    confirmDelete(){  
       this.$storage.deleteWallet(this.wallet.keystore.id)
       this.dialogDelete = false
       this.$alert.show({

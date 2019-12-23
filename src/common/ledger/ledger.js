@@ -25,7 +25,7 @@ const serializeErc20Tx = (t)=>{
     tx.raw[8] = Buffer.from([]) // s
   
     const serializedTx = tx.serialize()
-    console.log('交易序列化结果-> '+serializedTx.toString('hex'))
+    // console.log('交易序列化结果-> '+serializedTx.toString('hex'))
   
     return serializedTx.toString('hex')
 }
@@ -100,7 +100,7 @@ export default class LedgerDevice {
 
             await TransportNodeHid.open("").then(async newTransport => {
                 
-                console.log(JSON.stringify(newTransport,null,2))
+                // console.log(JSON.stringify(newTransport,null,2))
 
                 that.status = 1
                 that.transport = newTransport
@@ -109,7 +109,7 @@ export default class LedgerDevice {
                 if(that.transport){
                     that.transport = null
                 }
-                console.log('设备连接错误，1秒后再次尝试'+err)
+                // console.log('设备连接错误，1秒后再次尝试'+err)
             })  
         }
 
@@ -118,23 +118,23 @@ export default class LedgerDevice {
             let that = this
 
             await this.connectIotChainApp().then(appinfo=>{
-                console.log('itc app info->'+JSON.stringify(appinfo,null,2))
+                // console.log('itc app info->'+JSON.stringify(appinfo,null,2))
                 that.status = 2
 
             }).catch(err=>{
-                console.log('读取iotcain app信息错误->'+err)
+                // console.log('读取iotcain app信息错误->'+err)
 
                 if(err.toString().indexOf('DisconnectedDevice') != -1){
 
                     that.transport = null
                     that.status = 0
-                    console.log('设备连接错误，1秒后再次尝试')
+                    // console.log('设备连接错误，1秒后再次尝试')
                 }
                 
                 if(err.toString().indexOf('TransportStatusError') != -1){
                     
                     that.status = 1
-                    console.log('未打开iotchain应用')
+                    // console.log('未打开iotchain应用')
                 }
             })
         }
@@ -144,20 +144,20 @@ export default class LedgerDevice {
             let that = this
             await this.queryIotChainAddressList(10).then(result=>{
                 
-                console.log('获取地址信息成功->'+result)
+                // console.log('获取地址信息成功->'+result)
             }).catch(err=>{
                 
                 if(err.toString().indexOf('DisconnectedDevice') != -1){
 
                     that.transport = null
                     that.status = 0
-                    console.log('设备连接错误，1秒后再次尝试')
+                    // console.log('设备连接错误，1秒后再次尝试')
                 }
                 
                 if(err.toString().indexOf('TransportStatusError') != -1){
                     
                     that.status = 1
-                    console.log('未打开iotchain应用')
+                    // console.log('未打开iotchain应用')
                 }
             })
         }
@@ -224,7 +224,7 @@ export default class LedgerDevice {
                 })
             }).catch(err=>{
 
-                console.log('path为'+index+'的地址信息查询错误:'+err)
+                // console.log('path为'+index+'的地址信息查询错误:'+err)
                 return Promise.reject('path为'+index+'的地址信息查询错误:'+err)
             })
         }
@@ -245,8 +245,8 @@ export default class LedgerDevice {
      */
     async sendITG(addressIdx,t){
 
-        console.log('地址序号为'+addressIdx)
-        console.log('ITG交易内容为'+JSON.stringify(t,null,2))
+        // console.log('地址序号为'+addressIdx)
+        // console.log('ITG交易内容为'+JSON.stringify(t,null,2))
 
         let tx = serializeTx(t)
         return await this.signTransaction(addressIdx,tx).then(vsr=>{
@@ -271,8 +271,8 @@ export default class LedgerDevice {
      */
     async sendITC(addressIdx,t){
 
-        console.log('地址序号为'+addressIdx)
-        console.log('ITC交易内容为'+JSON.stringify(t,null,2))
+        // console.log('地址序号为'+addressIdx)
+        // console.log('ITC交易内容为'+JSON.stringify(t,null,2))
 
         let tx = serializeErc20Tx(t)
         return await this.signTransaction(addressIdx,tx).then(vsr=>{
@@ -299,7 +299,7 @@ export default class LedgerDevice {
             return result
         }).catch(err=>{
 
-            console.log('交易拒绝'+err)
+            // console.log('交易拒绝'+err)
             return Promise.reject('交易错误，请检查连接或者确认交易'+err)
         }) 
     }

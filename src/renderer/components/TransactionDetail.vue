@@ -71,7 +71,9 @@
 </template>
 
 <script>
+import Base from './ledger/Base'
 export default {
+  extends:Base,
   data(){
     return {
       txhash: '',

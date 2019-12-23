@@ -402,11 +402,11 @@ const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
 const generalITCTransferData = (address,value)=>{
 
 
-    console.log('参数address->'+address+' value->'+value)
+    // console.log('参数address->'+address+' value->'+value)
 
     const payload = iotchainApi().contract.encodeFunction(ABI,'transfer',[address,value])
 
-    console.log('payload->'+payload)
+    // console.log('payload->'+payload)
 
     return payload
 }

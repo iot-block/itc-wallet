@@ -10,8 +10,9 @@
 
 <script>
 
-
+import Base from './Base'
 export default {
+  extends:Base,
     data(){
       return {
         namelabel:'Ledger',
@@ -45,7 +46,7 @@ export default {
       }
     },
     destroyed(){
-      console.log('销毁查询')
+      // console.log('销毁查询')
       clearInterval(this.query)
     },
     mounted(){
