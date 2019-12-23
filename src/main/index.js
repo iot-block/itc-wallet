@@ -33,7 +33,7 @@ function createWindow () {
     height: 563,
     width: 1000,
     useContentSize: true,
-    minWidth: 600,
+    minWidth: 900,
     minHeight: 500,
     titleBarStyle: 'hidden',
     webPreferences: {webSecurity: false}
