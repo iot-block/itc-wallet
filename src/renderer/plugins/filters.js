@@ -1,6 +1,6 @@
 import web3util from 'web3-utils'
 import BigNumber from 'bignumber.js';
-import {formatDate} from '../util/util'
+import util from '../util/util'
 
 const filters = {
   datetime(time) {
@@ -14,7 +14,7 @@ const filters = {
     }
     time = time * 1
     let date = new Date(time)
-    return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
+    return util.formatDate(date, 'yyyy-MM-dd hh:mm:ss')
   },
   fixed(value,f){
     if(!value){
@@ -38,6 +38,17 @@ const filters = {
     let unit = web3util.fromWei(bn,'ether')
   
     return new BigNumber(unit).toFixed(fixed)
+  },
+  address(value){
+    if(!value){
+      return value
+    }
+    value = value.replace(/0x/g,'').toLowerCase()
+    if(value.startsWith('itc')){
+      return value
+    }else{
+      return 'itc'+value
+    }
   },
   hash(value){
     if(!value){

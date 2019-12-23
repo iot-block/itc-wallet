@@ -10,7 +10,7 @@
         <v-card :elevation="2" class="fill-height d-flex flex-column">
           <v-card-title class="black--text font-weight-bold">{{wallet.name}}</v-card-title>
           <div class="px-4 pb-4 pr-2 grey--text d-flex flex-row">
-            <span class="flex-grow-1 text-truncate">{{this.address | hash}}</span>
+            <span class="flex-grow-1 text-truncate">{{this.address | address}}</span>
             <v-icon class="mr-2 pointer" small @click="goReceive" color="blue">mdi-qrcode</v-icon>
             <v-icon class="mr-1 pointer" small @click="copyAddress" color="blue">content_copy</v-icon>
           </div>

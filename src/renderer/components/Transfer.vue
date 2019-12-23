@@ -2,7 +2,7 @@
   <v-container >
     <v-stepper v-model="step" class="elevation-0" style="background:#f9f9f9;">
       <v-stepper-header class="elevation-0" style="background:#ffffff;">
-        <v-stepper-step :complete="step > 1" step="1"><span :class="(step >= 1)?'blue--text':''">创建钱包</span></v-stepper-step>
+        <v-stepper-step :complete="step > 1" step="1"><span :class="(step >= 1)?'blue--text':''">Transfer</span></v-stepper-step>
        <v-divider :class="(step > 1)?'blue':''" ></v-divider>
         <v-stepper-step :complete="step > 2" step="2">Confirm</v-stepper-step>
        <v-divider :class="(step > 2)?'blue':''" ></v-divider>
@@ -12,7 +12,7 @@
       <v-stepper-items style="border-radius:5px" class="mt-5">
         <v-stepper-content step="1" class="px-0 py-0 ">
         
-          <v-card-title class="blue--text font-weight-bold pl-10" style="background:#e4f0ff;">Trasfer [{{sender | hash}}]</v-card-title>
+          <v-card-title class="blue--text font-weight-bold pl-10" style="background:#e4f0ff;">Trasfer [{{sender | address}}]</v-card-title>
           <v-card color="px-5 py-5">
           <div></div>
             
@@ -101,13 +101,13 @@
               <span>from</span>
             </v-col>
             <v-col cols="10">
-              <span class="grey--text">{{sender | hash}}</span>
+              <span class="grey--text">{{sender | address}}</span>
             </v-col>
             <v-col cols="2">
               <span>to</span>
             </v-col>
             <v-col cols="10">
-              <span class="grey--text">{{receiver | hash}}</span>
+              <span class="grey--text">{{receiver | address}}</span>
             </v-col>
             <v-col cols="2">
               <span>value</span>
@@ -269,7 +269,7 @@ export default {
       if(!this.receiver || !this.sender){
         return false
       }
-      return this.receiver.replace(/0x/g,'') != this.sender.replace(/0x/g,'')
+      return this.receiver.toLowerCase().replace(/0x|itc/g,'') != this.sender.toLowerCase().replace(/0x|itc/g,'')
     },
     async confirmTxByLedger(){
 

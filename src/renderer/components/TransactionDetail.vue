@@ -44,7 +44,7 @@
             From
           </v-col>
           <v-col cols="10" class="content-color">
-            {{transaction.trx.senderAddress | hash}}
+            {{transaction.trx.senderAddress | address}}
           </v-col>
         </v-row>
         <v-divider />
@@ -53,7 +53,7 @@
             To
           </v-col>
           <v-col cols="10" class="content-color">
-            {{transaction.trx.receivingAddress | hash}}
+            {{transaction.trx.receivingAddress | address}}
           </v-col>
         </v-row>
         <v-divider />

@@ -412,6 +412,12 @@ const generalITCTransferData = (address,value)=>{
 }
 
 const util = {
+    addressFilter(address){
+        if(!address){
+          return address
+        }
+        return address.toLowerCase().replace(/0x|itc/g,'')
+    },
     toWei(value, unit='ether'){
         return web3util.toWei(value+'', unit)
     },
@@ -419,7 +425,7 @@ const util = {
         return web3util.fromWei(value+'', unit)
     },
     isAddress(address){
-        return web3util.isAddress(address)
+        return web3util.isAddress(this.addressFilter(address))
     },
     async kec256(data){
         let buffer = new Buffer(data)
