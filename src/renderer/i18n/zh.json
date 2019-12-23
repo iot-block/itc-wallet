@@ -1,6 +1,6 @@
 {
   "wallet": {
-    "title": "钱包",
+    "title": "ITC钱包",
     "create": "创建",
     "import": "导入",
     "detail": "详情",
@@ -17,7 +17,7 @@
     "english": "English"
   },
   "ledger":{
-    "title":"Ledger",
+    "title":"Ledger钱包",
     "no-ledger":"未连接硬件钱包",
     "connect":"连接硬件钱包"
   }

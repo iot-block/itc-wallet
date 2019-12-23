@@ -23,6 +23,10 @@
   .elevation-12{
     box-shadow: 0 7px 8px -4px rgba(33,127,231,.1),0 12px 17px 2px rgba(33,127,231,.1),0 5px 22px 4px rgba(33,127,231,.1)!important;
   }
+
+  .v-text-field--outlined fieldset{
+    border: none!important;
+  }
 }
 
 .pointer{

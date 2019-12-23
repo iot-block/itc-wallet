@@ -1,6 +1,6 @@
 {
   "wallet": {
-    "title": "Wallet",
+    "title": "ITC Wallet",
     "create": "Create",
     "import": "Import",
     "detail": "Detail",
@@ -17,7 +17,7 @@
     "english": "English"
   },
   "ledger":{
-    "title":"Ledger",
+    "title":"Ledger Wallet",
     "no-ledger":"You have no wallet yet!",
     "connect":"connect ledger"
   }
