@@ -156,7 +156,7 @@ export default {
   },
   mounted(){
 
-    console.log('地址详情界面出现,参数'+JSON.stringify(this.$route.query.wallet,null,2))
+    // console.log('地址详情界面出现,参数'+JSON.stringify(this.$route.query.wallet,null,2))
 
     if(this.$route.query.wallet){
       this.wallet = JSON.parse(this.$route.query.wallet)

@@ -55,7 +55,7 @@
             required>
           </v-text-field>
           <v-slider
-            class="mt-10 align-center"
+            class="mt-10 align-end"
             hide-details
             :thumb-size="24"
             step="1"
@@ -87,7 +87,7 @@
             <v-btn
               class="ml-0"
               depressed
-              :disabled="!receiver || !transferType || !amount || amount<=0 || gasPrice<=0"
+              :disabled="!receiver || !transferType || !amount || amount<=0 || gasPrice<=0 || !validateReceiver()"
               color="primary"
               @click="goConfirm">
               Next
@@ -265,6 +265,12 @@ export default {
       })
   },
   methods:{
+    validateReceiver(){
+      if(!this.receiver || !this.sender){
+        return false
+      }
+      return this.receiver.replace(/0x/g,'') != this.sender.replace(/0x/g,'')
+    },
     async confirmTxByLedger(){
 
       let account = await this.$iotchain.account.getAccount(this.wallet.keystore.address)
