@@ -10,7 +10,7 @@
             <v-icon class="mr-1 link-text">chevron_right</v-icon>
           </div>
           <div class="px-4 pr-2 content-color d-flex flex-row">
-            <span class="flex-grow-1 text-truncate">{{wallet.keystore.address | hash}}</span>
+            <span class="flex-grow-1 text-truncate">{{wallet.keystore.address | address}}</span>
             <v-icon class="mr-1" small @click.stop="copyAddress" color="blue">content_copy</v-icon>
           </div>
           <v-spacer />

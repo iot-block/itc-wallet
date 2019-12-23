@@ -37,10 +37,10 @@
           </router-link>
         </v-col>
         <v-col cols="3" class="py-0 text-truncate">
-          {{tx.senderAddress | hash}}
+          {{tx.senderAddress | address}}
         </v-col>
         <v-col class="py-0 text-truncate">
-          {{tx.receivingAddress | hash}}
+          {{tx.receivingAddress | address}}
         </v-col>
         <v-col cols="1" class="py-0 text-truncate text-right">
           {{tx.value | unit(2)}}
