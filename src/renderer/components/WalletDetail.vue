@@ -18,13 +18,13 @@
          
           <div v-if="!isLederAddress" class=" d-flex flex-row px-4 py-2 black--text">
             <v-btn class="flex-grow-1 justify-center align-center d-flex mr-5" color="#e4f0ff" elevation="0" @click="openKeystore">
-                <span  class=" text-center pointer link-text"> Keystore</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Keystore</span>
             </v-btn>  
             <v-btn class="flex-grow-1 justify-center align-center d-flex mr-5" color="#e4f0ff" elevation="0" @click="changePassword">
-                <span  class=" text-center pointer link-text"> Change password</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Change password</span>
             </v-btn>  
             <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="deleteWallet">
-                <span  class=" text-center pointer link-text">Delete</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize">Delete</span>
             </v-btn>  
           </div>
         </v-card>
@@ -53,10 +53,10 @@
                 wallet:isLederAddress?JSON.stringify(wallet):null,
                 walletId:wallet.keystore.id
             }}">
-                <span  class=" text-center pointer link-text"> Transfer</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Transfer</span>
             </v-btn>    
             <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="goReceive">
-                <span  class=" text-center pointer link-text"> Receive</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Receive</span>
             </v-btn>    
           </div>
         </v-card>

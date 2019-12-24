@@ -10,44 +10,25 @@
       <span class="subtitle-2 font-weight-bold grey--text text--darken-1">no data</span>
     </div>
     <template v-else>
-      <v-row class="pa-2 mt-2 white--text" style="background:#3896ff;" dense>
-        <v-col cols="3" class="py-0">
-          <span>TxHash</span>
-        </v-col>
-        <v-col cols="3" class="py-0">
-          <span>From</span>
-        </v-col>
-        <v-col cols="3" class="py-0">
-          <span>To</span>
-        </v-col>
-        <v-col cols="1" class="py-0 text-right">
-          <span>Value</span>
-        </v-col>
-        <v-col cols="2" class="py-0 text-right">
-          <span>Time</span>
-        </v-col>
-      </v-row>
+  
       <v-row v-for="(tx,index) in txs" :key="index" 
         class="pa-2 " 
-        :class="index%2==1?'grey lighten-3 grey--text text--darken-2':''"
+        :class="index%2==0?'grey lighten-3 grey--text text--darken-2':''"
         dense>
-        <v-col cols="3" class="py-0 text-truncate link-text pointer">
-          <router-link :to="{name: isLedger?'ledgerTxDetail':'transation',query:{hash:tx.hash}}">
-            {{tx.hash | hash}}
+        <v-col cols="10" class="py-0 text-truncate link-text pointer">
+          <router-link :to="{name: isLedger?'ledgerTxDetail':'transation',query:{hash:tx.hash}}" class="grey--text">
+            <div>
+                {{tx.hash | hash}}
+            </div>
+            <div>
+                {{tx.unixTimestamp | datetime}}
+            </div>
           </router-link>
         </v-col>
-        <v-col cols="3" class="py-0 text-truncate">
-          {{tx.senderAddress | address}}
+        <v-col cols="1" class="py-0 text-truncate text-right blue--text">
+          {{tx.value | unit(2)}} ITC
         </v-col>
-        <v-col class="py-0 text-truncate">
-          {{tx.receivingAddress | address}}
-        </v-col>
-        <v-col cols="1" class="py-0 text-truncate text-right">
-          {{tx.value | unit(2)}}
-        </v-col>
-        <v-col cols="2" class="py-0 text-truncate text-right" style="width:">
-          {{tx.unixTimestamp | datetime}}
-        </v-col>
+      
       </v-row>
       <v-pagination
         class="mt-3"
