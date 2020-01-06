@@ -142,7 +142,7 @@ export default class LedgerDevice {
         if(this.originalAddressInfo.length == 0){
 
             let that = this
-            await this.queryIotChainAddressList(10).then(result=>{
+            await this.queryIotChainAddressList(1).then(result=>{
                 
                 // console.log('获取地址信息成功->'+result)
             }).catch(err=>{
