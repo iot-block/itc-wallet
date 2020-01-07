@@ -124,7 +124,7 @@ export default {
           }
         },
         {
-          icon: 'settings',
+          img: require('../../assets/images/setting.png'),
           text: this.$t('setting.title'),
           route: {
             name: 'setting'
