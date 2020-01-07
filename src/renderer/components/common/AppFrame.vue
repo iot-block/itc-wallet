@@ -110,14 +110,14 @@ export default {
     items(){
       return [
         {
-          icon: 'account_balance_wallet',
+          img: require('../../assets/images/itc_wallet.png'),
           text: this.$t('wallet.title'),
           route: {
             name: 'wallet'
           },
         },
         {
-          icon: 'usb',
+          img: require('../../assets/images/ledger_wallet.png'),
           text: this.$t('ledger.title'),
           route: {
             name: 'ledger'

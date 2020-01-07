@@ -6,7 +6,8 @@
       indeterminate>
     </v-progress-linear>
     <div v-if="nodata" class="d-flex flex-column justify-center align-center">
-      <v-icon size="80" color="blue">mdi-emoticon-frown-outline</v-icon>
+      <!-- <v-icon size="80" color="blue">mdi-emoticon-frown-outline</v-icon> -->
+      <v-img :src="require('../assets/images/nodata.png')" size="80" />
       <span class="subtitle-2 font-weight-bold grey--text text--darken-1">no data</span>
     </div>
     <template v-else>

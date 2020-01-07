@@ -17,7 +17,7 @@
     "english": "English"
   },
   "ledger":{
-    "title":"Ledger钱包",
+    "title":"Ledger",
     "no-ledger":"未连接硬件钱包",
     "connect":"连接硬件钱包"
   }

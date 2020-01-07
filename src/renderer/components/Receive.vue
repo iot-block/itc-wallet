@@ -1,26 +1,23 @@
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-card elevation="2" class="d-flex flex-column justify-center align-centermt-6 mt-6">
-      <div fluid class="d-flex flex-column justify-center align-center px-4 pb-4 pt-0" style="background:#2c7cf7;color:#ffffff;">
-        <v-avatar color="teal" size="48" class="mt-n6">
-          <v-icon size="30" dark>mdi-bitcoin</v-icon>
-        </v-avatar>
-        <span class="subtitle-1 font-weight-medium mt-1">ITC Wallet</span>
+      <div fluid class="d-flex flex-column justify-center align-center px-10 py-6" style="background:#5da0f8;color:#ffffff;">
+        <span class="subtitle-1 font-weight-medium">ITC Wallet</span>
         <div class="d-flex flex-row justify-center align-center">
           <span class="caption white--text text--darken-1">
-            {{address | hash}}
+            {{address | address}}
           </span>
           <v-icon class="ml-1" dark small @click.stop="copyAddress">content_copy</v-icon>
         </div>
       </div>
-      <div class="d-flex flex-column justify-center align-center px-4 pt-8 pb-12">
-        <span class="body-2">请转入ITC/ITG</span>
+      <div class="d-flex flex-column justify-center align-center px-4 py-12">
         <qrcode 
           :value="address" 
           :options="{ width: 150, margin: 0 }" 
-          class="mt-3"
+          class=""
           tag="img">
         </qrcode>
+        <span class="caption font-weight-bold mt-3" style="color:#5da0f8;">请转入ITC/ITG</span>
       </div>
       
     </v-card>

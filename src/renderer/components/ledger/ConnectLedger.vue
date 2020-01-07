@@ -1,16 +1,25 @@
 <template>
-  <v-container>
-    <v-text-field class="my-1 text-center title" label="1、连接至您的钱包" disabled :loading="step==0"></v-text-field>
-    <v-text-field class="my-2 text-center title" v-if="step>0" label="2、在Ledger中打开iot chain应用" disabled :loading="step==1"></v-text-field>
-    <v-text-field class="my-3 text-center title" v-if="step>1" label="3、正在同步Ledger钱包信息" disabled :loading="step==2"></v-text-field>
-    <v-text-field class="my-4 text-center title" v-if="step>2" v-model="namelabel" :messages="errorMessage" label="4、输入设备的名字" ></v-text-field>
-    <v-btn @click="saveDevice"  v-if="step>2">添加钱包</v-btn>
+  <v-container class="contentbox">
+    <Progress sequence='1' text='连接至您的钱包' :status="step>0" />
+    <Progress sequence='2' text='在Ledger中打开iot chain应用' :status="step>1" :style="`opacity:${step>0?1:0}`"/>
+    <Progress sequence='3' text='正在同步Ledger钱包信息' :status="step>2" :style="`opacity:${step>1?1:0}`"/>
+    <ProgressInput sequence='4' text='输入设备的名字' :ledgername="namelabel" :errorMessage="errorMessage" @LEDGER_NAME_CHANGED="ledgerNameChanged" :style="`opacity:${step>2?1:0}`"/>
+    <v-btn color="#5EA3FE" @click="saveDevice" :style="`opacity:${step>2?1:0};color:white`">添加钱包</v-btn>
   </v-container>
 </template>
 
 <script>
-
+/*
+    <v-text-field class="my-1 text-center title" label="1、连接至您的钱包" disabled :loading="step==0"></v-text-field>
+    <v-text-field class="my-2 text-center title" v-if="step>0" label="2、在Ledger中打开iot chain应用" disabled :loading="step==1"></v-text-field>
+    <v-text-field class="my-3 text-center title" v-if="step>1" label="3、正在同步Ledger钱包信息" disabled :loading="step==2"></v-text-field>
+    <v-text-field class="my-4 text-center title" v-if="step>2" v-model="namelabel" :messages="errorMessage" label="4、输入设备的名字" ></v-text-field>
+*/
 import Base from './Base'
+import Progress from './view/Progress'
+import ProgressInput from './view/ProgressInput'
+import '../../assets/common.scss'
+
 export default {
   extends:Base,
     data(){
@@ -20,8 +29,21 @@ export default {
         step:this.$ledger.queryLedgerStatus(),
       }
     },
+    components:{
+      Progress,
+      ProgressInput
+    },
+    watch:{
+      namelabel(val){
+        console.log(val)
+      }
+    },
     methods:{
+      ledgerNameChanged(name){
+        this.namelabel = name
+      },
       saveDevice(){
+        console.log('namelabel->'+this.namelabel)
 
         if(this.namelabel.length == 0 || this.namelabel.length > 50){
           this.errorMessage = '请输入长度为1-50的设备名字'
@@ -56,3 +78,13 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.contentbox{
+  background-color:white;
+  margin-left:2%;
+  width:96%;
+  margin-top:10px;
+  box-shadow: 0 7px 8px -4px rgba(33,127,231,.1),0 12px 17px 2px rgba(33,127,231,.1),0 5px 22px 4px rgba(33,127,231,.1);
+}
+</style>>
