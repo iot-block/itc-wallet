@@ -20,7 +20,7 @@
         replace>
         <v-list-item-action v-if="group.icon || group.img" class="mr-0">
           <v-icon v-if="group.icon"  :small="$vuetify.breakpoint.mdAndUp">{{ group.icon }}</v-icon>
-          <v-avatar tile v-else-if="group.img" :small="$vuetify.breakpoint.mdAndUp">
+          <v-avatar tile v-else-if="group.img" :size="$vuetify.breakpoint.mdAndUp?16:24">
             <v-img :src="group.img" contain></v-img>
           </v-avatar>
         </v-list-item-action>
