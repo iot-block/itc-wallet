@@ -176,7 +176,7 @@
                 <v-icon large class="" color="white">account_balance_wallet</v-icon>
                 <div class="pa-0 ml-3 flex-grow-1" style="width:0!important;">
                   <div class="subtitle-1 font-weight-bold white--text">Wallet</div>
-                  <div class="text-truncate white--text">{{this.address}}</div>
+                  <div class="text-truncate white--text">{{this.address | address}}</div>
                 </div>
               </v-card>
               <v-btn  depressed class="mx-auto d-block mt-4 " color="white"><v-icon color="green" class="bule">check</v-icon></v-btn>

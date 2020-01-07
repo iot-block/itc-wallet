@@ -8,6 +8,7 @@
       item-text="name"
       item-value="server"
       :label="$t('setting.node')"
+      filled
       dense
       outlined
       solo
@@ -22,6 +23,7 @@
       class="mt-1"
       :items="languages"
       :label="$t('setting.language')"
+      filled
       dense
       outlined
       solo
