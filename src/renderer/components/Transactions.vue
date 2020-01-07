@@ -13,7 +13,8 @@
   
       <v-row v-for="(tx,index) in txs" :key="index" 
         class="pa-2 " 
-        :class="index%2==0?'grey lighten-3 grey--text text--darken-2':''"
+        :class="index%2==0?'grey--text text--darken-2':''"
+             :style="index%2==0?'background:#f2f7fe':''"
         dense>
         <v-col cols="10" class="py-0 text-truncate link-text pointer">
           <router-link :to="{name: isLedger?'ledgerTxDetail':'transation',query:{hash:tx.hash}}" class="grey--text">
