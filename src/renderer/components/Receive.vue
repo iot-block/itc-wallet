@@ -1,7 +1,8 @@
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-card elevation="2" class="d-flex flex-column justify-center align-centermt-6 mt-6">
-      <div fluid class="d-flex flex-row justify-center align-center px-10 py-6" style="background:#5da0f8;color:#ffffff;">
+      <div fluid class="d-flex flex-row justify-center align-center px-12 py-10" style="background:#5da0f8;color:#ffffff;position:relative;">
+        <img src="../assets/images/logo_half.png" style="position:absolute;bottom:0;right:20px;width:100px;"/>
         <v-img width="32" :src="require('../assets/images/wallet.png')"/>
         <div class="ml-4">
           <span class="subtitle-2 font-weight-medium">ITC Wallet</span>
