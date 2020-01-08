@@ -164,24 +164,26 @@
           
         </v-stepper-content>
 
-        <v-stepper-content step="4">
+        <v-stepper-content step="4" class="pa-0">
           <v-row justify="center" >
             <v-col
-              cols="12"
-              sm="11"
-              md="8"
-              lg="7"
-              xl="6">
-              <v-card color="#3c8cff" elevation="0" class="pa-3 d-flex justify-center align-center">
-                <v-icon large class="" color="white">account_balance_wallet</v-icon>
-                <div class="pa-0 ml-3 flex-grow-1" style="width:0!important;">
+              class="pt-0 pb-8"
+              cols="12">
+              <v-card tile color="#5da0f8" elevation="0" 
+                class="py-10 d-flex justify-center align-center" 
+                style="position:relative;">
+                <img src="../assets/images/logo_half.png" style="position:absolute;bottom:0;right:20px;width:100px;"/>
+                <img src="../assets/images/wallet.png" style="width:32px;"/>
+                <div class="pa-0 ml-3" >
                   <div class="subtitle-1 font-weight-bold white--text">Wallet</div>
                   <div class="text-truncate white--text">{{this.address | address}}</div>
                 </div>
               </v-card>
-              <v-btn  depressed class="mx-auto d-block mt-4 " color="white"><v-icon color="green" class="bule">check</v-icon></v-btn>
-              <div class=" text-center mt-2 blue--text">Your new wallet is ready</div>
-              <v-btn color="blue" depressed class="mx-auto d-block mt-2 white--text" @click="$router.go(-1)">Done</v-btn>
+              <div class="text-center">
+                <v-icon color="green" class="mt-4 font-weight-bold">check</v-icon>
+                <div class="mt-2 blue--text">Your new wallet is ready</div>
+                <v-btn color="blue" depressed class="mx-auto d-block mt-2 white--text" @click="$router.go(-1)">Done</v-btn>
+              </div>
             </v-col>
             
           </v-row>

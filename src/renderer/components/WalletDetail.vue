@@ -72,7 +72,7 @@
 
     <v-dialog
       v-model="dialogKeystore"
-      width="500">
+      width="800">
       <v-card elevation="0">
         <v-card-title
           class="primary lighten-2 white--text"
@@ -87,16 +87,20 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="primary"
-            text
+            class="px-8"
+            color="#76aaf8"
+            dark
+            depressed
             @click="copyKeystore">
             Copy
           </v-btn>
           <v-btn
-            color="primary"
-            text
+            class="px-8 ml-4"
+            color="#76aaf8"
+            dark
+            depressed
             @click="dialogKeystore=false">
-            确认
+            关闭
           </v-btn>
         </v-card-actions>
       </v-card>
