@@ -8,11 +8,11 @@
       filled
       :error="error"
       :error-messages="errorMessage"
-      label="Mnemonic phrase">
+      :label="$t('wallet.mnemonic_phrase')">
     </v-textarea>
     <v-text-field
       v-model="walletName"
-      label="walletName"
+      :label="$t('wallet.wallet_name')"
       rounded
       outlined
       filled
@@ -22,7 +22,7 @@
     <v-text-field
       v-model="password"
       type="password"
-      label="password"
+      :label="$t('wallet.wallet_password')"
       :error="error2"
       :error-messages="errorMessage2"
       rounded
@@ -34,7 +34,7 @@
     <v-text-field
       v-model="passwordRepeat"
       type="password"
-      label="password repeat"
+      :label="$t('wallet.passwor_repet')"
       :error="error2"
       :error-messages="errorMessage2"
       rounded
@@ -50,8 +50,8 @@
         replace
         text
         depressed
-        color="success">
-        取消
+        color="blue darken-3">
+        {{ $t("wallet.cancel") }}
       </v-btn>
       <v-btn
         class="ml-4"
@@ -60,7 +60,7 @@
         :disabled="!walletName || !mnemonics || !password || password!=passwordRepeat"
         @click="doImport"
         color="primary">
-        Import
+        {{ $t("wallet.import") }}
       </v-btn>
     </div>
   </v-container>

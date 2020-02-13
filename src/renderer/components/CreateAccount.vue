@@ -2,19 +2,19 @@
   <v-container>
     <v-stepper v-model="step" class="elevation-0" style="background:#f9f9f9;">
       <v-stepper-header class="elevation-0" style="background:#ffffff;">
-        <v-stepper-step :complete="step > 1" step="1" :color="(step > 1)?'green':'blue'"><span :class="(step >= 1)?'blue--text':''">创建钱包</span></v-stepper-step>
+        <v-stepper-step :complete="step > 1" step="1" :color="(step > 1)?'green':'blue'"><span :class="(step >= 1)?'blue--text':''">{{ $t("wallet.create_wallet") }}</span></v-stepper-step>
         <v-divider :class="(step > 1)?'blue':''" ></v-divider>
-        <v-stepper-step :complete="step > 2" step="2" :color="(step > 2)?'green':'blue'"><span :class="(step >= 2)?'blue--text':''">备份助记词</span></v-stepper-step>
+        <v-stepper-step :complete="step > 2" step="2" :color="(step > 2)?'green':'blue'"><span :class="(step >= 2)?'blue--text':''">{{ $t("wallet.backup_hrases") }}</span></v-stepper-step>
        <v-divider :class="(step > 2)?'blue':''" ></v-divider>
-        <v-stepper-step :complete="step > 3" step="3" :color="(step > 3)?'green':'blue'"><span :class="(step >= 3)?'blue--text':''">确认助记词</span></v-stepper-step>
+        <v-stepper-step :complete="step > 3" step="3" :color="(step > 3)?'green':'blue'"><span :class="(step >= 3)?'blue--text':''">{{ $t("wallet.confirm_phrases") }}</span></v-stepper-step>
       <v-divider :class="(step > 3)?'blue':''" ></v-divider>
-        <v-stepper-step :complete="step ==4" step="4" :color="(step ==4 )?'green':'blue'"><span :class="(step >= 4)?'blue--text':''">完成</span></v-stepper-step>
+        <v-stepper-step :complete="step ==4" step="4" :color="(step ==4 )?'green':'blue'"><span :class="(step >= 4)?'blue--text':''">{{ $t("wallet.complete") }}</span></v-stepper-step>
       </v-stepper-header>
       <v-stepper-items style="border-radius:5px;background:#ffffff" class="mt-5" >
         <v-stepper-content step="1">
           <v-text-field
             v-model="walletName"
-            label="walletName"
+            :label="$t('wallet.wallet_name')"
             rounded
             outlined
             filled
@@ -24,7 +24,7 @@
           </v-text-field>
           <v-text-field
             v-model="password"
-            label="password"
+            :label="$t('wallet.wallet_password')"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
             :type="show1 ? 'text' : 'password'"
@@ -36,7 +36,7 @@
           </v-text-field>
           <v-text-field
             v-model="passwordRepeat"
-            label="password repeat"
+             :label="$t('wallet.passwor_repet')"
             :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show2 = !show2"
             :type="show2 ? 'text' : 'password'"
@@ -55,7 +55,7 @@
               outlined
               light
               color="blue darken-3">
-              取消
+              {{ $t("wallet.cancel") }}
             </v-btn>
             <v-btn
               class="ml-4"
@@ -63,7 +63,7 @@
               :disabled="!walletName || !password || !passwordRepeat || password!=passwordRepeat"
               color="primary"
               @click="step = 2">
-              Next
+           {{ $t("wallet.next") }}
             </v-btn>
           </div>
           
@@ -71,7 +71,7 @@
 
         <v-stepper-content step="2">
           <span class="blue--text">
-            Mnemonic words are very important to restore your wallet. Please back it up carefully and keep it in a safe place.
+                 {{ $t("wallet.mnemonic_phrases") }}
           </span>
           <v-card 
             class="mt-3 mb-10"
@@ -97,13 +97,13 @@
               light
               color="blue darken-3"
               @click="step = 1">
-             取消
+              {{ $t("wallet.cancel") }}
             </v-btn>
             <v-btn
               class="ml-4"
               color="primary"
               @click="step = 3">
-              Next
+           {{ $t("wallet.next") }}
             </v-btn>
           </div>
           
@@ -111,7 +111,7 @@
 
         <v-stepper-content step="3">
          <span class="blue--text">
-            To ensure that mnemonic words are backed up correctly, please arrange the following mnemonic words in order.
+                  {{ $t("wallet.to_ensure") }}
           </span>
           <v-card 
             class="mt-3 mb-3"
@@ -151,14 +151,14 @@
               light
               color="blue darken-3"
               @click="step = 2">
-             取消
+              {{ $t("wallet.cancel") }}
             </v-btn>
             <v-btn
               class="ml-4"
               color="primary"
               :loading="loading"
               @click="checkMnemonics">
-              Next
+          {{ $t("wallet.next") }}
             </v-btn>
           </div>
           
@@ -181,8 +181,8 @@
               </v-card>
               <div class="text-center">
                 <v-icon color="green" class="mt-4 font-weight-bold">check</v-icon>
-                <div class="mt-2 blue--text">Your new wallet is ready</div>
-                <v-btn color="blue" depressed class="mx-auto d-block mt-2 white--text" @click="$router.go(-1)">Done</v-btn>
+                <div class="mt-2 blue--text">   {{ $t("wallet.wallet_ready") }}</div>
+                <v-btn color="blue" depressed class="mx-auto d-block mt-2 white--text" @click="$router.go(-1)"> {{ $t("wallet.done") }}</v-btn>
               </div>
             </v-col>
             

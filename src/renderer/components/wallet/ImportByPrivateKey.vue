@@ -8,11 +8,11 @@
       :error="error"
       :error-messages="errorMessage"
       filled
-      label="Private key">
+      :label="$t('wallet.private_key')">
     </v-textarea>
     <v-text-field
       v-model="walletName"
-      label="walletName"
+    :label="$t('wallet.wallet_name')"
       rounded
       outlined
       filled
@@ -22,7 +22,7 @@
     <v-text-field
       v-model="password"
       type="password"
-      label="password"
+      :label="$t('wallet.wallet_password')"
       rounded
       outlined
       filled
@@ -38,7 +38,7 @@
       filled
       dense
       type="password"
-      label="password repeat"
+      :label="$t('wallet.passwor_repet')"
       :error="error2"
       :error-messages="errorMessage2"
       required>
@@ -50,8 +50,8 @@
         replace
         text
         depressed
-        color="success">
-        取消
+        color="blue darken-3">
+        {{ $t("wallet.cancel") }}
       </v-btn>
       <v-btn
         class="ml-4"
@@ -60,7 +60,7 @@
         :disabled="!privateKey || !walletName || !password || password!=passwordRepeat"
         :loading="loading"
         color="primary">
-        Import
+        {{ $t("wallet.import") }}
       </v-btn>
     </div>
   </v-container>

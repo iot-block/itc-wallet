@@ -2,31 +2,31 @@
   <v-container >
     <v-stepper v-model="step" class="elevation-0" style="background:#f9f9f9;">
       <v-stepper-header class="elevation-0" style="background:#ffffff;">
-        <v-stepper-step :complete="step > 1" step="1"><span :class="(step >= 1)?'blue--text':''">Transfer</span></v-stepper-step>
+        <v-stepper-step :complete="step > 1" step="1"><span :class="(step >= 1)?'blue--text':''">{{ $t("wallet.transfer") }}</span></v-stepper-step>
        <v-divider :class="(step > 1)?'blue':''" ></v-divider>
-        <v-stepper-step :complete="step > 2" step="2">Confirm</v-stepper-step>
+        <v-stepper-step :complete="step > 2" step="2">{{ $t("wallet.confirm") }}</v-stepper-step>
        <v-divider :class="(step > 2)?'blue':''" ></v-divider>
-        <v-stepper-step :complete="step == 3" step="3">Finish</v-stepper-step>
+        <v-stepper-step :complete="step == 3" step="3">{{ $t("wallet.finish") }}</v-stepper-step>
       </v-stepper-header>
-    
+
       <v-stepper-items style="border-radius:5px" class="mt-5">
         <v-stepper-content step="1" class="px-0 py-0 ">
         
-          <v-card-title class="blue--text font-weight-bold pl-10" style="background:#e4f0ff;">Trasfer [{{sender | address}}]</v-card-title>
+          <v-card-title class="blue--text  pl-10" style="background:#e4f0ff;">Trasfer [{{sender | address}}]</v-card-title>
           <v-card color="px-5 py-5">
           <div></div>
-            
+
           <v-text-field
             v-model="receiver"
-            label="Receiver Address"
+            :label="$t('wallet.receiving_address')"
             rounded
             outlined
             :error="error1"
             :error-messages="errorMessage1"
-            filled
             dense
             required
-            class="mt-5">
+            class="mt-5"
+            color="#4ba1ff">
           </v-text-field>
           <v-radio-group class="mt-0" v-model="transferType" mandatory row hide-details>
             <v-radio
@@ -45,14 +45,15 @@
           <v-text-field
             class="mt-4"
             v-model="amount"
-            label="amount"
+            :label="$t('wallet.amount')"
             hide-details
             type="number"
             rounded
             outlined
             filled
             dense
-            required>
+            required
+            color="#4ba1ff">
           </v-text-field>
           <v-slider
             class="mt-10 align-end"
@@ -62,6 +63,7 @@
             thumb-label="always"
             min="1"
             max="100"
+            color="#4ba1ff"
             track-color="grey lighten-2"
             v-model="gasPrice">
             <template v-slot:thumb-label="props">
@@ -85,12 +87,12 @@
           </v-slider>
           <div class="mt-4">
             <v-btn
-              class="ml-0"
+              class="ml-0 white--text title-color"
               depressed
               :disabled="!receiver || !transferType || !amount || amount<=0 || gasPrice<=0 || !validateReceiver()"
-              color="primary"
+              color="#4ba1ff"
               @click="goConfirm">
-              Next
+              {{ $t("wallet.next") }}
             </v-btn>
           </div>
           </v-card>
@@ -98,19 +100,19 @@
         <v-stepper-content step="2">
           <v-row>
             <v-col cols="2">
-              <span>from</span>
+              <span>{{ $t("wallet.sending_address") }}</span>
             </v-col>
             <v-col cols="10">
               <span class="grey--text">{{sender | address}}</span>
             </v-col>
             <v-col cols="2">
-              <span>to</span>
+              <span>{{ $t("wallet.receiving_address") }}</span>
             </v-col>
             <v-col cols="10">
               <span class="grey--text">{{receiver | address}}</span>
             </v-col>
             <v-col cols="2">
-              <span>value</span>
+              <span>{{ $t("wallet.transfer_amount") }}</span>
             </v-col>
             <v-col cols="10">
               <span class="grey--text">{{amount}} {{transferType=='itc'?'ITC':'ITG'}}</span>
@@ -129,7 +131,7 @@
             v-if="!isLedgerAddress"
             class="mt-4"
             v-model="password"
-            label="password"
+             :label="$t('wallet.password')"
             type="password"
             :error="error2"
             :error-messages="errorMessage2"
@@ -147,7 +149,7 @@
               outlined
               light
               color="blue darken-3">
-              取消
+              {{ $t("wallet.cancel") }}
             </v-btn>
 
       
@@ -158,7 +160,7 @@
               color="primary"
               :disabled="!password"
               @click="confirm">
-              Transfer
+              {{ $t("wallet.transfer") }}
             </v-btn>
             <v-btn
               v-if="isLedgerAddress"

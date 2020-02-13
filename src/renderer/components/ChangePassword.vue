@@ -4,7 +4,7 @@
       <v-card-title>{{wallet.name}}</v-card-title>
       <v-text-field
         v-model="password"
-        label="password"
+        :label="$t('wallet.password')"
         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="show1 = !show1"
         :type="show1 ? 'text' : 'password'"
@@ -18,7 +18,7 @@
       </v-text-field>
       <v-text-field
         v-model="newPassword"
-        label="new password"
+         :label="$t('wallet.newpassword')"
         :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="show2 = !show2"
         :type="show2 ? 'text' : 'password'"
@@ -32,7 +32,7 @@
       </v-text-field>
       <v-text-field
         v-model="newPasswordRepeat"
-        label="new password repeat"
+        :label="$t('wallet.newpasswor_repet')"
         :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="show3 = !show3"
         :type="show3 ? 'text' : 'password'"
@@ -48,8 +48,8 @@
           text
           depressed
           @click="$router.go(-1)"
-          color="success">
-          Cancel
+          color="blue darken-3">
+          {{ $t("wallet.cancel") }}
         </v-btn>
         <v-btn
           class="ml-4"
@@ -58,7 +58,7 @@
           color="primary"
           :loading="loading"
           @click="confirm">
-          Confirm
+          {{ $t("wallet.confirm") }}
         </v-btn>
       </div>
     </v-card>

@@ -7,7 +7,40 @@
     "transfer": "转账",
     "receive": "收款",
     "changepswd": "修改密码",
-    "transation": "交易"
+    "transation": "交易",
+    "create_wallet":"创建钱包",
+    "backup_hrases":"备份助记词",
+    "confirm_phrases":"确认助记词",
+    "complete":"完成",
+    "wallet_name":"钱包名字",
+    "wallet_password":"钱包密码",
+    "passwor_repet":"密码重复",
+    "cancel":"取消",
+    "next":"下一步",
+    "mnemonic_phrases":"助记词对恢复您的钱包非常重要。 请仔细备份并妥善保管。",
+    "to_ensure":"为确保正确备份助记词，请按顺序排列以下助记词",
+    "wallet_ready":"您的新钱包已经准备好",
+    "done":"完成",
+    "mnemonic_phrase":"助记词",
+    "private_key":"私钥",
+    "changepassword":"修改密码",
+    "delect":"删除",
+    "transaction_record":"交易记录",
+    "confirm":"确认",
+    "finish":"完成",
+    "receiving_address":"收款地址",
+    "amount":"金额",
+    "sending_address":"付款地址",
+    "transfer_amount":"转账金额",
+    "password":"密码",
+    "receive_itc":"转入ITC/ITG",
+    "wallet_copy":"拷贝",
+    "alert_close":"关闭",
+    "newpassword":"新密码",
+    "newpasswor_repet":"新密码重复",
+    "delete_wallet":"删除钱包",
+    "confirm_delete":"确认删除钱包？"
+    
   },
   "setting": {
     "title": "设置",
@@ -17,7 +50,7 @@
     "english": "English"
   },
   "ledger":{
-    "title":"Ledger",
+    "title":"硬件钱包",
     "no-ledger":"未连接硬件钱包",
     "connect":"连接硬件钱包"
   }

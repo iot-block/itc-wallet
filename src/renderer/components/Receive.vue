@@ -21,7 +21,7 @@
           class=""
           tag="img">
         </qrcode>
-        <span class="caption font-weight-bold mt-3" style="color:#5da0f8;">请转入ITC/ITG</span>
+        <span class="caption font-weight-bold mt-3" style="color:#5da0f8;"> {{ $t("wallet.receive_itc") }}</span>
       </div>
       
     </v-card>

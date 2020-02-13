@@ -3,8 +3,8 @@
     <v-card elevation="2" class="ma-3">
       <v-tabs :show-arrows="true">
         <v-tab>Keystore</v-tab>
-        <v-tab>Mnemonic phrase</v-tab>
-        <v-tab>Private Key</v-tab>
+        <v-tab>{{ $t("wallet.mnemonic_phrase") }}</v-tab>
+        <v-tab>{{ $t("wallet.private_key") }}</v-tab>
         <v-tab-item>
           <ImportByKeystore />
         </v-tab-item>

@@ -21,10 +21,10 @@
                 <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Keystore</span>
             </v-btn>  
             <v-btn class="flex-grow-1 justify-center align-center d-flex mr-5" color="#e4f0ff" elevation="0" @click="changePassword">
-                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Change password</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize">{{ $t("wallet.changepassword") }}</span>
             </v-btn>  
             <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="deleteWallet">
-                <span  class=" text-center pointer link-text" style="text-transform: capitalize">Delete</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize">{{ $t("wallet.delect") }}</span>
             </v-btn>  
           </div>
         </v-card>
@@ -53,10 +53,10 @@
                 wallet:isLederAddress?JSON.stringify(wallet):null,
                 walletId:wallet.keystore.id
             }}">
-                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Transfer</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> {{ $t("wallet.transfer") }}</span>
             </v-btn>    
             <v-btn class="flex-grow-1 justify-center align-center d-flex " color="#e4f0ff" elevation="0" @click="goReceive">
-                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> Receive</span>
+                <span  class=" text-center pointer link-text" style="text-transform: capitalize"> {{ $t("wallet.receive") }}</span>
             </v-btn>    
           </div>
         </v-card>
@@ -64,7 +64,7 @@
       <v-col
         cols="12">
         <v-card :elevation="2" class="pa-4">
-          <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold">Transactions Records</div>
+          <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold"> {{ $t("wallet.transaction_record") }}</div>
           <Transactions :address="address" :isLedger="isLederAddress"/>
         </v-card>
       </v-col>
@@ -92,7 +92,7 @@
             dark
             depressed
             @click="copyKeystore">
-            Copy
+              {{ $t("wallet.wallet_copy") }}
           </v-btn>
           <v-btn
             class="px-8 ml-4"
@@ -100,7 +100,7 @@
             dark
             depressed
             @click="dialogKeystore=false">
-            关闭
+               {{ $t("wallet.alert_close") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -113,11 +113,11 @@
         <v-card-title
           class="primary lighten-2 white--text"
           primary-title>
-          Confirm Delete Wallet
+         {{ $t("wallet.delete_wallet") }}
         </v-card-title>
 
         <v-card-text class="mt-4">
-          确认删除该钱包？
+           {{ $t("wallet.confirm_delete") }}
         </v-card-text>
 
         <v-divider></v-divider>
@@ -128,7 +128,7 @@
             color="primary"
             text
             @click="confirmDelete">
-            Delete
+             {{ $t("wallet.delect") }}
           </v-btn>
         </v-card-actions>
       </v-card>
