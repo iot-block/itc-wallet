@@ -39,7 +39,7 @@ export default {
     copyAddress(){
       this.$clipboard.writeText(this.address)
       this.$alert.show({
-        message: "复制成功",
+        message: this.$t('setting.copy'),
         timeout: 1000,
       })
     }

@@ -26,7 +26,9 @@
             dense
             required
             class="mt-5"
-            color="#4ba1ff">
+            color="#4ba1ff"
+            filled
+            >
           </v-text-field>
           <v-radio-group class="mt-0" v-model="transferType" mandatory row hide-details>
             <v-radio
@@ -273,7 +275,7 @@ export default {
       if(!this.receiver || !this.sender){
         return false
       }
-      return this.receiver.toLowerCase().replace(/0x|itc/g,'') != this.sender.toLowerCase().replace(/0x|itc/g,'')
+      return this.receiver.toLowerCase().replace(/0x|ITC/g,'') != this.sender.toLowerCase().replace(/0x|ITC/g,'')
     },
     async confirmTxByLedger(){
 
@@ -287,12 +289,12 @@ export default {
       if(this.transferType == 'itg'){
       
         let gas = web3util.toHex('42000')
-
+        let toAddress = this.$iotchain.util.formatAddress(this.receiver)
         this.$ledger.confirmITGTx(this.wallet.keystore.id,{
             nonce: web3util.toHex(nonce),
             gasPrice: web3util.toHex(gasPrice),
             gasLimit: gas,
-            to: this.receiver,
+            to: toAddress,
             value:web3util.toHex(value),
             chainId:'0x0a'
         }).then(result=>{
@@ -312,7 +314,8 @@ export default {
       else{
         
           let gas = web3util.toHex('150000')
-          let data = this.$iotchain.transaction.generalITCTransferData(this.receiver,value+'')
+          let toAddress = this.$iotchain.util.formatAddress(this.receiver)
+          let data = this.$iotchain.transaction.generalITCTransferData(toAddress,value+'')
 
           this.$ledger.confirmITCTx(this.wallet.keystore.id,{
               nonce: web3util.toHex(nonce),
@@ -326,9 +329,7 @@ export default {
               // console.log('ledger签名的ITC交易：'+JSON.stringify(result,null,2))
               this.signedTx = result
           }).catch(err=>{
-
             // console.log('出现错误，待处理，可能是断开连接，可能是用户拒绝'+err)
-
             this.$alert.show({
                 message: '交易确认失败，请重新尝试.'+err,
                 timeout: 2000
@@ -339,21 +340,14 @@ export default {
     },
    
     sendSignedTransaction(){
-
         this.isSendTx = true
-        
         //发送
         this.$iotchain.transaction.sendSignedTransaction(this.signedTx).then(response=>{
 
           this.isSendTx = false
           this.handleTxResponse(response)
-
         }).catch(err=>{
-
-          // console.log('交易发送失败'+err)
-
           this.isSendTx = false
-
           this.$alert.show({
                 message: '交易广播失败'+err,
                 timeout: 2000
@@ -380,7 +374,7 @@ export default {
     handleTxResponse(response){
 
       this.$alert.show({
-        message: '交易广播成功',
+        message: 'Success!',
         timeout: 2000
       })
       this.$progress.show({
@@ -413,6 +407,7 @@ export default {
         if(this.transferType == 'itg'){
           setTimeout(() => {
             let amount = this.$iotchain.util.toWei(this.amount)
+            console.log(this.receiver)
             this.$iotchain.transaction.transferITG(privateKey,this.receiver,amount+"",{
                 gas:'42000',
                 gasPrice:this.$iotchain.util.toWei(this.gasPrice,'szabo')+""
@@ -437,7 +432,7 @@ export default {
               this.handleTxResponse(response)
             }).catch((error) => {
               this.$alert.show({
-                message: '交易广播失败'+error,
+                message: 'Failed'+error,
                 timeout: 2000
               })
             })
@@ -445,7 +440,7 @@ export default {
         }
       } catch (error) {
         this.error2 = true
-        this.errorMessage2 = "密码错误"
+        this.errorMessage2 = "Password Error."
       }
     }
   },

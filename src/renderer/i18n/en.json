@@ -25,7 +25,8 @@
     "private_key":"Private Key",
     "changepassword":"Change password",
     "delect":"Delete",
-    "transaction_record":"Transaction record",
+    "transaction_record":"Token Transactions",
+    "transaction_itg_record":"Transactions",
     "confirm":"Confirm",
     "finish":"Finish",
     "receiving_address":"Receiving address",
@@ -46,11 +47,18 @@
     "node": "Node",
     "language": "Language",
     "chinese": "中文",
-    "english": "English"
+    "english": "English",
+    "copy":"Copied!"
   },
   "ledger":{
     "title":"Ledger Wallet",
     "no-ledger":"You have no wallet yet!",
-    "connect":"connect ledger"
+    "dis-connect":"ledger is disconnected.",
+    "connect":"Please connect ledger.",
+    "step_open":"Open iot chain app in ledger",
+    "step_sync":"Synchronizing ledger wallet information",
+    "step_name":"input name of ledger",
+    "step_add":"Add Wallet",
+    "input_device_name_err":"Please input a device name with a length of 1-50"
   }
 }

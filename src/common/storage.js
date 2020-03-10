@@ -13,13 +13,13 @@ const defaults = {
         },
         {
           name: 'mainnet-node2',
-          server: 'http://139.196.160.72:30315',
+          server: 'http://47.116.16.174:30315',
           chainId: 10,
           itcContract: '0x2ca70e7d0c396c36e8b9d206d988607a013483cf'
         },
         {
           name: 'mainnet-node3',
-          server: 'http://139.196.160.93:30315',
+          server: 'http://47.103.148.95:30315',
           chainId: 10,
           itcContract: '0x2ca70e7d0c396c36e8b9d206d988607a013483cf'
         },

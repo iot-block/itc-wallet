@@ -44,10 +44,12 @@ const filters = {
       return value
     }
     value = value.replace(/0x/g,'').toLowerCase()
-    if(value.startsWith('itc')){
+    if(value.startsWith('ITC')){
       return value
+    }else if(value.startsWith('itc')){
+      return 'ITC'+value.substr(3)
     }else{
-      return 'itc'+value
+      return 'ITC'+value
     }
   },
   hash(value){

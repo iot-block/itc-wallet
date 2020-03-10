@@ -1,11 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <span 
-                class="sequence-label"
-            >
-                {{sequence}}
-            </span>
+            <span class="sequence-label">{{sequence}}</span>
             <p/>
             <p/>
             <span class="title-label">

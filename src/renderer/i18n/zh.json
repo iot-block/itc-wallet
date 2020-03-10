@@ -25,7 +25,8 @@
     "private_key":"私钥",
     "changepassword":"修改密码",
     "delect":"删除",
-    "transaction_record":"交易记录",
+    "transaction_record":"ITC交易",
+    "transaction_itg_record":"ITG交易",
     "confirm":"确认",
     "finish":"完成",
     "receiving_address":"收款地址",
@@ -47,11 +48,18 @@
     "node": "节点",
     "language": "语言",
     "chinese": "中文",
-    "english": "English"
+    "english": "English",
+    "copy":"复制成功!"
   },
   "ledger":{
     "title":"硬件钱包",
     "no-ledger":"未连接硬件钱包",
-    "connect":"连接硬件钱包"
+    "dis-connect":"设备断开连接",
+    "connect":"连接至您的硬件钱包",
+    "step_open":"在Ledger中打开iot chain应用",
+    "step_sync":"正在同步Ledger钱包信息",
+    "step_name":"输入设备的名字",
+    "step_add":"添加钱包",
+    "input_device_name_err":"请输入长度为1-50的设备名字"
   }
 }

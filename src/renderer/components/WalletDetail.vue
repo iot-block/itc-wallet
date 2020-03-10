@@ -64,8 +64,15 @@
       <v-col
         cols="12">
         <v-card :elevation="2" class="pa-4">
-          <div class="pb-4 subtitle-2 grey--text text--darken-3 font-weight-bold"> {{ $t("wallet.transaction_record") }}</div>
-          <Transactions :address="address" :isLedger="isLederAddress"/>
+          <div class="checkout-container">
+            <v-btn text class="checkout-recoder-btn justify-center align-center d-flex" @click="checkoutITCRecoder">
+              <span  :class="recoderType?'':'link-text'">{{$t("wallet.transaction_record")}}</span>
+            </v-btn>  
+            <v-btn text class="checkout-recoder-btn justify-center align-center d-flex" @click="checkoutITGRecoder">
+              <span  :class="!recoderType?'':'link-text'" style="capitalize">{{$t("wallet.transaction_itg_record")}}</span>
+            </v-btn>  
+          </div>
+          <Transactions :address="address" :isLedger="isLederAddress" :recoderType="recoderType"/>
         </v-card>
       </v-col>
     </v-row>
@@ -157,7 +164,8 @@ export default {
       address: '',
       itc: 0,
       itg: 0,
-      isLederAddress:false
+      isLederAddress:false,
+      recoderType:0
     }
   },
   mounted(){
@@ -182,6 +190,12 @@ export default {
       })
   },
   methods: {
+    checkoutITGRecoder(){
+      this.recoderType = 1
+    },
+    checkoutITCRecoder(){
+      this.recoderType = 0
+    },
     goReceive(){
       this.$router.push({
         name:this.isLederAddress?'ledgerReceive':'receive',
@@ -198,16 +212,17 @@ export default {
       this.dialogKeystore = true
     },
     copyAddress(){
-      this.$clipboard.writeText(this.address)
+      let address = this.address.indexOf('ITC') == 0 ? this.address : 'ITC' + this.address.substr(2)
+      this.$clipboard.writeText(address)
       this.$alert.show({
-        message: "复制成功",
+        message:  this.$t('setting.copy'),
         timeout: 1000,
       })
     },
     copyKeystore(){
       this.$clipboard.writeText(JSON.stringify(this.wallet.keystore,null,2))
       this.$alert.show({
-        message: "复制成功",
+        message:  this.$t('setting.copy'),
         timeout: 1000,
       })
     },
@@ -226,3 +241,15 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+.checkout-recoder-btn{
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.checkout-container{
+  display: flex;
+  flex-direction: row;
+}
+</style>

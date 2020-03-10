@@ -142,20 +142,16 @@ export default class LedgerDevice {
         if(this.originalAddressInfo.length == 0){
 
             let that = this
-            await this.queryIotChainAddressList(1).then(result=>{
-                
+            await this.queryIotChainAddressList(10).then(result=>{
                 // console.log('获取地址信息成功->'+result)
             }).catch(err=>{
                 
                 if(err.toString().indexOf('DisconnectedDevice') != -1){
-
                     that.transport = null
                     that.status = 0
                     // console.log('设备连接错误，1秒后再次尝试')
                 }
-                
-                if(err.toString().indexOf('TransportStatusError') != -1){
-                    
+                if(err.toString().indexOf('TransportStatusError') != -1){ 
                     that.status = 1
                     // console.log('未打开iotchain应用')
                 }
@@ -185,7 +181,6 @@ export default class LedgerDevice {
         }
         const appEth = new AppEth(this.transport);
         let path = LedgerDevice.getAddressPath(pathIdx)
-
         return appEth.getAddress(path)
     }
 
@@ -197,7 +192,6 @@ export default class LedgerDevice {
         if(!this.transport){
             return Promise.reject('connect device error')
         }
-    
         const appEth = new AppEth(this.transport);
         return appEth.getAppConfiguration()
     }
@@ -211,9 +205,7 @@ export default class LedgerDevice {
         if(!this.transport){
             return Promise.reject('device did not connect') 
         }
-
         let addressInfos = []
-
         for (let index = 0; index < amount; index++) {
                         
             await this.queryDestinationAddress(index).then(addressInfo=>{
@@ -223,12 +215,10 @@ export default class LedgerDevice {
                     idx:index
                 })
             }).catch(err=>{
-
                 // console.log('path为'+index+'的地址信息查询错误:'+err)
                 return Promise.reject('path为'+index+'的地址信息查询错误:'+err)
             })
         }
-
         this.originalAddressInfo = addressInfos
         return Promise.resolve(addressInfos)
     }    
@@ -250,7 +240,6 @@ export default class LedgerDevice {
 
         let tx = serializeTx(t)
         return await this.signTransaction(addressIdx,tx).then(vsr=>{
-
             return {
                 ...t,
                 ...vsr
@@ -276,7 +265,6 @@ export default class LedgerDevice {
 
         let tx = serializeErc20Tx(t)
         return await this.signTransaction(addressIdx,tx).then(vsr=>{
-
             return {
                 ...t,
                 ...vsr
@@ -287,18 +275,15 @@ export default class LedgerDevice {
     async signTransaction(addressIdx,tx){
 
         let path = LedgerDevice.getAddressPath(addressIdx)
-
         if(!this.transport){
             return Promise.reject('connect device error')
         }
         const appEth = new AppEth(this.transport);
 
         return appEth.signTransaction(path, tx).then(result => {
-
             result.v = getRecoveryId(10,parseInt(result.v))
             return result
         }).catch(err=>{
-
             // console.log('交易拒绝'+err)
             return Promise.reject('交易错误，请检查连接或者确认交易'+err)
         }) 

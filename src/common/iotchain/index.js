@@ -150,6 +150,10 @@ const getBlockByNumber = async (blockNumber)=>{
  */
 const getAccount = async (address)=>{
 
+    if(address.indexOf('ITC')==0 || address.indexOf('itc') == 0){
+        address='0x'+address.substr(3)
+    }
+
     try{
         let response = await iotchainApi().account.getAccount(address)
         return Promise.resolve(response)
@@ -165,6 +169,10 @@ const getAccount = async (address)=>{
  */
 const getBalance = async (address)=>{
 
+    if(address.indexOf('ITC')==0 || address.indexOf('itc') == 0){
+        address='0x'+address.substr(3)
+    }
+
     try{
         let response = await iotchainApi().account.getBalance(address)
         return Promise.resolve(response)
@@ -175,6 +183,10 @@ const getBalance = async (address)=>{
 }
 
 const getItcBalance = (address)=>{
+
+    if(address.indexOf('ITC')==0 || address.indexOf('itc') == 0){
+        address='0x'+address.substr(3)
+    }
     return callContractFunction(itcContractAddress(),ABI,'balanceOf',[address])
 }
     
@@ -377,6 +389,10 @@ const itcBalanceOf = async(address)=>{
  */
 const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}={})=>{
 
+    if(receiveAddress.indexOf('ITC')==0 || receiveAddress.indexOf('itc') == 0){
+        receiveAddress='0x'+receiveAddress.substr(3)
+    }
+
     if(!nonce){
         let address = iotchainApi().utils.privateKeyToAddress(privateKey)
         let account = await getAccount(address)
@@ -396,11 +412,19 @@ const transferITG = async (privateKey,receiveAddress,amount,{nonce,gas,gasPrice}
 }
 
 const transferITC = async (privateKey,address,value,{nonce,gas,gasPrice}={})=>{
+
+    if(address.indexOf('ITC')==0 || address.indexOf('itc') == 0){
+        address='0x'+address.substr(3)
+    }
+
     return handleContractFunction(itcContractAddress(),ABI,'transfer',[address,value],privateKey,{nonce,gas,gasPrice})
 }
 
 const generalITCTransferData = (address,value)=>{
 
+    if(address.indexOf('ITC')==0 || address.indexOf('itc') == 0){
+        address='0x'+address.substr(3)
+    }
 
     // console.log('参数address->'+address+' value->'+value)
 
@@ -416,7 +440,13 @@ const util = {
         if(!address){
           return address
         }
-        return address.toLowerCase().replace(/0x|itc/g,'')
+        return address.toLowerCase().replace(/0x|ITC/g,'')
+    },
+    formatAddress(address){
+        if(address.indexOf('ITC') == 0 || address.indexOf('itc') == 0 ){
+            address = '0x' + address.substr(3)
+        }
+        return address
     },
     toWei(value, unit='ether'){
         return web3util.toWei(value+'', unit)
@@ -425,6 +455,9 @@ const util = {
         return web3util.fromWei(value+'', unit)
     },
     isAddress(address){
+        if(address.indexOf('ITC')==0){
+            address = '0x'+ address.substr(3)
+        }
         return web3util.isAddress(this.addressFilter(address))
     },
     async kec256(data){

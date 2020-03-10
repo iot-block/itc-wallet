@@ -60,9 +60,9 @@ export default {
       })
     },
     copyAddress(){
-      this.$clipboard.writeText(this.wallet.keystore.address)
+      this.$clipboard.writeText('ITC' + this.wallet.keystore.address)
       this.$alert.show({
-        message: "复制成功",
+        message: this.$t('setting.copy'),
         timeout: 1000,
       })
     }

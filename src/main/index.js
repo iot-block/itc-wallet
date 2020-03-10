@@ -36,7 +36,8 @@ function createWindow () {
     minWidth: 900,
     minHeight: 500,
     titleBarStyle: 'hidden',
-    webPreferences: {webSecurity: false}
+    webPreferences: {webSecurity: false},
+    icon: '../assets/logo.png',
   })
 
   mainWindow.loadURL(winURL)

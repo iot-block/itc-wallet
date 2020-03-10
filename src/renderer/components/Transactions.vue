@@ -27,10 +27,12 @@
             </div>
           </router-link>
         </v-col>
-        <v-col cols="1" class="py-0 text-truncate text-right blue--text">
-          {{tx.value | unit(2)}} ITC
+        <v-col cols="1" 
+        class="py-0 text-truncate text-right min-value"
+        :class="address.slice(-40).toLowerCase()===tx.receivingAddress.slice(-40).toLowerCase()?'blue--text':'red--text'">
+          <span>{{address.slice(-40).toLowerCase()==tx.receivingAddress.slice(-40).toLowerCase()?'+':'-'}}</span>
+          <span>{{tx.value | unit(4)}} {{recoderType?'ITG':'ITC'}}</span>
         </v-col>
-      
       </v-row>
       <v-pagination
         class="mt-3"
@@ -46,7 +48,7 @@
 <script>
 
 export default {
-  props: ['address','isLedger'],
+  props: ['address','isLedger','recoderType'],
   data(){
     return {
       page: 1,
@@ -70,12 +72,16 @@ export default {
     page(val){
       this.loadData(this.page)
     },
+    recoderType(val){
+      this.loadData(1)
+    }
   },
   methods: {
     loadData(page){
       if(this.address){
         this.loading = true
-        this.$explorer.holderItcTxList(this.address,page,this.pageSize)
+        if(!this.recoderType){
+          this.$explorer.holderItcTxList(this.address,page,this.pageSize)
           .then(response => {
             this.txs = response.data.trx
             this.total = response.data.amount
@@ -85,8 +91,28 @@ export default {
               this.nodata = true
             }
           });
+        }
+        else{
+          this.$explorer.holderAllTxList(this.address,page,this.pageSize)
+          .then(response => {
+            this.txs = response.data.trx
+            this.total = response.data.amount
+            this.pageTotal = Math.floor(this.total/this.pageSize) + (this.total%this.pageSize==0?0:1)
+            this.loading = false
+            if(!this.total){
+              this.nodata = true
+            }
+          });
+        }
+        
       }
     }
   }
 }
 </script>
+
+<style scoped>
+.min-value{
+  min-width:100px;
+}
+</style>

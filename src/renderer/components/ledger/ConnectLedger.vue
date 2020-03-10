@@ -1,10 +1,10 @@
 <template>
   <v-container class="contentbox">
-    <Progress sequence='1' text='连接至您的钱包' :status="step>0" />
-    <Progress sequence='2' text='在Ledger中打开iot chain应用' :status="step>1" :style="`opacity:${step>0?1:0}`"/>
-    <Progress sequence='3' text='正在同步Ledger钱包信息' :status="step>2" :style="`opacity:${step>1?1:0}`"/>
-    <ProgressInput sequence='4' text='输入设备的名字' :ledgername="namelabel" :errorMessage="errorMessage" @LEDGER_NAME_CHANGED="ledgerNameChanged" :style="`opacity:${step>2?1:0}`"/>
-    <v-btn color="#5EA3FE" @click="saveDevice" :style="`opacity:${step>2?1:0};color:white`">添加钱包</v-btn>
+    <Progress sequence='1' :text="$t('ledger.connect')" :status="step>0" />
+    <Progress sequence='2' :text="$t('ledger.step_open')" :status="step>1" :style="`opacity:${step>0?1:0}`"/>
+    <Progress sequence='3' :text="$t('ledger.step_sync')" :status="step>2" :style="`opacity:${step>1?1:0}`"/>
+    <ProgressInput sequence='4' :text="$t('ledger.step_name')" :ledgername="namelabel" :errorMessage="errorMessage" @LEDGER_NAME_CHANGED="ledgerNameChanged" :style="`opacity:${step>2?1:0}`"/>
+    <v-btn color="#5EA3FE" @click="saveDevice" :style="`opacity:${step>2?1:0};color:white`">{{$t('ledger.step_add')}}</v-btn>
   </v-container>
 </template>
 
@@ -46,7 +46,7 @@ export default {
         console.log('namelabel->'+this.namelabel)
 
         if(this.namelabel.length == 0 || this.namelabel.length > 50){
-          this.errorMessage = '请输入长度为1-50的设备名字'
+          this.errorMessage = this.$t("ledger.input_device_name_err")
           return
         }
 
